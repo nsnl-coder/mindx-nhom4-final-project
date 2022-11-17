@@ -1,9 +1,15 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import logo from '../../assets/logo-full.svg';
 
 const Header = () => {
   return (
     <>
-      <li className='text-primary'>
+      <div>
+        <img src={logo} alt="" />
+        <input type="search" className="border text-primary" />
+      </div>
+      <div></div>
+      {/* <li className='text-primary'>
         <Link to='/'>Home</Link>
       </li>
       <li className='text-primary'>
@@ -17,9 +23,9 @@ const Header = () => {
       </li>
       <li className='text-primary'>
         <Link to='/new-post'>New post</Link>
-      </li>
+      </li> */}
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
