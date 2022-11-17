@@ -10,6 +10,8 @@ const {createError}=require('../utils/createError');
 const register=async(req,res,next)=>{
     
     try{  
+        let user = await User.findOne({ email: req.body.email });
+        if(user) return next(createError(409,"User with given email already Exist!"))
          const addSavedPost=new SavedPosts({_id:new mongoose.Types.ObjectId()});
          await addSavedPost.save();
         const newUser=new User(
@@ -19,7 +21,7 @@ const register=async(req,res,next)=>{
        
         const userSaved=await newUser.save();
         const {password,...details}=userSaved._doc;
-        const token_access=jwt.sign({id:userSaved._id,userName:userSaved.userName},process.env.JWT_KEY,{expiresIn:"4d"});
+        const token_access=jwt.sign({id:userSaved._id,userName:userSaved.userName},process.env.JWT_KEY,{expiresIn:"3d"});
         const url=`http://localhost:3000/users/${userSaved._id}/verify/${token_access}`
         await sendEmail(userSaved.email,"Verify Email",url);
         res.status(200).json("An Email sent to your account please verify");
