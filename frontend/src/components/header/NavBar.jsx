@@ -13,20 +13,20 @@ const SidebarContent = () => {
         <div className="flex items-center flex-grow ">
           <label
             htmlFor="my-drawer"
-            className="drawer-button lg:hidden hover:shadow-lg"
+            className="drawer-button md:hidden hover:shadow-lg"
           >
-            <img src={menuIcon} alt="" className="w-6 cursor-pointer" />
+            <img src={menuIcon} alt="menu" className="w-6 cursor-pointer" />
           </label>
-          <div className="w-full gap-x-4 hidden lg:flex">
+          <div className="w-full gap-x-4 hidden md:flex">
             <Link to="/">
-              <img src={logo} alt="" className="h-10" />
+              <img src={logo} alt="logo" className="h-10" />
             </Link>
             <div className="flex w-full items-center gap-x-3">
               <input
                 type="text"
-                className="border px-4 flex-grow ml-8 h-9 rounded-full bg-gray-50 outline-none text-sm focus:shadow-sm"
+                className="border px-4 flex-grow ml-8 h-9 rounded-full bg-gray-50 outline-none text-md text-gray-500 focus:shadow-sm"
               />
-              <img src={searchIcon} alt="" className="w-6 h-6 cursor-pointer" />
+              <img src={searchIcon} alt="search" className="w-6 h-6 cursor-pointer" />
             </div>
           </div>
         </div>
@@ -39,7 +39,7 @@ const SidebarContent = () => {
             />
           </Link>
           <Link to="/new-post">
-            <img src={addIcon} alt="" className="h-9" />
+            <img src={addIcon} alt="new-post" className="h-9" />
           </Link>
         </div>
       </div>
