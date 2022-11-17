@@ -1,11 +1,31 @@
-import { UserProfile, Auth, NewPost, PageNotFound } from './pages/index'
 import { Routes, Route } from 'react-router-dom'
+import { useEffect } from 'react'
 
 import Home from './pages/home/Home'
+import useCallApi from './hooks/useCallApi'
+import { UserProfile, Auth, NewPost, PageNotFound } from './pages/index'
 
 const App = () => {
+  // const { isLoading, error, sendRequest } = useCallApi()
+
+  // const useApiData = (data) => {
+  //   console.log(data)
+  // }
+
+  // useEffect(() => {
+  //   sendRequest(
+  //     {
+  //       url: 'https://dummyjson.com/products/1',
+  //       method: 'get',
+  //     },
+  //     useApiData
+  //   )
+  // }, [])
+
   return (
     <>
+      {/* {error && <p>error</p>}
+      {isLoading && <p>Loading....</p>} */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile/:id" element={<UserProfile />} />

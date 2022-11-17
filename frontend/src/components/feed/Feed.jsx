@@ -10,7 +10,7 @@ const breakpointColumnsObj = {
   1024: 4,
   768: 3,
   640: 2,
-};
+}
 
 const Feed = () => {
   return (
@@ -21,7 +21,12 @@ const Feed = () => {
     >
       {posts.slice(0, 20).map((post) => (
         <div>
-          <img key={post.photo} src={post.photo} className="rounded-lg" alt={post.title} />
+          <img
+            key={post.photo}
+            src={post.photo}
+            className="rounded-lg"
+            alt={post.title}
+          />
           <div className="flex py-4 items-center">
             <img className="h-8 w-8 mr-4" src={logo} alt="logo" />
             <h4>Author</h4>
