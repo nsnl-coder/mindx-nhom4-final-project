@@ -1,20 +1,17 @@
 /** @type {import('tailwindcss').Config} */
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
-    colors: {
-      primary: '#F81411', // main color for logo, buttons, highlight, success message
-      gray: '#D9D9D9',
-      'dark-gray': '#696969', // color for other substitute parts
-      warn: '#F1CC81', // color for warning message
-      white: '#FFFFFF', // background color
-      black: '#313638', // text color
-      'pure-black': '#000000', // use for text color in primary background
-      transparent: 'transparent',
+    extend: {
+      colors: {
+        primary: '#F81411', // main color for logo, buttons, highlight, success message
+        accent: '#F1CC81', // color for warning message
+        text: '#313638', // text color
+      },
     },
+
     fontFamily: {
       roboto: ['Roboto', 'sans-serif'],
       sans: ['Roboto', ...defaultTheme.fontFamily.sans], // config default fontfamily
@@ -29,4 +26,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
