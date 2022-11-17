@@ -1,0 +1,6 @@
+export { default as Auth } from './auth/Auth'
+export { default as Home } from './home/Home'
+export { default as NewPost } from './newPost/NewPost'
+export { default as PostDetail } from './postDetail/PostDetail'
+export { default as UserProfile } from './userProfile/UserProfile'
+export { default as PageNotFound } from './pageNotFound/PageNotFound'
