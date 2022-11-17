@@ -13,7 +13,6 @@ const App = () => {
         <Route path="/new-post" element={<NewPost />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-      <div className="h-screen"></div>
     </>
   )
 }
