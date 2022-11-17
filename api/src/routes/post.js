@@ -1,6 +1,6 @@
 const express=require('express');
 const {CreatePost,DeletePost,GetPost,GetsPost,UpdatePost}=require('../controllers/post');
-const {verifyAdmin,verifyUser,vertifyToken}=require('../utils/vertify');
+const {verifyUser}=require('../utils/vertify');
 const router=express.Router();
 
 router.post('/',verifyUser,CreatePost);

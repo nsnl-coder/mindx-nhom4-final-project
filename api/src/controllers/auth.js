@@ -4,7 +4,7 @@ const CryptoJS=require('crypto-js');
 const nodemailer=require('nodemailer');
 const sendEmail=require('../utils/sendEmail');
 const User=require('../models/user');
-const SavedPosts=require('../models/savedPost');
+
 const {createError}=require('../utils/createError');
 
 const register=async(req,res,next)=>{
@@ -12,12 +12,11 @@ const register=async(req,res,next)=>{
     try{  
         let user = await User.findOne({ email: req.body.email });
         if(user) return next(createError(409,"User with given email already Exist!"))
-         const addSavedPost=new SavedPosts({_id:new mongoose.Types.ObjectId()});
-         await addSavedPost.save();
+        
         const newUser=new User(
             {email:req.body.email,
             userName:req.body.userName,
-            password:CryptoJS.AES.encrypt(req.body.password,process.env.CRYPTOJS_KEY).toString(),savedPosts:addSavedPost._id});
+            password:CryptoJS.AES.encrypt(req.body.password,process.env.CRYPTOJS_KEY).toString()});
        
         const userSaved=await newUser.save();
         const {password,...details}=userSaved._doc;
@@ -41,9 +40,9 @@ const login=async(req,res,next)=>{
             return next(createError(400,"Incorrect password!"));
         }
         if(!user.verified){
-            const token=jwt.sign({id:user._id,userName:user.userName},process.env.JWT_KEY,{expiresIn:"4d"});
-            const url=`http://localhost:3000/users/${userSaved._id}/verify/${token_access}`
-            await sendEmail(userSaved.email,"Verify Email",url);
+            const token=jwt.sign({id:user._id,userName:user.userName},process.env.JWT_KEY,{expiresIn:"3d"});
+            const url=`http://localhost:3000/users/${user._id}/verify/${token}`
+            await sendEmail(user.email,"Verify Email",url);
             return next(400,"An Email sent to your account please verify");
         }
         const {password,...details}=user._doc;

@@ -4,12 +4,10 @@ const mongoose=require('mongoose');
 const bodyParser=require('body-parser');
 const cors=require('cors');
 const {OAuth2Client}=require('google-auth-library');
-const path=require('path');
 const postRoute=require('./routes/post');
-const messageRoute=require('./routes/message'); 
+const commentRoute=require('./routes/comment'); 
 const authRoute=require('./routes/auth');
 const userRoute=require('./routes/user');
-const savedPostRoute=require('./routes/savedPost');
 dotenv.config();
 
 const app =express();
@@ -34,10 +32,10 @@ app.use(bodyParser.json({limit:'30mb',extended:true}));
 app.use(bodyParser.urlencoded({limit:'30mb',extended:true}));
 app.use(cors());
 app.use('/api/post',postRoute);
-app.use('/api/message',messageRoute);
+app.use('/api/comment',commentRoute);
 app.use('/api/user',userRoute);
 app.use('/api/auth',authRoute);
-app.use('/api/savedPost',savedPostRoute);
+
 app.use((err,req,res,next)=>{
     const errStatus=err.status || 500
     const errMessage=err.message || "something went wrong "

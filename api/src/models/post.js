@@ -1,20 +1,19 @@
 const mongoose=require('mongoose');
 const postSchema=new mongoose.Schema(
     {
+        
         title:{
             type:String,
           
         },
-        message:[
-            {type:mongoose.Schema.Types.ObjectId,ref:"Message"}
-        ],
-        cretor:{
-            type:String,
-           require:true
+        comments:[{type:mongoose.Schema.Types.ObjectId,ref:"Comment"}]
+        ,
+        author:{
+           type:mongoose.Schema.Types.ObjectId,ref:"User"
         }, 
         selectFile:{
             type:String,
-            require:true
+            required:true
         },
         likeCount:{
             type:Number,
@@ -23,8 +22,14 @@ const postSchema=new mongoose.Schema(
         saveFileCount:{
             type:Number,
             default:0,
-        }
-        
+        },
+        photo:{
+            type:String
+        },
+        savedUsers:{
+            type:mongoose.Schema.Types.ObjectId,ref:"User"
+        },
+        content:String
         
     },
     {timestamps:true}

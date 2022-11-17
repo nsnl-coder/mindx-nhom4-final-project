@@ -4,13 +4,21 @@ const {createError} =require('../utils/createError');
 
 const getUser=async(req,res,next)=>{
     try{
-        const user=await User.findById(req.params.id);
+        const user=await User.findById(req.params.id).populate("savedPosts");
         const {password,...details}=user._doc;
         res.status(200).json(details);
     }catch(err){
         console.log(err);
     }
 } 
+const UpdateUser=async(req,res,next)=>{
+    try{
+        const user=await User.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true});
+        res.status(200).json(user);
+    }catch(err){
+        next(err);
+    }
+}
 const changePassword=async(req,res,next)=>{
     const {oldPassword,newPassword}=req.body;
     try{
@@ -26,4 +34,15 @@ const changePassword=async(req,res,next)=>{
         next(err);
     }
 }
-module.exports={getUser,changePassword}
+const addSavedPosts=async(req,res,next)=>{
+    try{
+        const savedPost=await User.findByIdAndUpdate(req.params.id,{$push:{savedPosts:req.body.id}},{new:true});
+        res.status(200).json(savedPost);
+    }catch(err){
+        next(err);
+    }
+}
+
+
+
+module.exports={getUser,changePassword,addSavedPosts,UpdateUser}

@@ -1,13 +1,13 @@
 const Post =require('../models/post');
-const Message=require('../models/message');
+const Comment=require('../models/comment');
 const mongoose=require('mongoose');
+const comment = require('../models/comment');
 //create 
 const CreatePost=async (req,res,next)=>{
     try{
        
-        const newMessage=new Message({_id:new mongoose.Types.ObjectId()});
-        const message=await newMessage.save();
-         const newPost=new Post({message:newMessage._id,...req.body});
+       
+         const newPost=new Post(req.body);
         const post=await newPost.save();
         res.status(200).json(post);
     }catch(err){
@@ -25,22 +25,27 @@ const UpdatePost=async (req,res,next)=>{
 }
 //getAll
 const GetsPost=async (req,res,next)=>{
+    const {page}=req.query;
     try{
-        const post=await Post.find();
+        const LIMIT=10;
+        const startIndex=(Number(page)-1)*LIMIT;
+        const post=await Post.find().sort({createAt:-1}).limit(LIMIT).skip(startIndex);
         res.status(200).json(post);
     }catch(err){
        next(err);
     }
 }
 //get
+
 const GetPost=async (req,res,next)=>{
     try{
-        const post=await Post.findById(req.params.id).populate('message');
+        const post=await Post.findById(req.params.id).populate("comments").populate("author")
         res.status(200).json(post);
     }catch(err){
        next(err);
     }
 }
+
 //delete
 const DeletePost=async (req,res,next)=>{
     try{
