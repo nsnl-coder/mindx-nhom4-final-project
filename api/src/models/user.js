@@ -19,6 +19,13 @@ const userSchema=mongoose.Schema({
         type:Boolean,
         default:false
     },
+    verified:{
+        type:Boolean,
+        default:false
+    },
+    savedPosts:[
+        {type:mongoose.Schema.Types.ObjectId,ref:"SavedPosts"}
+    ],  
     img:{
         type:String,
         default:"https://dvdn247.net/wp-content/uploads/2020/07/avatar-mac-dinh-1.png"

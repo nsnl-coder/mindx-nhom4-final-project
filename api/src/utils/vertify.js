@@ -1,4 +1,4 @@
-const e = require('express');
+
 const jwt=require('jsonwebtoken');
 const {createError}=require('./createError');
 const vertifyToken=(req,res,next)=>{
@@ -15,7 +15,7 @@ const vertifyToken=(req,res,next)=>{
 }
 const verifyUser=(req,res,next)=>{
     vertifyToken(req,res,()=>{
-        if(req.user._id!==req.params.id){
+        if(req.user?.id!==req.params.id){
             return next(createError(401,"You are not authorized!"));
         }
         else{
@@ -25,7 +25,7 @@ const verifyUser=(req,res,next)=>{
 }
 const verifyAdmin=(req,res,next)=>{
     vertifyToken(req,res,()=>{
-        if(!req.user.isAdmin){
+        if(!req.user?.isAdmin){
             return next(createError(401,"You are not Admin"))
         }else{
             next();
