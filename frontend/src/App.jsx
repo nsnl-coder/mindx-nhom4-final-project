@@ -1,7 +1,7 @@
-import { UserProfile, Auth, NewPost, PageNotFound } from './pages/index';
-import { Routes, Route } from 'react-router-dom';
+import { UserProfile, Auth, NewPost, PageNotFound } from './pages/index'
+import { Routes, Route } from 'react-router-dom'
 
-import Home from './pages/home/Home';
+import Home from './pages/home/Home'
 
 const App = () => {
   return (
@@ -13,8 +13,9 @@ const App = () => {
         <Route path="/new-post" element={<NewPost />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <div className="h-screen"></div>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App

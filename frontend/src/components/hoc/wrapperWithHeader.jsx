@@ -5,8 +5,9 @@ const wrapperWithHeader = (OriginalComponent) => {
   const NewComponent = () => {
     return (
       <>
-        <Header />
-        <OriginalComponent />
+        <Header>
+          <OriginalComponent />
+        </Header>
       </>
     )
   }
