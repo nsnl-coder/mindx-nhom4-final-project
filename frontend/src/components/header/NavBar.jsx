@@ -11,7 +11,10 @@ const SidebarContent = () => {
     <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
       <div className="max-w-6xl mx-auto flex items-center gap-x-14 px-10">
         <div className="flex items-center flex-grow ">
-          <label htmlFor="my-drawer" className="drawer-button lg:hidden">
+          <label
+            htmlFor="my-drawer"
+            className="drawer-button lg:hidden hover:shadow-lg"
+          >
             <img src={menuIcon} alt="" className="w-6 cursor-pointer" />
           </label>
           <div className="w-full gap-x-4 hidden lg:flex">
