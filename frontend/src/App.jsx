@@ -1,9 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import { useEffect } from 'react'
 
-import Home from './pages/home/Home'
 import useCallApi from './hooks/useCallApi'
-import { UserProfile, Auth, NewPost, PageNotFound } from './pages/index'
+import { Home, UserProfile, Auth, NewPost, PageNotFound } from './pages/index'
 
 const App = () => {
   // const { isLoading, error, sendRequest } = useCallApi()
