@@ -6,7 +6,7 @@ import searchIcon from '../../assets/icon-search.svg'
 import addIcon from '../../assets/icon-add.svg'
 import menuIcon from '../../assets/icon-bars.svg'
 
-const SidebarContent = () => {
+const NavBar = ({ toggleSideBarVisivility }) => {
   return (
     <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
       <div className="max-w-6xl mx-auto flex items-center gap-x-14 px-10">
@@ -15,7 +15,12 @@ const SidebarContent = () => {
             htmlFor="my-drawer"
             className="drawer-button md:hidden hover:shadow-lg"
           >
-            <img src={menuIcon} alt="menu" className="w-6 cursor-pointer" />
+            <img
+              src={menuIcon}
+              alt="menu"
+              className="w-6 cursor-pointer"
+              onClick={toggleSideBarVisivility}
+            />
           </label>
           <div className="w-full gap-x-4 hidden md:flex">
             <Link to="/">
@@ -26,7 +31,11 @@ const SidebarContent = () => {
                 type="text"
                 className="border px-4 flex-grow ml-8 h-9 rounded-full bg-gray-50 outline-none text-md text-gray-500 focus:shadow-sm"
               />
-              <img src={searchIcon} alt="search" className="w-6 h-6 cursor-pointer" />
+              <img
+                src={searchIcon}
+                alt="search"
+                className="w-6 h-6 cursor-pointer"
+              />
             </div>
           </div>
         </div>
@@ -47,4 +56,4 @@ const SidebarContent = () => {
   )
 }
 
-export default SidebarContent
+export default NavBar

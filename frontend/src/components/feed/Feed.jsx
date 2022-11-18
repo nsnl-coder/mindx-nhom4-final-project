@@ -35,17 +35,17 @@ const Feed = () => {
   const { isLoading, error, sendRequest } = useCallApi()
 
   const [posts, setPosts] = useState([])
-
   const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0)
   }, [])
 
   const useApiData = (data) => {
     if (data.length > 0) {
       setHasMore(true)
       setPosts((prev) => [...prev, ...data])
+      const newData = [...posts, ...data]
     } else {
       setHasMore(false)
       return
@@ -62,14 +62,17 @@ const Feed = () => {
     )
   }
 
-  if (error) return (
-    <div className="w-full h-[90.5%] bg-white p-4 flex flex-col items-center justify-center">
-      <div className="scale-[2] -translate-y-10">
-        <img src={deleteIcon} alt="error" />
+  if (error)
+    return (
+      <div className="w-full h-[90.5%] bg-white p-4 flex flex-col items-center justify-center">
+        <div className="scale-[2] -translate-y-10">
+          <img src={deleteIcon} alt="error" />
+        </div>
+        <h3 className="text-primary font-semibold text-2xl">
+          Oops! Something went wrong.
+        </h3>
       </div>
-      <h3 className="text-primary font-semibold text-2xl">Oops! Something went wrong.</h3>
-    </div>
-  )
+    )
 
   return (
     <div className="bg-white relative">
@@ -77,10 +80,13 @@ const Feed = () => {
         pageStart={0}
         loadMore={loadFunc}
         hasMore={hasMore}
-        loader={<div className="w-full flex justify-center mb-5"><Spinner /></div>}
+        loader={
+          <div className="w-full flex justify-center mb-5" key={0}>
+            <Spinner />
+          </div>
+        }
       >
         <Masonry
-          key={1}
           breakpointCols={breakpointColumnsObj}
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
@@ -90,7 +96,11 @@ const Feed = () => {
           ))}
         </Masonry>
       </InfiniteScroll>
-      <ScrollToTop smooth className="w-11 h-11 flex justify-center items-center rounded-full" component={<img src={iconUp} alt="icon-up" />} />
+      <ScrollToTop
+        smooth
+        className="w-11 h-11 flex justify-center items-center rounded-full"
+        component={<img src={iconUp} alt="icon-up" />}
+      />
     </div>
   )
 }
@@ -100,14 +110,14 @@ export default Feed
 // debounce to ignore triggering too many events
 
 const debounce = (func, timeout = 300) => {
-  let timer;
+  let timer
   return (...args) => {
     if (!timer) {
-      func.apply(this, args);
+      func.apply(this, args)
     }
-    clearTimeout(timer);
+    clearTimeout(timer)
     timer = setTimeout(() => {
-      timer = undefined;
-    }, timeout);
-  };
+      timer = undefined
+    }, timeout)
+  }
 }
