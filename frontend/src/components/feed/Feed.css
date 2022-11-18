@@ -4,7 +4,8 @@
   display: -ms-flexbox;
   /* Not needed if autoprefixing */
   display: flex;
-  margin: 20px 30px 20px 10px;
+  margin-right: 30px;
+  padding: 20px 0;
   /* gutter size offset */
   width: auto;
 }
@@ -20,22 +21,4 @@
   /* change div to reference your elements you put in <Masonry> */
   margin-bottom: 20px;
   border-radius: 1rem;
-}
-
-/* Optional, different gutter size on mobile */
-@media (max-width: 800px) {
-  /* .my-masonry-grid { */
-    /* margin-left: -20px; */
-    /* gutter size offset */
-  /* } */
-
-  .my-masonry-grid_column {
-    padding-left: 20px;
-    /* gutter size offset */
-  }
-
-  .my-masonry-grid_column>div {
-    margin-bottom: 10px;
-    /* space between items */
-  }
 }
