@@ -29,7 +29,7 @@ const GetsPost=async (req,res,next)=>{
     try{
         const LIMIT=10;
         const startIndex=(Number(page)-1)*LIMIT;
-        const post=await Post.find().sort({createAt:-1}).limit(LIMIT).skip(startIndex);
+        const post=await Post.find().sort({createAt:-1}).limit(LIMIT).skip(startIndex).populate("author");
         res.status(200).json(post);
     }catch(err){
        next(err);
