@@ -86,7 +86,7 @@ const Feed = () => {
           columnClassName="my-masonry-grid_column"
         >
           {posts.map((post) => (
-            <PostCard post={post} />
+            <PostCard post={post} key={post._id} />
           ))}
         </Masonry>
       </InfiniteScroll>
