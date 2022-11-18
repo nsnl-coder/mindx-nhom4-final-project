@@ -9,7 +9,7 @@ const PostCard = ({ post }) => {
   return (
     <div>
       <div className="hover:shadow-xl image-full group relative">
-        <Link to={`post/${post._id}`}>
+        <Link to={`../post/${post._id}`}>
           <div className="w-full h-full group-hover:bg-black/30 absolute rounded-xl"></div>
           <img src={post.photo} alt={post.title} className="rounded-xl" />
           <p className="hidden group-hover:block absolute bottom-2 left-3 right-3 text-white text-md truncate">
