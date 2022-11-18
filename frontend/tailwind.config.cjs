@@ -25,5 +25,10 @@ module.exports = {
       '2xl': '1536px',
     },
   },
+  variants: {
+    extend: {
+      display: ["group-hover"],
+    },
+  },
   plugins: [require('daisyui')],
 }

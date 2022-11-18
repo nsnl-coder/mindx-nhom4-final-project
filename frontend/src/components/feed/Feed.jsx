@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
+import { TailSpin } from 'react-loader-spinner'
 import Masonry from 'react-masonry-css'
+import ScrollToTop from 'react-scroll-to-top'
 
 import useCallApi from '../../hooks/useCallApi'
-import logo from '../../assets/logo-icon-small.svg'
+import deleteIcon from '../../assets/icon-delete.svg'
+import iconUp from '../../assets/icon-angle-up.svg'
 import './Feed.css'
+import PostCard from './postCard/PostCard'
 
 const breakpointColumnsObj = {
   default: 6,
@@ -14,14 +18,38 @@ const breakpointColumnsObj = {
   640: 2,
 }
 
+const Spinner = () => (
+  <TailSpin
+    height="80"
+    width="80"
+    color="#F81411"
+    ariaLabel="tail-spin-loading"
+    radius="1"
+    wrapperStyle={{}}
+    wrapperClass=""
+    visible={true}
+  />
+)
+
 const Feed = () => {
   const { isLoading, error, sendRequest } = useCallApi()
 
-  const [items, setItems] = useState([])
+  const [posts, setPosts] = useState([])
+
+  const [hasMore, setHasMore] = useState(true)
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   const useApiData = (data) => {
-    if (error) return
-    setItems((prev) => [...prev, ...data])
+    if (data.length > 0) {
+      setHasMore(true)
+      setPosts((prev) => [...prev, ...data])
+    } else {
+      setHasMore(false)
+      return
+    }
   }
 
   const loadFunc = (page) => {
@@ -34,13 +62,22 @@ const Feed = () => {
     )
   }
 
+  if (error) return (
+    <div className="w-full h-[90.5%] bg-white p-4 flex flex-col items-center justify-center">
+      <div className="scale-[2] -translate-y-10">
+        <img src={deleteIcon} alt="error" />
+      </div>
+      <h3 className="text-primary font-semibold text-2xl">Oops! Something went wrong.</h3>
+    </div>
+  )
+
   return (
-    // items.length !== 0 ?
-      (<InfiniteScroll
+    <div className="bg-white relative">
+      <InfiniteScroll
         pageStart={0}
         loadMore={loadFunc}
-        hasMore={true || false}
-        loader={<div className="loader" key={0}>Loading ...</div>}
+        hasMore={hasMore}
+        loader={<div className="w-full flex justify-center mb-5"><Spinner /></div>}
       >
         <Masonry
           key={1}
@@ -48,23 +85,29 @@ const Feed = () => {
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
         >
-          {items.map((item) => (
-            <div key={item._id["$oid"]}>
-              <img
-                src={item.photo}
-                className="rounded-lg"
-                alt={item.title}
-              />
-              <div className="flex py-4 items-center">
-                <img className="h-8 w-8 mr-4" src={logo} alt="logo" />
-                <h4>Author</h4>
-              </div>
-            </div>
+          {posts.map((post) => (
+            <PostCard post={post} />
           ))}
         </Masonry>
-      </InfiniteScroll>)
-      // : <h4>Empty...</h4>
+      </InfiniteScroll>
+      <ScrollToTop smooth className="w-11 h-11 flex justify-center items-center rounded-full" component={<img src={iconUp} alt="icon-up" />} />
+    </div>
   )
 }
 
 export default Feed
+
+// debounce to ignore triggering too many events
+
+const debounce = (func, timeout = 300) => {
+  let timer;
+  return (...args) => {
+    if (!timer) {
+      func.apply(this, args);
+    }
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      timer = undefined;
+    }, timeout);
+  };
+}

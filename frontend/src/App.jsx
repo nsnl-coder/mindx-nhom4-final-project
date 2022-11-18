@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { useEffect } from 'react'
 
 import useCallApi from './hooks/useCallApi'
-import { Home, UserProfile, Auth, NewPost, PageNotFound } from './pages/index'
+import { Home, UserProfile, Auth, NewPost, PageNotFound, PostDetail } from './pages/index'
 
 const App = () => {
   // const { isLoading, error, sendRequest } = useCallApi()
@@ -28,6 +28,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile/:id" element={<UserProfile />} />
+        <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/auth/*" element={<Auth />} />
         <Route path="/new-post" element={<NewPost />} />
         <Route path="*" element={<PageNotFound />} />
