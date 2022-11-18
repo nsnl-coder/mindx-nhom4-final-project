@@ -10,7 +10,6 @@ const Header = (props) => {
   }
 
   useEffect(() => {
-    console.log({ isSideBarShow })
     if (isSideBarShow) {
       document.querySelector('body').classList.add('overflow-y-hidden')
     } else {
