@@ -29,13 +29,13 @@ const GetsPost = async (req, res, next) => {
     const LIMIT = 10;
     const startIndex = (Number(page) - 1) * LIMIT;
     const post = await Post.find()
-      .sort({ createAt: -1 })
+      .sort({ createdAt: -1 })
       .limit(LIMIT)
       .skip(startIndex)
       .populate({
         path: "author",
         select:
-          "username firstName lastName gender createdAt profileImage _id dateOfBirth savedPosts",
+          "username firstName lastName gender createdAt profileImage _id dateOfBirth savedUsers",
       });
 
     res.status(200).json(post);
@@ -49,7 +49,7 @@ const GetUserNamePost = async (req, res, next) => {
     const LIMIT = 10;
     const startIndex = (Number(page) - 1) * LIMIT;
     const post = await Post.find()
-      .sort("-creatdeAt")
+      .sort("-createdAt")
       .limit(LIMIT)
       .skip(startIndex)
       .populate({
@@ -58,7 +58,7 @@ const GetUserNamePost = async (req, res, next) => {
           username: { $in: userName },
         },
         select:
-          "username firstName lastName gender createdAt profileImage _id dateOfBirth savedPosts",
+          "username firstName lastName gender createdAt profileImage _id dateOfBirth savedUsers",
       });
     const posts = post.reduce((total, num) => {
       if (num.author) {
