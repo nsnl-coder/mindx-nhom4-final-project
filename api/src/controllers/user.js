@@ -11,6 +11,15 @@ const getUser = async (req, res, next) => {
     console.log(err);
   }
 };
+const getStrangerUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id).populate("savedPosts");
+    const { password, email, isAdmin, verified, ...details } = user._doc;
+    res.status(200).json(details);
+  } catch (err) {
+    console.log(err);
+  }
+};
 const UpdateUser = async (req, res, next) => {
   try {
     const user = await User.findByIdAndUpdate(
@@ -64,4 +73,10 @@ const addSavedPosts = async (req, res, next) => {
   }
 };
 
-module.exports = { getUser, changePassword, addSavedPosts, UpdateUser };
+module.exports = {
+  getUser,
+  changePassword,
+  addSavedPosts,
+  UpdateUser,
+  getStrangerUser,
+};
