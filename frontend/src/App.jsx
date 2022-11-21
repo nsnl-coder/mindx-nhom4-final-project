@@ -1,30 +1,21 @@
 import { Routes, Route } from 'react-router-dom'
-import { useEffect } from 'react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-import useCallApi from './hooks/useCallApi'
-import { Home, UserProfile, Auth, NewPost, PageNotFound, PostDetail } from './pages/index'
+//
+import {
+  Home,
+  UserProfile,
+  Auth,
+  NewPost,
+  PageNotFound,
+  PostDetail,
+} from './pages/index'
 
 const App = () => {
-  // const { isLoading, error, sendRequest } = useCallApi()
-
-  // const useApiData = (data) => {
-  //   console.log(data)
-  // }
-
-  // useEffect(() => {
-  //   sendRequest(
-  //     {
-  //       url: 'https://dummyjson.com/products/1',
-  //       method: 'get',
-  //     },
-  //     useApiData
-  //   )
-  // }, [])
-
   return (
     <>
-      {/* {error && <p>error</p>}
-      {isLoading && <p>Loading....</p>} */}
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile/:id" element={<UserProfile />} />

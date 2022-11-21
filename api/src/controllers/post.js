@@ -1,6 +1,12 @@
 const Post = require('../models/post')
+
 //create
 const CreatePost = async (req, res, next) => {
+  if (req.file) {
+    const photoUrl = `${req.file.destination}/${req.file.filename}`
+    req.body.photo = photoUrl.replace('public', '')
+  }
+
   try {
     const newPost = new Post(req.body)
     const post = await newPost.save()
@@ -26,13 +32,17 @@ const UpdatePost = async (req, res, next) => {
 const GetsPost = async (req, res, next) => {
   const { page } = req.query
   try {
-    const LIMIT = 10
+    const LIMIT = 20
     const startIndex = (Number(page) - 1) * LIMIT
-    const post = await Post.find().limit(LIMIT).skip(startIndex).populate({
-      path: 'author',
-      select:
-        'username firstName lastName gender createdAt profileImage _id dateOfBirth,savedUsers',
-    })
+    const post = await Post.find({})
+      .limit(LIMIT)
+      .skip(startIndex)
+      .sort({ createdAt: -1 })
+      .populate({
+        path: 'author',
+        select:
+          'username firstName lastName gender createdAt profileImage _id dateOfBirth,savedUsers',
+      })
 
     res.status(200).json(post)
   } catch (err) {
@@ -40,18 +50,18 @@ const GetsPost = async (req, res, next) => {
   }
 }
 const GetUserNamePost = async (req, res, next) => {
-  const { page, userName } = req.query
+  const { page, username } = req.query
   try {
     const LIMIT = 10
     const startIndex = (Number(page) - 1) * LIMIT
     const post = await Post.find()
-      .sort({ createAt: -1 })
+      .sort({ createdAt: -1 })
       .limit(LIMIT)
       .skip(startIndex)
       .populate({
         path: 'author',
         match: {
-          username: { $in: userName },
+          username: { $in: username },
         },
         select:
           'username firstName lastName gender createdAt profileImage _id dateOfBirth,savedUsers',
