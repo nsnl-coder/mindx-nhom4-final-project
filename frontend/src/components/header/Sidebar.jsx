@@ -7,7 +7,7 @@ const Sidebar = () => {
   return (
     <div className="w-80 h-screen bg-white px-4 py-4 flex flex-col">
       <div className="flex-grow">
-        <Link to="/">
+        <Link to="../">
           <img src={logo} alt="logo" className="h-8 mb-6" />
         </Link>
         <div className="flex w-full items-center gap-x-3">

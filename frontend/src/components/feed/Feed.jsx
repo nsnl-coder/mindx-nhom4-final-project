@@ -4,11 +4,11 @@ import { TailSpin } from 'react-loader-spinner'
 import Masonry from 'react-masonry-css'
 import ScrollToTop from 'react-scroll-to-top'
 
+import './Feed.css'
+import PostCard from './postCard/PostCard'
 import useCallApi from '../../hooks/useCallApi'
 import deleteIcon from '../../assets/icon-delete.svg'
 import iconUp from '../../assets/icon-angle-up.svg'
-import './Feed.css'
-import PostCard from './postCard/PostCard'
 
 const breakpointColumnsObj = {
   default: 6,
@@ -31,7 +31,7 @@ const Spinner = () => (
   />
 )
 
-const Feed = () => {
+const Feed = ({ userId, user, collection }) => {
   const { isLoading, error, sendRequest } = useCallApi()
 
   const [posts, setPosts] = useState([])
@@ -44,8 +44,9 @@ const Feed = () => {
   const useApiData = (data) => {
     if (data.length > 0) {
       setHasMore(true)
-      setPosts((prev) => [...prev, ...data])
+      // setPosts((prev) => [...prev, ...data])
       const newData = [...posts, ...data]
+      setPosts(newData)
     } else {
       setHasMore(false)
       return
@@ -53,9 +54,19 @@ const Feed = () => {
   }
 
   const loadFunc = (page) => {
+    let apiUrl
+
+    if (collection === 'saved') {      
+      apiUrl = ``
+    } else {
+      apiUrl = userId
+        ? `${import.meta.env.VITE_BACKEND_HOST}/api/post/name/?page=${page}&userId=${userId}`
+        : `${import.meta.env.VITE_BACKEND_HOST}/api/post/?page=${page}`
+    }
+
     sendRequest(
       {
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/post/?page=${page}`,
+        url: apiUrl,
         method: 'get',
       },
       useApiData
@@ -75,7 +86,7 @@ const Feed = () => {
     )
 
   return (
-    <div className="bg-white relative">
+    <div className={`bg-white relative ${!userId && "min-h-screen"}`}>
       <InfiniteScroll
         pageStart={0}
         loadMore={loadFunc}
@@ -87,15 +98,22 @@ const Feed = () => {
         }
         threshold={250}
       >
-        <Masonry
-          breakpointCols={breakpointColumnsObj}
-          className="my-masonry-grid"
-          columnClassName="my-masonry-grid_column"
-        >
-          {posts.map((post) => (
-            <PostCard post={post} key={post._id} />
-          ))}
-        </Masonry>
+        {posts.length > 0 ?
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column"
+          >
+            {posts.map((post) => (
+              <PostCard post={post} key={post._id} user={user} />
+            ))}
+          </Masonry> : 
+          <div className="h-[50vh] flex flex-col items-center justify-center">
+            <h3 className="text-text font-semibold text-2xl">
+              It seems there is no post.
+            </h3>
+          </div>
+        }
       </InfiniteScroll>
       <ScrollToTop
         smooth
@@ -107,18 +125,3 @@ const Feed = () => {
 }
 
 export default Feed
-
-// debounce to ignore triggering too many events
-
-const debounce = (func, timeout = 300) => {
-  let timer
-  return (...args) => {
-    if (!timer) {
-      func.apply(this, args)
-    }
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      timer = undefined
-    }, timeout)
-  }
-}
