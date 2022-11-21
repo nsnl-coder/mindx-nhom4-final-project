@@ -4,13 +4,7 @@ import saveIcon from '../../../assets/icon-save.svg'
 import deleteIcon from '../../../assets/icon-delete.svg'
 
 const PostCard = ({ post }) => {
-  const currentUser = true
-  let photoLink = post.photo
-
-  if (!photoLink.startsWith('http')) {
-    console.log('not okk')
-    photoLink = import.meta.env.VITE_BACKEND_HOST + photoLink
-  }
+  const currentUser = false
 
   return (
     <div className="postCard">
@@ -27,10 +21,8 @@ const PostCard = ({ post }) => {
           className="hidden group-hover:block absolute top-2 left-2"
         >
           <img
-            src={currentUser?._id === post.author._id ? deleteIcon : saveIcon}
-            alt={
-              currentUser?._id === post.author._id ? 'delete-icon' : 'save-icon'
-            }
+            src={currentUser ? deleteIcon : saveIcon}
+            alt={currentUser ? 'delete-icon' : 'save-icon'}
           />
         </button>
       </div>

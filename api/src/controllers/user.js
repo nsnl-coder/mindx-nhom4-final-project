@@ -8,7 +8,33 @@ const getUser = async (req, res, next) => {
     const { password, ...details } = user._doc;
     res.status(200).json(details);
   } catch (err) {
-    console.log(err);
+    next(err);
+  }
+};
+const getAllUser = async (req, res, next) => {
+  try {
+    const user = await User.find().sort({ createdAt: -1 });
+    const { password, ...details } = user;
+    res.status(200).json(details);
+  } catch {
+    next(err);
+  }
+};
+const deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndRemove(req.params.id);
+    res.status(200).json("deleted");
+  } catch (err) {
+    next(err);
+  }
+};
+const getStrangerUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id).populate("savedPosts");
+    const { password, email, isAdmin, verified, ...details } = user._doc;
+    res.status(200).json(details);
+  } catch (err) {
+    next(err);
   }
 };
 const UpdateUser = async (req, res, next) => {
@@ -64,4 +90,12 @@ const addSavedPosts = async (req, res, next) => {
   }
 };
 
-module.exports = { getUser, changePassword, addSavedPosts, UpdateUser };
+module.exports = {
+  getUser,
+  changePassword,
+  addSavedPosts,
+  UpdateUser,
+  getStrangerUser,
+  deleteUser,
+  getAllUser,
+};

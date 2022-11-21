@@ -85,7 +85,6 @@ const Feed = () => {
             <Spinner />
           </div>
         }
-        threshold={250}
       >
         <Masonry
           breakpointCols={breakpointColumnsObj}
