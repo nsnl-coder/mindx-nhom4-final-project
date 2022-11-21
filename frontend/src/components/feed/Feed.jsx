@@ -96,7 +96,6 @@ const Feed = ({ userId, user, collection }) => {
             <Spinner />
           </div>
         }
-        threshold={250}
       >
         {posts.length > 0 ?
           <Masonry
