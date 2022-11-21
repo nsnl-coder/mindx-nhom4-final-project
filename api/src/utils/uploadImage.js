@@ -3,7 +3,7 @@ const { createError } = require('../utils/createError')
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/images/posts')
+    cb(null, 'public/images')
   },
   filename: (req, file, cb) => {
     const ext = file.mimetype.split('/')[1]

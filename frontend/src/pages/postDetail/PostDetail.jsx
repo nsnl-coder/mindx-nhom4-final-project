@@ -2,9 +2,10 @@ import { wrapperWithHeader } from '../../components'
 
 const PostDetail = () => {
   return (
-    <>
-      <h1>PostDetail</h1>
-    </>
+    <div className="flex">
+      <div></div>
+      <div></div>
+    </div>
   )
 }
 

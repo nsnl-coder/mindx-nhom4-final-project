@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const formatPhotoName = require('../utils/formatPhotoName')
 
 const postSchema = new mongoose.Schema(
   {
@@ -23,6 +24,7 @@ const postSchema = new mongoose.Schema(
     },
     photo: {
       type: String,
+      required: true,
     },
     savedUsers: {
       type: mongoose.Schema.Types.ObjectId,
@@ -32,4 +34,15 @@ const postSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+postSchema.post(/^find/, (docs) => {
+  if (Array.isArray(docs)) {
+    for (let i = 0; i < docs.length; i++) {
+      docs[i].photo = formatPhotoName(docs[i].photo)
+    }
+  } else {
+    docs.photo = formatPhotoName(docs[i].photo)
+  }
+})
+
 module.exports = mongoose.model('Post', postSchema)

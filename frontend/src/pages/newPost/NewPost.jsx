@@ -1,13 +1,12 @@
-import { wrapperWithHeader } from '../../components'
 import { AiOutlineFileAdd } from 'react-icons/ai'
 import { useEffect, useRef, useState } from 'react'
 import { useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-
-import Editor from '../../components/editor/Editor'
-import useCallApi from '../../hooks/useCallApi'
 import { useNavigate } from 'react-router-dom'
+
+import useCallApi from '../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../utils/toast'
+import { wrapperWithHeader, Editor, PageContainer } from '../../components'
 
 const NewPost = () => {
   const [selectedPhoto, setSelectedPhoto] = useState()
@@ -91,102 +90,106 @@ const NewPost = () => {
   }, [error])
 
   return (
-    <form onSubmit={onSubmitHandler} className="py-12">
-      <div className="flex flex-col md:flex-row max-w-6xl mx-auto px-10 gap-x-8 gap-y-12">
-        <div className="w-full md:w-5/12">
-          <div
-            className={
-              selectedPhoto
-                ? 'self-start'
-                : 'self-start bg-gray-100 rounded-xl text-center py-24'
-            }
-          >
-            {selectedPhoto && (
-              <>
-                <img
-                  src={URL.createObjectURL(selectedPhoto)}
-                  className="w-full"
-                  alt="Selected Photo"
-                />
-                <label
-                  htmlFor="uploadPhoto"
-                  className="cursor-pointer font-bold"
-                >
-                  <a className="border flex gap-x-2 ml-auto mt-4 py-4 px-2 items-center w-full justify-center hover:bg-text hover:text-white">
-                    <AiOutlineFileAdd fontSize={24} />
-                    Change your image
-                  </a>
-                </label>
-              </>
-            )}
-            {!selectedPhoto && (
-              <>
-                <label
-                  htmlFor="uploadPhoto"
-                  className="flex flex-col items-center gap-y-1.5 cursor-pointer w-full justify-center "
-                >
-                  <h3 className="font-bold">Drag and drop your image here</h3>
-                  <span className=" inline-block my-4">or</span>
-                  <button className=" pointer-events-none bg-primary text-white px-6 py-2 rounded-md flex items-center gap-x-3">
-                    <AiOutlineFileAdd />
-                    Add file
-                  </button>
-                  <h4 className=" font-bold text-sm mt-10">Supported files</h4>
-                  <p>jpg, png, webp</p>
-                </label>
-              </>
-            )}
-            <input
-              type="file"
-              className="hidden"
-              name="uploadPhoto"
-              id="uploadPhoto"
-              accept="image/*"
-              defaultValue=""
-              onChange={photoChangeHandler}
-            />
-          </div>
-          {!selectedPhoto && formError.photo && (
-            <div className="bg-white text-red-400 mt-2 ml-2 text-sm">
-              {formError.photo}
+    <PageContainer title="Create New Post">
+      <form onSubmit={onSubmitHandler} className="py-12">
+        <div className="flex flex-col md:flex-row mx-auto px-10 gap-x-8 gap-y-12">
+          <div className="w-full md:w-5/12">
+            <div
+              className={
+                selectedPhoto
+                  ? 'self-start'
+                  : 'self-start bg-gray-100 rounded-xl text-center py-24'
+              }
+            >
+              {selectedPhoto && (
+                <>
+                  <img
+                    src={URL.createObjectURL(selectedPhoto)}
+                    className="w-full"
+                    alt="Selected Photo"
+                  />
+                  <label
+                    htmlFor="uploadPhoto"
+                    className="cursor-pointer font-bold"
+                  >
+                    <a className="border flex gap-x-2 ml-auto mt-4 py-4 px-2 items-center w-full justify-center hover:bg-text hover:text-white">
+                      <AiOutlineFileAdd fontSize={24} />
+                      Change your image
+                    </a>
+                  </label>
+                </>
+              )}
+              {!selectedPhoto && (
+                <>
+                  <label
+                    htmlFor="uploadPhoto"
+                    className="flex flex-col items-center gap-y-1.5 cursor-pointer w-full justify-center "
+                  >
+                    <h3 className="font-bold">Drag and drop your image here</h3>
+                    <span className=" inline-block my-4">or</span>
+                    <button className=" pointer-events-none bg-primary text-white px-6 py-2 rounded-md flex items-center gap-x-3">
+                      <AiOutlineFileAdd />
+                      Add file
+                    </button>
+                    <h4 className=" font-bold text-sm mt-10">
+                      Supported files
+                    </h4>
+                    <p>jpg, png, webp</p>
+                  </label>
+                </>
+              )}
+              <input
+                type="file"
+                className="hidden"
+                name="uploadPhoto"
+                id="uploadPhoto"
+                accept="image/*"
+                defaultValue=""
+                onChange={photoChangeHandler}
+              />
             </div>
-          )}
-        </div>
-
-        <div className="md:w-7/12 flex flex-col">
-          <div className="mb-8">
-            <input
-              type="text"
-              className="outline-0 py-4 px-4 w-full border-b"
-              placeholder="Enter your title here"
-              value={title}
-              onChange={titleChangeHandler}
-            />
-            {formError.title && (
+            {!selectedPhoto && formError.photo && (
               <div className="bg-white text-red-400 mt-2 ml-2 text-sm">
-                {formError.title}
+                {formError.photo}
               </div>
             )}
           </div>
-          <Editor editor={editor} />
-          {formError.content && (
-            <div className="bg-white text-red-400 mt-2 ml-2">
-              {formError.content}
+
+          <div className="md:w-7/12 flex flex-col">
+            <div className="mb-8">
+              <input
+                type="text"
+                className="outline-0 py-4 px-4 w-full border-b"
+                placeholder="Enter your title here"
+                value={title}
+                onChange={titleChangeHandler}
+              />
+              {formError.title && (
+                <div className="bg-white text-red-400 mt-2 ml-2 text-sm">
+                  {formError.title}
+                </div>
+              )}
             </div>
-          )}
-          <button
-            className={
-              isLoading
-                ? 'bg-primary/50 text-white py-2 px-12 rounded-full mt-4 self-end'
-                : 'bg-primary text-white py-2 px-12 rounded-full mt-4 self-end'
-            }
-            disabled={isLoading ? true : false}
-          >
-            {isLoading ? 'Posting...' : 'Post'}
-          </button>
+            <Editor editor={editor} />
+            {formError.content && (
+              <div className="bg-white text-red-400 mt-2 ml-2">
+                {formError.content}
+              </div>
+            )}
+            <button
+              className={
+                isLoading
+                  ? 'bg-primary/50 text-white py-2 px-12 rounded-full mt-4 self-end'
+                  : 'bg-primary text-white py-2 px-12 rounded-full mt-4 self-end'
+              }
+              disabled={isLoading ? true : false}
+            >
+              {isLoading ? 'Posting...' : 'Post'}
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </PageContainer>
   )
 }
 

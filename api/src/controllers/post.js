@@ -2,8 +2,7 @@ const Post = require('../models/post')
 //create
 const CreatePost = async (req, res, next) => {
   if (req.file) {
-    const photoUrl = `${req.file.destination}/${req.file.filename}`
-    req.body.photo = photoUrl.replace('public', '')
+    req.body.photo = req.file.filename
   }
 
   try {
