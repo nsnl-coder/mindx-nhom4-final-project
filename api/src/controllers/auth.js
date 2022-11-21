@@ -13,24 +13,27 @@ const register = async (req, res, next) => {
     if (user)
       return next(createError(409, "User with given email already Exist!"));
 
-    const newUser = new User({
-      email: req.body.email,
-      userName: req.body.userName,
-      password: CryptoJS.AES.encrypt(
-        req.body.password,
-        process.env.CRYPTOJS_KEY
-      ).toString(),
-    });
+    const newUser = new User(req.body);
 
     const userSaved = await newUser.save();
-    const { password, ...details } = userSaved._doc;
+    const updatePassword = await User.findByIdAndUpdate(
+      newUser._id,
+      {
+        password: CryptoJS.AES.encrypt(
+          req.body.password,
+          process.env.CRYPTOJS_KEY
+        ).toString(),
+      },
+      { new: true }
+    );
+    const { password, ...details } = updatePassword._doc;
     const token_access = jwt.sign(
-      { id: userSaved._id, userName: userSaved.userName },
+      { id: userSaved._id, username: updatePassword.username },
       process.env.JWT_KEY,
       { expiresIn: "3d" }
     );
-    const url = `http://localhost:3000/users/${userSaved._id}/verify/${token_access}`;
-    await sendEmail(userSaved.email, "Verify Email", url);
+    const url = `http://localhost:5173/auth/verified/${userSaved._id}/${token_access}`;
+    sendEmail(userSaved.email, "Verify Email", url);
     res.status(200).json("An Email sent to your account please verify");
   } catch (err) {
     next(err);
@@ -52,12 +55,12 @@ const login = async (req, res, next) => {
     }
     if (!user.verified) {
       const token = jwt.sign(
-        { id: user._id, userName: user.userName },
+        { id: user._id, username: user.username },
         process.env.JWT_KEY,
         { expiresIn: "3d" }
       );
-      const url = `http://localhost:3000/users/${user._id}/verify/${token}`;
-      await sendEmail(user.email, "Verify Email", url);
+      const url = `http://localhost:5173/auth/verified/${user._id}/${token}`;
+      sendEmail(user.email, "Verify Email", url);
       return next(400, "An Email sent to your account please verify");
     }
     const { password, ...details } = user._doc;
@@ -103,7 +106,7 @@ const checkToken = async (req, res, next) => {
         if (err) return next(createError(401, "Token is not valid!"));
         const token = await User.findOne({
           _id: userVerify.id,
-          userName: userVerify.userName,
+          username: userVerify.username,
         });
         if (!token) return next(createError(400, "Invalid link"));
         await User.findByIdAndUpdate(user._id, { verified: true });
