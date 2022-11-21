@@ -34,7 +34,7 @@ const PostCard = ({ post, user }) => {
           />
         </button>
       </div>
-      {!userName ?
+      {!currentUser ?
         <Link
           to={`../profile/${post.author._id}`}
           className="flex py-2 items-end">

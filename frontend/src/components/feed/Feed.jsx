@@ -60,7 +60,7 @@ const Feed = ({ userId, user, collection }) => {
       apiUrl = ``
     } else {
       apiUrl = userId
-        ? `${import.meta.env.VITE_BACKEND_HOST}/api/post/name/?page=${page}&userId=${userId}`
+        ? `${import.meta.env.VITE_BACKEND_HOST}/api/post/name/?page=${page}&username=${user?.username}`
         : `${import.meta.env.VITE_BACKEND_HOST}/api/post/?page=${page}`
     }
 
@@ -75,7 +75,7 @@ const Feed = ({ userId, user, collection }) => {
 
   if (error)
     return (
-      <div className="w-full h-[90.5%] bg-white p-4 flex flex-col items-center justify-center">
+      <div className="w-full min-h-screen bg-white p-4 flex flex-col items-center justify-center">
         <div className="scale-[2] -translate-y-10">
           <img src={deleteIcon} alt="error" />
         </div>
