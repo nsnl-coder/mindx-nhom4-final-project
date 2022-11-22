@@ -4,10 +4,8 @@ import saveIcon from '../../../assets/icon-save.svg'
 import deleteIcon from '../../../assets/icon-delete.svg'
 
 const PostCard = ({ post, user }) => {
-  const currentUser = user
-
   return (
-    <div>
+    <div className="overflow-hidden">
       <div className="rounded-3xl shadow-xl image-full group relative">
         <Link to={`../post/${post._id}`}>
           <div
@@ -29,12 +27,12 @@ const PostCard = ({ post, user }) => {
           className="hidden group-hover:block absolute top-2 left-2"
         >
           <img
-            src={currentUser?._id === post.author._id ? deleteIcon : saveIcon}
-            alt={currentUser?._id === post.author._id ? 'delete-icon' : 'save-icon'}
+            src={user?._id === post.author._id ? deleteIcon : saveIcon}
+            alt={user?._id === post.author._id ? 'delete-icon' : 'save-icon'}
           />
         </button>
       </div>
-      {!currentUser ?
+      {!user ?
         <Link
           to={`../profile/${post.author._id}`}
           className="flex py-2 items-end">

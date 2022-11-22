@@ -1,24 +1,39 @@
-import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Routes, Route, useParams } from 'react-router-dom'
 
-import { wrapperWithHeader, Feed, ProfileDetail } from '../../components'
+import useCallApi from '../../hooks/useCallApi'
+import { wrapperWithHeader, ProfileDetail } from '../../components'
+import { UserSaved, UserPosts } from '../../components'
 
 const UserProfile = () => {
   const [user, setUser] = useState({})
-  const [collection, setCollection] = useState("posts")
-
-  const handleChange = (e) => {
-    if (!e.target.value) return
-    setCollection(e.target.value)
-  }
 
   const { id: userId } = useParams()
+
+  const { isLoading, error, sendRequest } = useCallApi()
+
+  const useApiData = (data) => {
+    setUser(data)
+  }
+
+  useEffect(() => {
+    sendRequest(
+      {
+        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/strangerUser/${userId}`,
+        method: 'get',
+      },
+      useApiData
+    )
+  }, [])
 
   return (
     <>
       <div className="bg-white min-h-screen">
-        <ProfileDetail userId={userId} collection={collection} user={user} setUser={setUser} handleChange={handleChange} />
-        <Feed userId={userId} user={user} collection={collection} />
+        <ProfileDetail user={user} />
+        <Routes>
+          <Route path="saved" element={<UserSaved user={user} userId={userId} collection="saved" />} />
+          <Route path="posts" element={<UserPosts user={user} userId={userId} collection="posts" />} />
+        </Routes>
       </div>
     </>
   )

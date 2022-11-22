@@ -37,9 +37,22 @@ const Feed = ({ userId, user, collection }) => {
   const [posts, setPosts] = useState([])
   const [hasMore, setHasMore] = useState(true)
 
+  let userName = user?.username
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const loadFuncSaved = (page) => {
+    let saved = user?.savedPosts?.slice(page * 10, page * 10 + 9)
+    if (saved?.length > 0 || page === 0) {
+      setHasMore(true)
+      const newData = [...posts, ...saved]
+      setPosts(newData)
+    } else {
+      setHasMore(false)
+    }
+  }
 
   const useApiData = (data) => {
     if (data.length > 0) {
@@ -53,16 +66,11 @@ const Feed = ({ userId, user, collection }) => {
     }
   }
 
-  const loadFunc = (page) => {
-    let apiUrl
-
-    if (collection === 'saved') {      
-      apiUrl = ``
-    } else {
-      apiUrl = userId
-        ? `${import.meta.env.VITE_BACKEND_HOST}/api/post/name/?page=${page}&username=${user?.username}`
-        : `${import.meta.env.VITE_BACKEND_HOST}/api/post/?page=${page}`
-    }
+  const loadFuncOther = (page) => {
+    let apiUrl = userId
+      ? `${import.meta.env.VITE_BACKEND_HOST}/api/post/name/?page=${page}&userName=${userName}`
+      : `${import.meta.env.VITE_BACKEND_HOST}/api/post/?page=${page}`
+    // console.log(apiUrl)
 
     sendRequest(
       {
@@ -71,6 +79,7 @@ const Feed = ({ userId, user, collection }) => {
       },
       useApiData
     )
+
   }
 
   if (error)
@@ -85,11 +94,53 @@ const Feed = ({ userId, user, collection }) => {
       </div>
     )
 
+  if (collection === 'saved')
+    return (
+      <div className="bg-white relative">
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={loadFuncSaved}
+          hasMore={hasMore}
+          loader={
+            <div className="w-full flex justify-center mb-5" key={0}>
+              <Spinner />
+            </div>
+          }
+        >
+          {posts.length > 0 ?
+            <Masonry
+              breakpointCols={breakpointColumnsObj}
+              className="my-masonry-grid"
+              columnClassName="my-masonry-grid_column"
+              key={1}
+            >
+              {posts.map((post) => (
+                <PostCard post={post} key={post._id} user={user} />
+              ))}
+            </Masonry> :
+            <div
+              className="h-[50vh] flex flex-col items-center justify-center"
+              key={1}
+            >
+              <h3 className="text-text font-semibold text-2xl">
+                It seems there is no post.
+              </h3>
+            </div>
+          }
+        </InfiniteScroll>
+        <ScrollToTop
+          smooth
+          className="w-11 h-11 flex justify-center items-center rounded-full"
+          component={<img src={iconUp} alt="icon-up" />}
+        />
+      </div>
+    )
+
   return (
-    <div className={`bg-white relative ${!userId && "min-h-screen"}`}>
+    <div className={`bg-white relative ${!user && "min-h-screen"}`}>
       <InfiniteScroll
         pageStart={0}
-        loadMore={loadFunc}
+        loadMore={loadFuncOther}
         hasMore={hasMore}
         loader={
           <div className="w-full flex justify-center mb-5" key={0}>
@@ -102,12 +153,16 @@ const Feed = ({ userId, user, collection }) => {
             breakpointCols={breakpointColumnsObj}
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
+            key={1}
           >
             {posts.map((post) => (
               <PostCard post={post} key={post._id} user={user} />
             ))}
-          </Masonry> : 
-          <div className="h-[50vh] flex flex-col items-center justify-center">
+          </Masonry> :
+          <div
+            className="h-[50vh] flex flex-col items-center justify-center"
+            key={1}
+          >
             <h3 className="text-text font-semibold text-2xl">
               It seems there is no post.
             </h3>
