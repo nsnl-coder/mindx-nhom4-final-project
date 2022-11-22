@@ -5,8 +5,8 @@ import deleteIcon from '../../../assets/icon-delete.svg'
 
 const PostCard = ({ post, user }) => {
   return (
-    <div className="overflow-hidden">
-      <div className="rounded-3xl shadow-xl image-full group relative">
+    <div className="postCard">
+      <div className="hover:shadow-xl image-full group relative">
         <Link to={`../post/${post._id}`}>
           <div
             className="w-full h-full group-hover:bg-black/30 absolute rounded-xl"

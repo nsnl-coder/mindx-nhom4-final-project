@@ -8,9 +8,7 @@ import './index.css'
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_HOST
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 )

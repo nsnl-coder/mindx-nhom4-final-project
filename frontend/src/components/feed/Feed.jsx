@@ -7,8 +7,8 @@ import ScrollToTop from 'react-scroll-to-top'
 import './Feed.css'
 import PostCard from './postCard/PostCard'
 import useCallApi from '../../hooks/useCallApi'
-import deleteIcon from '../../assets/icon-delete.svg'
 import iconUp from '../../assets/icon-angle-up.svg'
+import Error from '../ui/Error'
 
 const breakpointColumnsObj = {
   default: 6,
@@ -82,17 +82,7 @@ const Feed = ({ userId, user, collection }) => {
 
   }
 
-  if (error)
-    return (
-      <div className="w-full min-h-screen bg-white p-4 flex flex-col items-center justify-center">
-        <div className="scale-[2] -translate-y-10">
-          <img src={deleteIcon} alt="error" />
-        </div>
-        <h3 className="text-primary font-semibold text-2xl">
-          Oops! Something went wrong.
-        </h3>
-      </div>
-    )
+  if (error) return <Error />
 
   if (collection === 'saved')
     return (

@@ -1,10 +1,23 @@
 import { Routes, Route } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-import { Home, UserProfile, Auth, NewPost, PageNotFound, PostDetail, UserSettings } from './pages/index'
+//
+import {
+  Home,
+  UserProfile,
+  Auth,
+  NewPost,
+  PageNotFound,
+  PostDetail, PostDetail, UserSettings
+} from './pages/index'
+
+import ContextProvider from './contexts/ContextProvider'
 
 const App = () => {
   return (
-    <>
+    <ContextProvider>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile/:id/*" element={<UserProfile />} />
@@ -14,7 +27,7 @@ const App = () => {
         <Route path="/new-post" element={<NewPost />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-    </>
+    </ContextProvider>
   )
 }
 
