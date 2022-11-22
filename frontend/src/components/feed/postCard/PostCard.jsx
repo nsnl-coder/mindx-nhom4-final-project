@@ -1,23 +1,27 @@
 import { Link } from 'react-router-dom'
-import { useContext } from 'react'
+import { useEffect, useContext } from 'react'
 
 import { AuthContext } from '../../../contexts'
 import saveIcon from '../../../assets/icon-save.svg'
 import deleteIcon from '../../../assets/icon-delete.svg'
+import useCallApi from '../../../hooks/useCallApi'
+import { showToastError, showToastSuccess } from '../../../utils/toast'
 
 const PostCard = ({ post, user }) => {
   const { auth } = useContext(AuthContext)
 
+  const { isLoading, error, sendRequest } = useCallApi()
+
   const useApiData = (data) => {
-    console.log(data)
+    showToastSuccess('Successfully')
   }
 
-  const handleSavePost = (id) => {
+  const handleSavePost = (post) => {
     sendRequest(
       {
         url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/save-post/${auth?.userId}`,
         method: 'put',
-        data: id
+        data: post
       },
       useApiData
     )
@@ -32,6 +36,12 @@ const PostCard = ({ post, user }) => {
       useApiData
     )
   }
+
+  useEffect(() => {
+    if (error) {
+      showToastError('Something went wrong, please try again')
+    }
+  }, [error])
 
   return (
     <div className="postCard">
@@ -65,7 +75,7 @@ const PostCard = ({ post, user }) => {
           <button
             type="button"
             className="hidden group-hover:block absolute top-2 left-2"
-            onClick={handleSavePost}
+            onClick={() => handleSavePost(post)}
           >
             <img
               src={saveIcon}

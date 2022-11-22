@@ -1,6 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
 
-import ellipsisIcon from '../../assets/icon-ellipsis.svg'
 import { IoMdFemale } from 'react-icons/io'
 import { IoMdMale } from 'react-icons/io'
 import { IoMdTransgender } from 'react-icons/io'
