@@ -6,7 +6,12 @@ import { useNavigate } from 'react-router-dom'
 
 import useCallApi from '../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../utils/toast'
-import { wrapperWithHeader, Editor, PageContainer } from '../../components'
+import {
+  wrapperWithHeader,
+  Editor,
+  PageContainer,
+  loggedInOnly,
+} from '../../components'
 
 const NewPost = () => {
   const [selectedPhoto, setSelectedPhoto] = useState()
@@ -79,10 +84,6 @@ const NewPost = () => {
         method: 'post',
         url: '/api/post',
         data: formData,
-        headers: {
-          token:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzdkNGY1ZjlmM2U1MjUxMzk2YTcwYSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NjkwNzEyMTEsImV4cCI6MTY3Njg0NzIxMX0.h1yFjjSsl1j6MTRE6ZTH37-DRkq5SuUqyvp36gW7_nI',
-        },
       },
       applyApiData
     )
@@ -197,4 +198,4 @@ const NewPost = () => {
   )
 }
 
-export default wrapperWithHeader(NewPost)
+export default loggedInOnly(wrapperWithHeader(NewPost))

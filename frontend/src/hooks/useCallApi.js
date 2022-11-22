@@ -1,9 +1,12 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import axios from 'axios'
+import { AuthContext } from '../contexts/AuthContext'
 
 const useCallApi = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const { auth } = useContext(AuthContext)
+  const { token } = auth
 
   const sendRequest = async (requestConfig, applyApiData) => {
     setIsLoading(true)
@@ -13,7 +16,9 @@ const useCallApi = () => {
         method: requestConfig.method || 'GET',
         url: requestConfig.url,
         data: requestConfig.data,
-        headers: requestConfig.headers,
+        headers: {
+          token,
+        },
       })
       applyApiData(data)
     } catch (err) {

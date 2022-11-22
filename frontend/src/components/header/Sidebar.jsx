@@ -25,7 +25,7 @@ const Sidebar = () => {
       <div className="flex items-center space-x-2">
         <img
           src="https://www.pinkvilla.com/files/styles/amp_metadata_content_image/public/nancy_momoland_main_wm.png"
-          alt=""
+          alt="profile image"
           className="w-9 aspect-square object-cover object-center rounded-full"
         />
         <p className="font-semibold">Nancy Momoland</p>

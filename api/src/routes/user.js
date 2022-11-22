@@ -1,7 +1,7 @@
 const express = require('express')
 
 const {
-  getMe,
+  getUser,
   changePassword,
   addSavedPosts,
   UpdateUser,
@@ -10,9 +10,9 @@ const {
   getAllUser,
 } = require('../controllers/user')
 
-const { verifyUser, vertifyToken } = require('../utils/vertify')
+const { verifyUser } = require('../utils/vertify')
 const router = express.Router()
-router.get('/getMe', vertifyToken, getMe)
+router.get('/:id', getUser)
 router.put('/change-password/:id', verifyUser, changePassword)
 router.put('/save-post/:id', verifyUser, addSavedPosts)
 router.put('/updateUser/:id', verifyUser, UpdateUser)

@@ -1,9 +1,7 @@
-const ContextProvider = () => {
-  return (
-    <>
-      <h1>ContextProvider</h1>
-    </>
-  )
+import AuthContextProvider from './AuthContext'
+
+const ContextProvider = (props) => {
+  return <AuthContextProvider>{props.children}</AuthContextProvider>
 }
 
 export default ContextProvider

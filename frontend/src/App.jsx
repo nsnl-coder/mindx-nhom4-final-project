@@ -12,9 +12,11 @@ import {
   PostDetail,
 } from './pages/index'
 
+import ContextProvider from './contexts/ContextProvider'
+
 const App = () => {
   return (
-    <>
+    <ContextProvider>
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -24,7 +26,7 @@ const App = () => {
         <Route path="/new-post" element={<NewPost />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-    </>
+    </ContextProvider>
   )
 }
 

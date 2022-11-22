@@ -7,6 +7,10 @@ const User = require('../models/user')
 
 const { createError } = require('../utils/createError')
 
+const isJwtTokenValid = (req, res) => {
+  res.status(200).json({ user: req.user })
+}
+
 const register = async (req, res, next) => {
   try {
     let user = await User.findOne({ email: req.body.email })
@@ -39,6 +43,7 @@ const register = async (req, res, next) => {
     next(err)
   }
 }
+
 const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email })
@@ -143,4 +148,12 @@ const ResetPassword = async (req, res, next) => {
     next(err)
   }
 }
-module.exports = { login, register, fotgotPassword, checkToken, ResetPassword }
+
+module.exports = {
+  login,
+  register,
+  fotgotPassword,
+  checkToken,
+  ResetPassword,
+  isJwtTokenValid,
+}

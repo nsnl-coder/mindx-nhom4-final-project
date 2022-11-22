@@ -2,9 +2,9 @@ const User = require('../models/user')
 const CryptoJS = require('crypto-js')
 const { createError } = require('../utils/createError')
 
-const getMe = async (req, res, next) => {
+const getUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id).select('username')
+    const user = await User.findById(req.params.id).populate('savedPosts')
     const { password, ...details } = user._doc
     res.status(200).json(details)
   } catch (err) {
@@ -92,7 +92,7 @@ const addSavedPosts = async (req, res, next) => {
 }
 
 module.exports = {
-  getMe,
+  getUser,
   changePassword,
   addSavedPosts,
   UpdateUser,
