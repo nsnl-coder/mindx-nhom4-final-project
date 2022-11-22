@@ -1,16 +1,14 @@
 const jwt = require('jsonwebtoken')
-const mongoose = require('mongoose')
+const crypto = require('crypto')
 const CryptoJS = require('crypto-js')
 const nodemailer = require('nodemailer')
 const sendEmail = require('../utils/sendEmail')
 const User = require('../models/user')
-
+const Token = require('../models/token')
 const { createError } = require('../utils/createError')
-
 const isJwtTokenValid = (req, res) => {
   res.status(200).json({ user: req.user })
 }
-
 const register = async (req, res, next) => {
   try {
     let user = await User.findOne({ email: req.body.email })
@@ -31,19 +29,17 @@ const register = async (req, res, next) => {
       { new: true }
     )
     const { password, ...details } = updatePassword._doc
-    const token_access = jwt.sign(
-      { id: userSaved._id, username: updatePassword.username },
-      process.env.JWT_KEY,
-      { expiresIn: '3d' }
-    )
-    const url = `http://localhost:5173/auth/verified/${userSaved._id}/${token_access}`
-    sendEmail(userSaved.email, 'Verify Email', url)
+    const token = await new Token({
+      userId: newUser._id,
+      token: crypto.randomBytes(32).toString('hex'),
+    }).save()
+    const url = `http://localhost:5173/auth/verified/${userSaved._id}/${token.token}`
+    await sendEmail(userSaved.email, 'Verify Email', url)
     res.status(200).json('An Email sent to your account please verify')
   } catch (err) {
     next(err)
   }
 }
-
 const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email })
@@ -80,7 +76,7 @@ const login = async (req, res, next) => {
         username: user.username,
       },
       process.env.JWT_KEY,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      { expiresIn: '4d' }
     )
 
     res.status(200).json({ ...details, token_access })
@@ -113,20 +109,15 @@ const checkToken = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id)
     if (!user) return next(createError(400, 'Invalid link'))
-    jwt.verify(
-      req.params.token,
-      process.env.JWT_KEY,
-      async (err, userVerify) => {
-        if (err) return next(createError(401, 'Token is not valid!'))
-        const token = await User.findOne({
-          _id: userVerify.id,
-          username: userVerify.username,
-        })
-        if (!token) return next(createError(400, 'Invalid link'))
-        await User.findByIdAndUpdate(user._id, { verified: true })
-      }
-    )
+
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
+    })
+    if (!token) return next(createError(400, 'Invalid link!!'))
+    await User.findByIdAndUpdate(user._id, { verified: true })
     res.status(200).json('Email verified successfully')
+    await token.remove()
   } catch (err) {
     next(err)
   }
@@ -157,7 +148,6 @@ const ResetPassword = async (req, res, next) => {
     next(err)
   }
 }
-
 module.exports = {
   login,
   register,
