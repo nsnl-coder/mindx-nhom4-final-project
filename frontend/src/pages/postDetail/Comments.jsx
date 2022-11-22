@@ -1,8 +1,12 @@
 import { Button } from '../../components'
 import { MdAddComment } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import { AuthContext } from '../../contexts'
+import { useContext } from 'react'
 
 const Comments = ({ comments }) => {
+  const { auth } = useContext(AuthContext)
+
   return (
     <>
       <div className="flex gap-x-3 !mb-6">

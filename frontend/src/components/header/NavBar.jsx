@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom'
+import { FaUserPlus, FaUser } from 'react-icons/fa'
+import { RiLogoutCircleFill } from 'react-icons/ri'
+import { IoSettingsSharp } from 'react-icons/io5'
+import { AiFillHome } from 'react-icons/ai'
 
 //
 import logo from '../../assets/logo-full.svg'
 import searchIcon from '../../assets/icon-search.svg'
-import addIcon from '../../assets/icon-add.svg'
 import menuIcon from '../../assets/icon-bars.svg'
 
-const NavBar = ({ toggleSideBarVisivility }) => {
+const NavBar = ({ toggleSideBarVisivility, auth }) => {
+  const { userId, profileImage, username, isLoggedIn } = auth
+
   return (
     <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
       <div className="max-w-6xl mx-auto flex items-center gap-x-14 px-10">
@@ -39,18 +44,70 @@ const NavBar = ({ toggleSideBarVisivility }) => {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-x-5">
-          <Link to="/profile/nsnhatlong">
-            <img
-              src="https://www.pinkvilla.com/files/styles/amp_metadata_content_image/public/nancy_momoland_main_wm.png"
-              alt=""
-              className="w-9 aspect-square object-cover object-center rounded-full"
-            />
-          </Link>
-          <Link to="/new-post">
-            <img src={addIcon} alt="new-post" className="h-9" />
-          </Link>
-        </div>
+        {isLoggedIn && (
+          <div className="dropdown dropdown-hover dropdown-end pl-6">
+            <label tabIndex={0} className="text-3xl cursor-pointer bg-red-400">
+              <img
+                src={profileImage}
+                alt="profile image"
+                className="w-9 aspect-square object-cover object-center rounded-full"
+              />
+            </label>
+            <div tabIndex={0} className="dropdown-content menu w-52 pt-6">
+              <ul className="bg-base-100 shadow-md">
+                <li>
+                  <Link to={'/'}>
+                    <AiFillHome />
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/profile/${userId}`}>
+                    <FaUser />
+                    {username}
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/settings`}>
+                    <IoSettingsSharp />
+                    settings
+                  </Link>
+                </li>
+
+                <li className="text-text">
+                  <a>
+                    <RiLogoutCircleFill />
+                    Log out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
+        {!isLoggedIn && (
+          <div className="dropdown dropdown-hover dropdown-end pl-6">
+            <label tabIndex={0} className="text-2xl cursor-pointer bg-red-400">
+              <FaUserPlus />
+            </label>
+            <div tabIndex={0} className="dropdown-content menu w-52 pt-4">
+              <ul className="bg-base-100 shadow-md">
+                <li>
+                  <Link to="auth/login" className="text-text focus:bg-gray-200">
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="auth/register"
+                    className="text-text focus:bg-gray-200"
+                  >
+                    Register
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

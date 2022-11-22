@@ -6,8 +6,8 @@ import Register from './Register'
 const Auth = () => {
   return (
     <Routes>
-      <Route path='login' element={<Login />} />
-      <Route path='register' element={<Register />} />
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
     </Routes>
   )
 }

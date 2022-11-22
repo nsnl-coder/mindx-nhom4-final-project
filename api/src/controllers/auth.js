@@ -60,7 +60,10 @@ const login = async (req, res, next) => {
     }
     if (!user.verified) {
       const token = jwt.sign(
-        { id: user._id, username: user.username },
+        {
+          id: user._id,
+          username: user.username,
+        },
         process.env.JWT_KEY,
         { expiresIn: '3d' }
       )
@@ -70,10 +73,16 @@ const login = async (req, res, next) => {
     }
     const { password, ...details } = user._doc
     const token_access = jwt.sign(
-      { id: user._id, isAdmin: user.isAdmin },
+      {
+        id: user._id,
+        isAdmin: user.isAdmin,
+        profileImage: user.profileImage,
+        username: user.username,
+      },
       process.env.JWT_KEY,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     )
+
     res.status(200).json({ ...details, token_access })
   } catch (err) {
     next(err)
