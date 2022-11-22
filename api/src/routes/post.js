@@ -18,5 +18,5 @@ router.put('/:id', verifyUser, UpdatePost)
 router.delete('/:id', verifyUser, DeletePost)
 router.get('/find/:id', GetPost)
 router.get('/', GetsPost)
-router.get('/name', GetUserNamePost)
+router.get('/name/:id', GetUserNamePost)
 module.exports = router
