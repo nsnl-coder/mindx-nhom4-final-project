@@ -6,7 +6,7 @@ import { wrapperWithHeader, Feed } from '../../components'
 import logo from '../../assets/logo-icon-big.svg'
 
 const UserProfile = () => {
-  const [collection, setCollection] = useState("posts")
+  const [collection, setCollection] = useState('posts')
 
   const handleChange = (e) => {
     console.log(e.target)
@@ -21,10 +21,25 @@ const UserProfile = () => {
           <img src={logo} alt="logo" />
           <h2 className="text-text text-3xl font-semibold">{userId}</h2>
           <div className="h-8 w-[240px] rounded-full flex justify-evenly items-center bg-gray-300">
-
-            <label htmlFor="posts" onClick={handleChange}><input type="radio" name="collection" className="hidden" id="posts" checked />Posts</label>
-
-            <label htmlFor="saved" onClick={handleChange}><input type="radio" name="collection" className="hidden" id="saved" />Saved</label>
+            <label htmlFor="posts" onClick={handleChange}>
+              <input
+                type="radio"
+                name="collection"
+                className="hidden"
+                id="posts"
+                checked
+              />
+              Posts
+            </label>
+            <label htmlFor="saved" onClick={handleChange}>
+              <input
+                type="radio"
+                name="collection"
+                className="hidden"
+                id="saved"
+              />
+              Saved
+            </label>
           </div>
         </div>
         <Feed />

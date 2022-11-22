@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-  width: 18px;
-  height: 18px;
+  width: 12px;
+  height: 6px;
   background: white;
 }
 
@@ -16,11 +16,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #F81411;
+  background: #dedede;
   border-radius: 100vh;
-  border: 3px solid #f6f7ed;
+  border: 2px solid #f6f7ed;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #de110e;
+  background: #b8b8b8;
 }

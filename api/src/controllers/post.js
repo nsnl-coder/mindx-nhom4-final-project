@@ -1,14 +1,18 @@
-const Post = require("../models/post");
+const Post = require('../models/post')
 //create
 const CreatePost = async (req, res, next) => {
-  try {
-    const newPost = new Post(req.body);
-    const post = await newPost.save();
-    res.status(200).json(post);
-  } catch (err) {
-    next(err);
+  if (req.file) {
+    req.body.photo = req.file.filename
   }
-};
+
+  try {
+    const newPost = new Post(req.body)
+    const post = await newPost.save()
+    res.status(200).json(post)
+  } catch (err) {
+    next(err)
+  }
+}
 //update
 const UpdatePost = async (req, res, next) => {
   try {
@@ -16,85 +20,98 @@ const UpdatePost = async (req, res, next) => {
       req.params.id,
       { $set: req.body },
       { new: true }
-    );
-    res.status(200).json(updatePost);
+    )
+    res.status(200).json(updatePost)
   } catch (err) {
-    next(err);
+    next(err)
   }
-};
+}
 //getAll
 const GetsPost = async (req, res, next) => {
-  const { page } = req.query;
+  const { page } = req.query
   try {
-    const LIMIT = 10;
-    const startIndex = (Number(page) - 1) * LIMIT;
+    const LIMIT = 10
+    const startIndex = (Number(page) - 1) * LIMIT
     const post = await Post.find()
       .sort({ createdAt: -1 })
       .limit(LIMIT)
       .skip(startIndex)
       .populate({
-        path: "author",
+        path: 'author',
         select:
-          "username firstName lastName gender createdAt profileImage _id dateOfBirth savedUsers",
-      });
+          'username firstName lastName gender createdAt profileImage _id dateOfBirth savedUsers',
+      })
 
-    res.status(200).json(post);
+    res.status(200).json(post)
   } catch (err) {
-    next(err);
+    next(err)
   }
-};
+}
 const GetUserNamePost = async (req, res, next) => {
-  const { page, userName } = req.query;
+  const { page, userName } = req.query
   try {
-    const LIMIT = 10;
-    const startIndex = (Number(page) - 1) * LIMIT;
+    const LIMIT = 10
+    const startIndex = (Number(page) - 1) * LIMIT
     const post = await Post.find()
-      .sort("-createdAt")
+      .sort('-createdAt')
       .limit(LIMIT)
       .skip(startIndex)
       .populate({
-        path: "author",
+        path: 'author',
         match: {
-          username: { $in: userName },
+          username: { $in: username },
         },
         select:
-          "username firstName lastName gender createdAt profileImage _id dateOfBirth savedUsers",
-      });
+          'username firstName lastName gender createdAt profileImage _id dateOfBirth savedUsers',
+      })
     const posts = post.reduce((total, num) => {
       if (num.author) {
-        return [...total, num];
+        return [...total, num]
       } else {
-        return total;
+        return total
       }
-    }, []);
-    res.status(200).json(posts);
+    }, [])
+    res.status(200).json(posts)
   } catch (err) {
-    next(err);
+    next(err)
   }
-};
+}
 
 //get
 
 const GetPost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id)
-      .populate("comments")
-      .populate("author");
-    res.status(200).json(post);
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'authorId',
+          select: 'username profileImage',
+        },
+      })
+      .populate({
+        path: 'author',
+        select: 'username profileImage',
+      })
+      .populate({
+        path: 'savedUsers',
+        select: 'username profileImage',
+      })
+    res.status(200).json(post)
   } catch (err) {
-    next(err);
+    next(err)
   }
-};
+}
 
 //delete
 const DeletePost = async (req, res, next) => {
   try {
-    await Post.findByIdAndRemove(req.params.id);
-    res.status(200).json("deleted");
+    await Post.findByIdAndRemove(req.params.id)
+    res.status(200).json('deleted')
   } catch (err) {
-    res.status(404).json(err);
+    res.status(404).json(err)
   }
-};
+}
 module.exports = {
   GetPost,
   CreatePost,
@@ -102,4 +119,4 @@ module.exports = {
   GetsPost,
   UpdatePost,
   GetUserNamePost,
-};
+}

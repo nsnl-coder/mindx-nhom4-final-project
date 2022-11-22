@@ -1,19 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../../contexts'
+import { showToastError } from '../../utils/toast'
 
 const notLoggedInOnly = (Component) => {
-  const isLoggedIn = true
-
   const NewComponent = () => {
     const navigate = useNavigate()
+    const { auth } = useContext(AuthContext)
+    const { isLoggedIn, userId } = auth
+    console.log({ isLoggedIn, userId })
 
     // navigate if already login
     useEffect(() => {
       if (isLoggedIn) {
-        navigate('/profile/testprofile')
+        navigate(`/profile/${userId}`)
       }
-    }, [])
+    }, [isLoggedIn])
 
     return <Component />
   }
