@@ -48,23 +48,23 @@ const GetsPost = async (req, res, next) => {
   }
 }
 const GetUserNamePost = async (req, res, next) => {
-  const { page, userName } = req.query
+  const { page } = req.query
   try {
     const LIMIT = 10
     const startIndex = (Number(page) - 1) * LIMIT
     const post = await Post.find()
-      .sort('-createdAt')
-      .limit(LIMIT)
-      .skip(startIndex)
       .populate({
         path: 'author',
         match: {
-          username: { $in: username },
+          _id: { $in: req.params.id },
         },
         select:
           'username firstName lastName gender createdAt profileImage _id dateOfBirth savedUsers',
       })
-    const posts = post.reduce((total, num) => {
+      .sort('-createdAt')
+      .limit(LIMIT)
+      .skip(startIndex)
+    const posts = await post.reduce((total, num) => {
       if (num.author) {
         return [...total, num]
       } else {
