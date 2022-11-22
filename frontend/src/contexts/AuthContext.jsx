@@ -12,21 +12,21 @@ const AuthContextProvider = (props) => {
     profileImage: '',
   })
 
-  // useEffect(() => {
-  //   axios({
-  //     url: '/api/auth/checkJWT',
-  //     headers: {
-  //       token,
-  //     },
-  //   })
-  //     .then((data) => {
-  //       const id = data.data.user.id
-  //       setAuth({ userId: id, token, isLoggedIn: true })
-  //     })
-  //     .catch((err) => {
-  //       // setAuth(prev=>{return {...prev,isLoggedIn}})
-  //     })
-  // }, [])
+  useEffect(() => {
+    axios({
+      url: '/api/auth/checkJWT',
+      headers: {
+        token,
+      },
+    })
+      .then((data) => {
+        const { id, profileImage, username } = data.data.user
+        setAuth({ userId: id, token, isLoggedIn: true, profileImage, username })
+      })
+      .catch((err) => {
+        // setAuth(prev=>{return {...prev,isLoggedIn}})
+      })
+  }, [])
   const contextData = { auth, setAuth }
 
   return (
