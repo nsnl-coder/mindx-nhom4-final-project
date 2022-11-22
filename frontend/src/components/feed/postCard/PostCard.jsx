@@ -1,9 +1,38 @@
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
 
+import { AuthContext } from '../../../contexts'
 import saveIcon from '../../../assets/icon-save.svg'
 import deleteIcon from '../../../assets/icon-delete.svg'
 
 const PostCard = ({ post, user }) => {
+  const { auth } = useContext(AuthContext)
+
+  const useApiData = (data) => {
+    console.log(data)
+  }
+
+  const handleSavePost = (id) => {
+    sendRequest(
+      {
+        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/save-post/${auth?.userId}`,
+        method: 'put',
+        data: id
+      },
+      useApiData
+    )
+  }
+
+  const handleDeletePost = (id) => {
+    sendRequest(
+      {
+        url: `${import.meta.env.VITE_BACKEND_HOST}/api/post/${id}`,
+        method: 'delete',
+      },
+      useApiData
+    )
+  }
+
   return (
     <div className="postCard">
       <div className="hover:shadow-xl image-full group relative">
@@ -22,15 +51,28 @@ const PostCard = ({ post, user }) => {
             {post.title}
           </p>
         </Link>
-        <button
-          type="button"
-          className="hidden group-hover:block absolute top-2 left-2"
-        >
-          <img
-            src={user?._id === post.author._id ? deleteIcon : saveIcon}
-            alt={user?._id === post.author._id ? 'delete-icon' : 'save-icon'}
-          />
-        </button>
+        {auth?.userId === post.author._id ?
+          <button
+            type="button"
+            className="hidden group-hover:block absolute top-2 left-2"
+            onClick={() => handleDeletePost(post._id)}
+          >
+            <img
+              src={deleteIcon}
+              alt="delete-icon"
+            />
+          </button> :
+          <button
+            type="button"
+            className="hidden group-hover:block absolute top-2 left-2"
+            onClick={handleSavePost}
+          >
+            <img
+              src={saveIcon}
+              alt="save-icon"
+            />
+          </button>
+        }
       </div>
       {!user ?
         <Link

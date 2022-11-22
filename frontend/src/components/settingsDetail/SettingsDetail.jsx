@@ -1,34 +1,56 @@
 import { useState, useEffect } from 'react'
+import { useContext } from 'react'
 
+import useCallApi from '../../hooks/useCallApi'
+import { AuthContext } from '../../contexts/AuthContext'
 import { PublicSettings, OtherSettings, PrivateSettings } from './SettingsForms'
 
 const SettingsDetail = ({ setting }) => {
-  const [submitValue, setSubmitValue] = useState({})
+  const [user, setUser] = useState({})
+
+  // const { auth } = useContext(AuthContext)
+  const auth = { userId: '6373cc56fc13ae0993000047' }
+
+  const { isLoading, error, sendRequest } = useCallApi()
+
+  const useApiData = (data) => {
+    setUser(data)
+  }
+
+  const updateUser = () => {
+    sendRequest(
+      {
+        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/strangerUser/${auth?.userId}`,
+        method: 'get',
+      },
+      useApiData
+    )
+  }
 
   useEffect(() => {
-    console.log(submitValue)
-  }, [submitValue])
+    updateUser()
+  }, [])
 
-  const Details = ({ setValue }) => {
+  const Details = ({ user, updateUser }) => {
     switch (setting) {
       case 'other':
         return (
-          <OtherSettings setValue={setValue} />
+          <OtherSettings user={user} updateUser={updateUser} />
         )
       case 'private':
         return (
-          <PrivateSettings setValue={setValue} />
+          <PrivateSettings user={user} updateUser={updateUser} />
         )
       default:
         return (
-          <PublicSettings setValue={setValue} />
+          <PublicSettings user={user} updateUser={updateUser} />
         )
     }
   }
 
   return (
     <div className="mt-4 ml-4 md:absolute md:top-4 md:right-4 md:left-[250px] max-w-[700px] md:mx-auto">
-      <Details setValue={setSubmitValue} />
+      <Details user={user} updateUser={updateUser} />
     </div>
   )
 }

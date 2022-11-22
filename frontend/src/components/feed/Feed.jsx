@@ -68,7 +68,7 @@ const Feed = ({ userId, user, collection }) => {
 
   const loadFuncOther = (page) => {
     let apiUrl = userId
-      ? `${import.meta.env.VITE_BACKEND_HOST}/api/post/name/?page=${page}&userName=${userName}`
+      ? `${import.meta.env.VITE_BACKEND_HOST}/api/post/name/${userId}?page=${page}`
       : `${import.meta.env.VITE_BACKEND_HOST}/api/post/?page=${page}`
     // console.log(apiUrl)
 
