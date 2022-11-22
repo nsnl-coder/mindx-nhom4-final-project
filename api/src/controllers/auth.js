@@ -67,7 +67,7 @@ const login = async (req, res, next) => {
     const token_access = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },
       process.env.JWT_KEY,
-      { expiresIn: '4d' }
+      { expiresIn: process.env.JWT_EXPIRES_IN }
     )
     res.status(200).json({ ...details, token_access })
   } catch (err) {

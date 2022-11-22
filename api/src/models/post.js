@@ -26,10 +26,12 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    savedUsers: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
+    savedUsers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
     content: String,
   },
   { timestamps: true }
@@ -41,7 +43,9 @@ postSchema.post(/^find/, (docs) => {
       docs[i].photo = formatPhotoName(docs[i].photo)
     }
   } else {
-    docs.photo = formatPhotoName(docs[i].photo)
+    if (docs) {
+      docs.photo = formatPhotoName(docs.photo)
+    }
   }
 })
 

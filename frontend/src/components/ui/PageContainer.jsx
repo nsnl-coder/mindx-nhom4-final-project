@@ -10,7 +10,9 @@ const PageContainer = (props) => {
   }, [])
 
   return (
-    <div className={`max-w-6xl mx-auto ${className}`}>{props.children}</div>
+    <div className={`max-w-6xl px-10 mx-auto ${className}`}>
+      {props.children}
+    </div>
   )
 }
 

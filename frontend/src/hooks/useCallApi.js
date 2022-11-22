@@ -13,6 +13,7 @@ const useCallApi = () => {
         method: requestConfig.method || 'GET',
         url: requestConfig.url,
         data: requestConfig.data,
+        headers: requestConfig.headers,
       })
       applyApiData(data)
     } catch (err) {

@@ -79,6 +79,10 @@ const NewPost = () => {
         method: 'post',
         url: '/api/post',
         data: formData,
+        headers: {
+          token:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzdkNGY1ZjlmM2U1MjUxMzk2YTcwYSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NjkwNzEyMTEsImV4cCI6MTY3Njg0NzIxMX0.h1yFjjSsl1j6MTRE6ZTH37-DRkq5SuUqyvp36gW7_nI',
+        },
       },
       applyApiData
     )
@@ -92,7 +96,7 @@ const NewPost = () => {
   return (
     <PageContainer title="Create New Post">
       <form onSubmit={onSubmitHandler} className="py-12">
-        <div className="flex flex-col md:flex-row mx-auto px-10 gap-x-8 gap-y-12">
+        <div className="flex flex-col md:flex-row mx-auto gap-x-8 gap-y-12">
           <div className="w-full md:w-5/12">
             <div
               className={
@@ -105,7 +109,7 @@ const NewPost = () => {
                 <>
                   <img
                     src={URL.createObjectURL(selectedPhoto)}
-                    className="w-full"
+                    className=""
                     alt="Selected Photo"
                   />
                   <label

@@ -82,8 +82,21 @@ const GetUserNamePost = async (req, res, next) => {
 const GetPost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id)
-      .populate('comments')
-      .populate('author')
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'authorId',
+          select: 'username profileImage',
+        },
+      })
+      .populate({
+        path: 'author',
+        select: 'username profileImage',
+      })
+      .populate({
+        path: 'savedUsers',
+        select: 'username profileImage',
+      })
     res.status(200).json(post)
   } catch (err) {
     next(err)
