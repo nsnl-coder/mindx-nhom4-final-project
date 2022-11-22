@@ -8,8 +8,7 @@ import { PublicSettings, OtherSettings, PrivateSettings } from './SettingsForms'
 const SettingsDetail = ({ setting }) => {
   const [user, setUser] = useState({})
 
-  // const { auth } = useContext(AuthContext)
-  const auth = { userId: '6373cc56fc13ae0993000047' }
+  const { auth } = useContext(AuthContext)
 
   const { isLoading, error, sendRequest } = useCallApi()
 

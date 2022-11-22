@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { wrapperWithHeader } from '../../components'
+import { wrapperWithHeader, loggedInOnly } from '../../components'
 import SettingsDetail from '../../components/settingsDetail/SettingsDetail'
 import SettingsNavigator from '../../components/settingsDetail/SettingsNavigator'
 
 const UserSettings = () => {
   const [setting, setSetting] = useState('public')
 
-  const { id: userId } = useParams()
+  // const { id: userId } = useParams()
 
   return (
     <div className="bg-white min-h-screen flex flex-col relative">
@@ -18,4 +18,4 @@ const UserSettings = () => {
   )
 }
 
-export default wrapperWithHeader(UserSettings)
+export default loggedInOnly(wrapperWithHeader(UserSettings))

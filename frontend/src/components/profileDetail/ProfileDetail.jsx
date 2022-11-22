@@ -58,12 +58,6 @@ const ProfileDetail = ({ user }) => {
           Saved
         </Link>
       </div>
-      <Link
-        to="settings"
-        className="absolute right-8 top-8 scale-75"
-      >
-        <img src={ellipsisIcon} alt="icon-ellipsis" />
-      </Link>
     </div>
   )
 }
