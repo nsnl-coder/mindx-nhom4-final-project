@@ -9,7 +9,8 @@ import {
   Auth,
   NewPost,
   PageNotFound,
-  PostDetail, PostDetail, UserSettings
+  PostDetail,
+  UserSettings
 } from './pages/index'
 
 import ContextProvider from './contexts/ContextProvider'
