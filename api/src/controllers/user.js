@@ -31,7 +31,7 @@ const deleteUser = async (req, res, next) => {
 const getStrangerUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate("savedPosts");
-    const { password, email, isAdmin, verified, ...details } = user._doc;
+    const { password, email, isAdmin, verified, ...details } = user?._doc;
     res.status(200).json(details);
   } catch (err) {
     next(err);
