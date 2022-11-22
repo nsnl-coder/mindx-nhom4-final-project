@@ -1,5 +1,5 @@
 const express = require('express')
-const { vertifyToken } = require('../utils/vertify')
+const { verifyToken } = require('../utils/verify')
 
 const {
   login,
@@ -12,7 +12,7 @@ const {
 const router = express.Router()
 router.post('/register', register)
 router.post('/login', login)
-router.get('/checkJWT', vertifyToken, isJwtTokenValid)
+router.get('/checkJWT', verifyToken, isJwtTokenValid)
 router.post('/forgot-password', fotgotPassword)
 router.post('/reset-password/:id/:token', ResetPassword)
 router.get('/:id/verify/:token', checkToken)

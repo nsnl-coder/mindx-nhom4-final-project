@@ -1,20 +1,26 @@
-const mongoose = require("mongoose");
-const Comment = require("../models/comment");
-const Post = require("../models/post");
+const mongoose = require('mongoose')
+const Comment = require('../models/comment')
+const Post = require('../models/post')
 
 //create
 const addComment = async (req, res, next) => {
   try {
-    const newMessage = new Comment(req.body);
-    const savedComment = await newMessage.save();
-    await Post.findByIdAndUpdate(req.params.id, {
-      $push: { comments: newMessage._id },
-    });
-    res.status(200).json(savedComment);
+    req.body.authorId = req.user.id
+    const newComment = new Comment(req.body)
+    const savedComment = await newComment.save()
+    const populatedComment = await Comment.findById(savedComment._id).populate({
+      path: 'authorId',
+      select: 'username profileImage createdAt',
+    })
+
+    await Post.findByIdAndUpdate(req.params.postId, {
+      $push: { comments: newComment._id },
+    })
+    res.status(200).json(populatedComment)
   } catch (err) {
-    next(err);
+    next(err)
   }
-};
+}
 //update
 const UpdateComment = async (req, res, next) => {
   try {
@@ -22,10 +28,10 @@ const UpdateComment = async (req, res, next) => {
       req.params.id,
       { $set: req.body },
       { new: true }
-    );
-    res.status(200).json(updateMessage);
+    )
+    res.status(200).json(updateMessage)
   } catch (err) {
-    next(err);
+    next(err)
   }
-};
-module.exports = { addComment };
+}
+module.exports = { addComment }

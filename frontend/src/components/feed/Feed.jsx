@@ -8,6 +8,7 @@ import useCallApi from '../../hooks/useCallApi'
 import iconUp from '../../assets/icon-angle-up.svg'
 import './Feed.css'
 import PostCard from './postCard/PostCard'
+import Error from '../ui/Error'
 
 const breakpointColumnsObj = {
   default: 6,

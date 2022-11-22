@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const { createError } = require('./createError')
 
 // check if token is valid
-const vertifyToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
   const authHeader = req.headers.token
   console.log(req.headers.token)
   if (!authHeader) {
@@ -22,7 +22,7 @@ const vertifyToken = (req, res, next) => {
 
 // check if user authorize to edit other resource
 const verifyUser = (req, res, next) => {
-  vertifyToken(req, res, () => {
+  verifyToken(req, res, () => {
     if (req.user?.id !== req.params.id) {
       return next(createError(401, 'You are not authorized!'))
     } else {
@@ -32,7 +32,7 @@ const verifyUser = (req, res, next) => {
 }
 
 const verifyAdmin = (req, res, next) => {
-  vertifyToken(req, res, () => {
+  verifyToken(req, res, () => {
     if (!req.user?.isAdmin) {
       return next(createError(401, 'You are not Admin'))
     } else {
@@ -40,4 +40,4 @@ const verifyAdmin = (req, res, next) => {
     }
   })
 }
-module.exports = { verifyAdmin, verifyUser, vertifyToken }
+module.exports = { verifyAdmin, verifyUser, verifyToken }

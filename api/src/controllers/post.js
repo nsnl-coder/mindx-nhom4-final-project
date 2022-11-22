@@ -86,7 +86,10 @@ const GetPost = async (req, res, next) => {
         path: 'comments',
         populate: {
           path: 'authorId',
-          select: 'username profileImage',
+          select: 'username profileImage createdAt',
+        },
+        options: {
+          sort: '-createdAt',
         },
       })
       .populate({

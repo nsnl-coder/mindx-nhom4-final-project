@@ -1,7 +1,7 @@
-const express=require('express');
-const {addComment}=require('../controllers/comment');
-const {verifyUser} =require('../utils/vertify');
-const router=express.Router();
-router.post('/:id',verifyUser,addComment);
+const express = require('express')
+const { addComment } = require('../controllers/comment')
+const { verifyToken } = require('../utils/verify')
+const router = express.Router()
+router.post('/:postId', verifyToken, addComment)
 
-module.exports=router;
+module.exports = router

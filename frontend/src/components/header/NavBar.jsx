@@ -3,6 +3,7 @@ import { FaUserPlus, FaUser } from 'react-icons/fa'
 import { RiLogoutCircleFill } from 'react-icons/ri'
 import { IoSettingsSharp } from 'react-icons/io5'
 import { AiFillHome } from 'react-icons/ai'
+import { MdAddCircle } from 'react-icons/md'
 
 //
 import logo from '../../assets/logo-full.svg'
@@ -58,13 +59,19 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                 <li>
                   <Link to={'/'}>
                     <AiFillHome />
-                    Home
+                    Feeds
                   </Link>
                 </li>
                 <li>
                   <Link to={`/profile/${userId}`}>
                     <FaUser />
                     {username}
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/new-post`}>
+                    <MdAddCircle />
+                    New post
                   </Link>
                 </li>
                 <li>

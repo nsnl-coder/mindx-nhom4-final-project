@@ -10,7 +10,7 @@ const {
   getAllUser,
 } = require('../controllers/user')
 
-const { verifyUser } = require('../utils/vertify')
+const { verifyUser } = require('../utils/verify')
 const router = express.Router()
 router.get('/:id', getUser)
 router.put('/change-password/:id', verifyUser, changePassword)
