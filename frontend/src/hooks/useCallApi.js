@@ -23,7 +23,7 @@ const useCallApi = () => {
       })
       applyApiData(data)
     } catch (err) {
-      setError(err.message)
+      setError(err)
     }
     setIsLoading(false)
   }
