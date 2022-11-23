@@ -16,10 +16,13 @@ const ProfileDetail = ({ user }) => {
         className="w-[150px] h-[150px] rounded-full"
         alt="profile-image"
       />
-      <Link to=".">
-        <h2 className="text-text text-3xl font-semibold">
-          {`${user?.firstName} ${user?.lastName}`}
+      <Link to="." className="max-w-full text-center">
+        <h2 className="mt-4 text-text text-3xl font-semibold truncate">
+          {user?.firstName && user?.lastName ? `${user?.firstName} ${user?.lastName}` : `User-${user?._id}`}
         </h2>
+        <h3 className="mt-4 text-text text-2xl font-semibold truncate">
+          {`(${user?.username})`}
+        </h3>
       </Link>
       {data['*'] === '' ?
         <div className="flex flex-col gap-1 justify-center items-center text-text m-2 text-lg font-semibold">

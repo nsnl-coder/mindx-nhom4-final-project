@@ -45,7 +45,7 @@ const PostCard = ({ post, user }) => {
 
   return (
     <div className="postCard">
-      <div className="hover:shadow-xl image-full group relative">
+      <div className="hover:shadow-xl image-full group relative rounded-xl">
         <Link to={`../post/${post._id}`}>
           <div
             className="w-full h-full group-hover:bg-black/30 absolute rounded-xl"
@@ -53,7 +53,7 @@ const PostCard = ({ post, user }) => {
           <img
             src={post.photo}
             alt={post.title}
-            className="rounded-xl"
+            className="rounded-xl min-h-16"
           />
           <p
             className="hidden group-hover:block absolute bottom-2 left-3 right-3 text-white text-md truncate"
@@ -96,7 +96,7 @@ const PostCard = ({ post, user }) => {
           <h4
             className="text-text mr-2 text-lg md:text-md truncate hover:text-primary hover:font-medium"
           >
-            {`${post.author.firstName} ${post.author.lastName}`}
+            {post.author.firstName && post.author.lastName ? `${post.author.firstName} ${post.author.lastName}` : `User-${post.author._id}`}
           </h4>
         </Link> : null
       }
