@@ -11,12 +11,14 @@ const isJwtTokenValid = (req, res) => {
 }
 const register = async (req, res, next) => {
   try {
-    let user = await User.findOne({ email: req.body.email })
-    if (user)
+    let checkUser = await User.findOne({ username: req.body.username })
+    if (checkUser)
+      return next(createError(409, 'User with given username already Exist!'))
+    let checkEmail = await User.findOne({ email: req.body.email })
+    if (checkEmail)
       return next(createError(409, 'User with given email already Exist!'))
 
     const newUser = new User(req.body)
-
     const userSaved = await newUser.save()
     const updatePassword = await User.findByIdAndUpdate(
       newUser._id,
@@ -35,7 +37,7 @@ const register = async (req, res, next) => {
     }).save()
     const url = `http://localhost:5173/auth/verified/${userSaved._id}/${token.token}`
     await sendEmail(userSaved.email, 'Verify Email', url)
-    res.status(200).json('An Email sent to your account please verify')
+    res.status(200).json(newUser)
   } catch (err) {
     next(err)
   }
@@ -55,22 +57,26 @@ const login = async (req, res, next) => {
       return next(createError(400, 'Incorrect password!'))
     }
     if (!user.verified) {
-      const token = jwt.sign(
-        { id: user._id, username: user.username },
-        process.env.JWT_KEY,
-        { expiresIn: '3d' }
-      )
-      const url = `http://localhost:5173/auth/verified/${user._id}/${token}`
+      let token = await Token.findOne({ userId: user._id })
+      if (!token) {
+        token = await new Token({
+          userId: newUser._id,
+          token: crypto.randomBytes(32).toString('hex'),
+        }).save()
+      }
+      const url = `http://localhost:5173/auth/verified/${user._id}/${token.token}`
       sendEmail(user.email, 'Verify Email', url)
-      return next(400, 'An Email sent to your account please verify')
+      return res
+        .status(200)
+        .json({ id: user._id, email: user.email, verified: user.verified })
     }
     const { password, ...details } = user._doc
-    const token_access2 = jwt.sign(
+    const token_access = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },
       process.env.JWT_KEY,
       { expiresIn: '4d' }
     )
-    res.status(200).json({ ...details, token_access2 })
+    res.status(200).json({ ...details, token_access })
   } catch (err) {
     next(err)
   }
@@ -91,6 +97,24 @@ const fotgotPassword = async (req, res, next) => {
     const link = `http://localhost:5000/api/auth/reset-password/${oldUser._id}/${token}`
     await sendEmail(email, 'Reset Password', link)
     res.status(200).json('Email Successfully')
+  } catch (err) {
+    next(err)
+  }
+}
+//resend Email
+const resendEmail = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email })
+
+    const token = await Token.findOne({ userId: req.params.id }).populate(
+      'userId'
+    )
+    if (!token) {
+      return next(createError(400, 'User with given email already Exist!'))
+    }
+    const url = `http://localhost:5173/auth/verified/${req.params.id}/${token.token}`
+    sendEmail(token.userId.email, 'Verify Email', url)
+    res.status(200).json('An Email sent to your account please verify')
   } catch (err) {
     next(err)
   }
@@ -146,4 +170,5 @@ module.exports = {
   checkToken,
   ResetPassword,
   isJwtTokenValid,
+  resendEmail,
 }
