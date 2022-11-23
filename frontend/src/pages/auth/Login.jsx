@@ -1,9 +1,16 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+
+//
 import { useForm } from 'react-hook-form'
 import Logo from '../../assets/logo-icon-big.svg'
 import useCallApi from '../../hooks/useCallApi'
+import { AuthContext } from '../../contexts'
+
 const Login = () => {
+  const { setAuth } = useContext(AuthContext)
+
   const { isLoading, error, sendRequest } = useCallApi()
   const {
     register,
@@ -11,16 +18,24 @@ const Login = () => {
     watch,
     formState: { errors },
   } = useForm()
+
   const applyApi = (user) => {
-    alert(user)
-    setData(null)
+    const auth = {
+      userId: user._id,
+      isLoggedIn: true,
+      profileImage: user.profileImage,
+      username: user.username,
+      token_access: user.token_access,
+    }
+    setAuth(auth)
+    localStorage.setItem('auth', JSON.stringify(auth))
   }
   const onSubmit = (data) => {
     sendRequest(
       {
         data: data,
         method: 'post',
-        url: `${import.meta.env.VITE_BACKEND_HOST}`,
+        url: '/api/auth/login',
       },
       applyApi
     )

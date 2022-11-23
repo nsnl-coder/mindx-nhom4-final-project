@@ -12,6 +12,10 @@ module.exports = {
         primary: '#F81411', // main color for logo, buttons, highlight, success message
         accent: '#F1CC81', // color for warning message
         text: '#313638', // text color
+        // chat app config
+        'blue-message': '#1555FF',
+        'gray-message': '#f8f8f8',
+        'text-message': '#4f5e7b',
       },
     },
 

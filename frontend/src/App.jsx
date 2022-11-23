@@ -13,6 +13,8 @@ import {
 } from './pages/index'
 
 import ContextProvider from './contexts/ContextProvider'
+import ChatApp from './pages/ChatApp/ChatApp'
+import { useEffect } from 'react'
 
 const App = () => {
   return (
@@ -24,6 +26,7 @@ const App = () => {
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/auth/*" element={<Auth />} />
         <Route path="/new-post" element={<NewPost />} />
+        <Route path="/chat" element={<ChatApp />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </ContextProvider>

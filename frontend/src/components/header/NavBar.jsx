@@ -9,9 +9,11 @@ import { MdAddCircle } from 'react-icons/md'
 import logo from '../../assets/logo-full.svg'
 import searchIcon from '../../assets/icon-search.svg'
 import menuIcon from '../../assets/icon-bars.svg'
+import useLogUserOut from '../../hooks/useLogUserOut'
 
 const NavBar = ({ toggleSideBarVisivility, auth }) => {
   const { userId, profileImage, username, isLoggedIn } = auth
+  const { logOut } = useLogUserOut()
 
   return (
     <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
@@ -81,7 +83,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                   </Link>
                 </li>
 
-                <li className="text-text">
+                <li className="text-text" onClick={logOut}>
                   <a>
                     <RiLogoutCircleFill />
                     Log out
@@ -99,13 +101,16 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
             <div tabIndex={0} className="dropdown-content menu w-52 pt-4">
               <ul className="bg-base-100 shadow-md">
                 <li>
-                  <Link to="auth/login" className="text-text focus:bg-gray-200">
+                  <Link
+                    to="/auth/login"
+                    className="text-text focus:bg-gray-200"
+                  >
                     Login
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="auth/register"
+                    to="/auth/register"
                     className="text-text focus:bg-gray-200"
                   >
                     Register
