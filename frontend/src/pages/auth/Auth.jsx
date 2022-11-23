@@ -10,7 +10,7 @@ const Auth = () => {
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="verified/:id/:token" element={<VerifySuccess />} />
-      <Route path="verify" element={<Verify />} />
+      <Route path="verify/:id" element={<Verify />} />
     </Routes>
   )
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import userCallApi from '../../hooks/useCallApi'
 import Logo from '../../assets/logo-icon-big.svg'
 const Register = () => {
@@ -12,8 +13,9 @@ const Register = () => {
     formState: { errors },
   } = useForm()
   const { isLoading, error, sendRequest } = userCallApi()
+  const [errorMessage, setErrorMessage] = useState(error)
   const applyApiData = (datas) => {
-    navigate('/auth/verify')
+    navigate(`/auth/verify/${datas._id}`)
   }
   const onSubmit = (data) => {
     sendRequest(
@@ -26,7 +28,7 @@ const Register = () => {
     )
   }
   useEffect(() => {
-    console.log(error)
+    setErrorMessage(error?.response?.data?.message)
   }, [error])
   return (
     <>
@@ -51,7 +53,13 @@ const Register = () => {
                   minLength: 5,
                   maxLength: 20,
                 })}
-                className="w-full rounded-md h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2"
+                onChange={() => setErrorMessage(null)}
+                className={`w-full outline-none rounded-md h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2 ${
+                  errors?.username?.type && 'border-primary border-[2px]'
+                } ${
+                  errorMessage === 'User with given username already Exist!' &&
+                  'border-primary border-[2px]'
+                }`}
               />
               {errors?.username?.type === 'required' && (
                 <span className="text-primary">This field is required</span>
@@ -66,6 +74,12 @@ const Register = () => {
                   User Name cannot axceed 20 characters
                 </span>
               )}
+              {errorMessage === 'User with given username already Exist!' &&
+                !errors?.username && (
+                  <span className="text-primary">
+                    User with given username already Exist!
+                  </span>
+                )}
 
               <br />
               <label className="text-lg font-semibold ">Email address:</label>
@@ -77,13 +91,24 @@ const Register = () => {
                   pattern:
                     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 })}
-                className="w-full rounded-md h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2"
+                onChange={() => setErrorMessage('')}
+                className={`w-full outline-none rounded-md h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2 ${
+                  errors?.email?.type && 'border-primary border-[2px]'
+                } ${
+                  errorMessage === 'User with given email already Exist!' &&
+                  'border-[2px] border-primary'
+                }`}
               />
               {errors?.email?.type === 'required' && (
                 <span className="text-primary">This field is required</span>
               )}
               {errors?.email?.type === 'pattern' && (
                 <span className="primary">Invalid email!</span>
+              )}
+              {errorMessage === 'User with given email already Exist!' && (
+                <span className="text-primary">
+                  User with given username already Exist!
+                </span>
               )}
               <br />
               <label className="text-lg font-semibold">Password</label>
@@ -94,7 +119,9 @@ const Register = () => {
                   required: true,
                   minLength: 8,
                 })}
-                className="w-full rounded-md h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2"
+                className={`w-full rounded-md outline-none h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2 ${
+                  errors?.password?.type && 'border-primary border-[2px]'
+                }`}
               />
               {errors?.password?.type === 'required' && (
                 <span className="text-primary">This field is required</span>
@@ -113,9 +140,12 @@ const Register = () => {
               </button>
               <p className="font-[600] text-[17px] mb-4">
                 Already Have An Account?{' '}
-                <span className="text-primary text-lg cursor-pointer">
-                  LOG IN{' '}
-                </span>
+                <Link to="/auth/login">
+                  {' '}
+                  <span className="text-primary text-lg cursor-pointer underline">
+                    LOG IN{' '}
+                  </span>
+                </Link>
                 now!
               </p>
             </form>

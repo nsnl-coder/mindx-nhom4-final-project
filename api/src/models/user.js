@@ -45,16 +45,4 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 )
 
-userSchema.post(/^find/, (docs) => {
-  if (Array.isArray(docs)) {
-    for (let i = 0; i < docs.length; i++) {
-      docs[i].profileImage = formatPhotoName(docs[i].profileImage)
-    }
-  } else {
-    if (docs) {
-      docs.profileImage = formatPhotoName(docs.profileImage)
-    }
-  }
-})
-
 module.exports = mongoose.model('User', userSchema)
