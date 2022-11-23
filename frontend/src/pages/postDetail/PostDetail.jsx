@@ -80,7 +80,7 @@ const PostDetail = () => {
               </div>
             </div>
           </div>
-          <div className="h-[450px] flex-grow overflow-y-auto space-y-4 py-6 px-8 border mt-4 flex flex-col">
+          <div className="h-[450px] flex-grow overflow-y-auto space-y-8 py-6 px-8 border mt-4 flex flex-col">
             {currentTab === 'comment' && (
               <Comments comments={post?.comments || []} />
             )}

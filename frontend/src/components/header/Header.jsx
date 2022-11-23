@@ -1,9 +1,13 @@
+import { useEffect, useState } from 'react'
+import { useContext } from 'react'
+
 import NavBar from './NavBar'
 import Sidebar from './Sidebar'
-import { useEffect, useState } from 'react'
+import { AuthContext } from '../../contexts'
 
 const Header = (props) => {
   const [isSideBarShow, setIsSideBarShow] = useState(false)
+  const { auth } = useContext(AuthContext)
 
   const toggleSideBarVisivility = () => {
     setIsSideBarShow((prevState) => !prevState)
@@ -21,7 +25,7 @@ const Header = (props) => {
     <div className="drawer h-auto">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
-        <NavBar toggleSideBarVisivility={toggleSideBarVisivility} />
+        <NavBar toggleSideBarVisivility={toggleSideBarVisivility} auth={auth} />
         {props.children}
       </div>
       <div className="drawer-side">
@@ -30,7 +34,7 @@ const Header = (props) => {
           className="drawer-overlay"
           onClick={toggleSideBarVisivility}
         ></label>
-        <Sidebar />
+        <Sidebar auth={auth} />
       </div>
     </div>
   )

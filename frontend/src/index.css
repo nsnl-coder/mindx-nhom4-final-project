@@ -6,7 +6,7 @@
 
 ::-webkit-scrollbar {
   width: 12px;
-  height: 6px;
+  height: 2px;
   background: white;
 }
 
@@ -18,9 +18,12 @@
 ::-webkit-scrollbar-thumb {
   background: #dedede;
   border-radius: 100vh;
-  border: 2px solid #f6f7ed;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #b8b8b8;
+.hide-scrollbar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }

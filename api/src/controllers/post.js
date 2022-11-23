@@ -30,7 +30,7 @@ const UpdatePost = async (req, res, next) => {
 const GetsPost = async (req, res, next) => {
   const { page } = req.query
   try {
-    const LIMIT = 10
+    const LIMIT = 20
     const startIndex = (Number(page) - 1) * LIMIT
     const post = await Post.find()
       .sort({ createdAt: -1 })
@@ -87,7 +87,10 @@ const GetPost = async (req, res, next) => {
         path: 'comments',
         populate: {
           path: 'authorId',
-          select: 'username profileImage',
+          select: 'username profileImage createdAt',
+        },
+        options: {
+          sort: '-createdAt',
         },
       })
       .populate({

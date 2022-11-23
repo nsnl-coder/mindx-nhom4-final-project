@@ -10,6 +10,7 @@ const postRoute = require('./routes/post')
 const commentRoute = require('./routes/comment')
 const authRoute = require('./routes/auth')
 const userRoute = require('./routes/user')
+const messageRoute = require('./routes/message')
 dotenv.config()
 
 const app = express()
@@ -39,6 +40,7 @@ app.use('/api/post', postRoute)
 app.use('/api/comment', commentRoute)
 app.use('/api/user', userRoute)
 app.use('/api/auth', authRoute)
+app.use('/api/message', messageRoute)
 
 app.use((err, req, res, next) => {
   const errStatus = err.status || 500

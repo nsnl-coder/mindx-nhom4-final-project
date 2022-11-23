@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const formatPhotoName = require('../utils/formatPhotoName')
 const userSchema = mongoose.Schema(
   {
     username: {

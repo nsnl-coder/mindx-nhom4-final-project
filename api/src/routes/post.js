@@ -10,10 +10,10 @@ const {
   GetUserNamePost,
 } = require('../controllers/post')
 
-const { verifyUser, vertifyToken } = require('../utils/vertify')
+const { verifyUser, verifyToken } = require('../utils/verify')
 const router = express.Router()
 
-router.post('/', vertifyToken, uploadImage.single('photo'), CreatePost)
+router.post('/', verifyToken, uploadImage.single('photo'), CreatePost)
 router.put('/:id', verifyUser, UpdatePost)
 router.delete('/:id', verifyUser, DeletePost)
 router.get('/find/:id', GetPost)

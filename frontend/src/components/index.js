@@ -8,3 +8,7 @@ export { default as LoadingSpinner } from './ui/LoadingSpinner'
 export { default as Error } from './ui/Error.jsx'
 export { default as Button } from './ui/Button'
 export { default as Header } from './header/Header'
+
+export { default as ProfileDetail } from './profileDetail/ProfileDetail'
+export { default as UserPosts } from './userPosts/UserPosts'
+export { default as UserSaved } from './userSaved/UserSaved'
