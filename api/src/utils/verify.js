@@ -4,7 +4,7 @@ const { createError } = require('./createError')
 // check if token is valid
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.token
-  console.log(req.headers.token)
+
   if (!authHeader) {
     return next(createError(401, 'You are not authencation'))
   }
@@ -22,7 +22,9 @@ const verifyToken = (req, res, next) => {
 
 // check if user authorize to edit other resource
 const verifyUser = (req, res, next) => {
-  verifyToken(req, res, () => {
+  verifyToken(req, res, (err) => {
+    if (err) return next(err)
+
     if (req.user?.id !== req.params.id) {
       return next(createError(401, 'You are not authorized!'))
     } else {
@@ -32,7 +34,9 @@ const verifyUser = (req, res, next) => {
 }
 
 const verifyAdmin = (req, res, next) => {
-  verifyToken(req, res, () => {
+  verifyToken(req, res, (err) => {
+    if (err) return next(err)
+
     if (!req.user?.isAdmin) {
       return next(createError(401, 'You are not Admin'))
     } else {

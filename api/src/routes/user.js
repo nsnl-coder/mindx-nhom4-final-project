@@ -1,4 +1,5 @@
 const express = require('express')
+const uploadImage = require('../utils/uploadImage')
 
 const {
   getUser,
@@ -15,7 +16,12 @@ const router = express.Router()
 router.get('/:id', getUser)
 router.put('/change-password/:id', verifyUser, changePassword)
 router.put('/save-post/:id', verifyUser, addSavedPosts)
-router.put('/updateUser/:id', verifyUser, UpdateUser)
+router.put(
+  '/updateUser/:id',
+  verifyUser,
+  uploadImage.single('profileImage'),
+  UpdateUser
+)
 router.get('/strangerUser/:id', getStrangerUser)
 router.delete('/delete/:id', deleteUser)
 router.get('/', getAllUser)

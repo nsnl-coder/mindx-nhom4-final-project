@@ -39,6 +39,10 @@ const getStrangerUser = async (req, res, next) => {
   }
 }
 const UpdateUser = async (req, res, next) => {
+  if (req.file) {
+    req.body.profileImage = req.file.filename
+  }
+
   try {
     const user = await User.findByIdAndUpdate(
       req.params.id,
