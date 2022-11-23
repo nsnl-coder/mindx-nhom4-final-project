@@ -10,6 +10,7 @@ import {
   NewPost,
   PageNotFound,
   PostDetail,
+  UserSettings
 } from './pages/index'
 
 import ContextProvider from './contexts/ContextProvider'
@@ -22,7 +23,8 @@ const App = () => {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile/:id" element={<UserProfile />} />
+        <Route path="/profile/:id/*" element={<UserProfile />} />
+        <Route path="settings" element={<UserSettings />} />
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/auth/*" element={<Auth />} />
         <Route path="/new-post" element={<NewPost />} />
