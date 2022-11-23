@@ -25,8 +25,9 @@ const Login = () => {
       isLoggedIn: true,
       profileImage: user.profileImage,
       username: user.username,
-      token_access: user.token_access,
+      token: 'Bearer ' + user.token_access,
     }
+    console.log(auth)
     setAuth(auth)
     localStorage.setItem('auth', JSON.stringify(auth))
   }
