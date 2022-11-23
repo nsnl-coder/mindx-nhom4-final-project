@@ -1,6 +1,6 @@
 import MyMessage from './MyMessage'
 
-const MyMessageBlock = () => {
+const MyMessageBlock = ({ messages }) => {
   return (
     <div className="space-y-4 mt-auto ml-20">
       <div className="flex space-x-2 items-center justify-end">
@@ -12,11 +12,9 @@ const MyMessageBlock = () => {
         />
       </div>
       <div className="space-y-1.5 mr-8">
-        <MyMessage />
-        <MyMessage />
-        <MyMessage />
-        <MyMessage />
-        <MyMessage />
+        {messages.map((message) => (
+          <MyMessage key={message._id} message={message} />
+        ))}
       </div>
     </div>
   )

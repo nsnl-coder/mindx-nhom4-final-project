@@ -43,6 +43,7 @@ app.use('/api/auth', authRoute)
 app.use('/api/message', messageRoute)
 
 app.use((err, req, res, next) => {
+  console.log(err)
   const errStatus = err.status || 500
   const errMessage = err.message || 'something went wrong '
   return res.status(errStatus).json({

@@ -6,8 +6,15 @@ const sendEmail = require('../utils/sendEmail')
 const User = require('../models/user')
 const Token = require('../models/token')
 const { createError } = require('../utils/createError')
-const isJwtTokenValid = (req, res) => {
-  res.status(200).json({ user: req.user })
+const isJwtTokenValid = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select(
+      'username profileImage'
+    )
+    res.status(200).json({ user })
+  } catch (err) {
+    next(err)
+  }
 }
 const register = async (req, res, next) => {
   try {

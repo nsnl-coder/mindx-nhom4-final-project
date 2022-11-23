@@ -10,12 +10,13 @@ import {
   NewPost,
   PageNotFound,
   PostDetail,
-  UserSettings
+  UserSettings,
 } from './pages/index'
 
 import ContextProvider from './contexts/ContextProvider'
 import ChatApp from './pages/ChatApp/ChatApp'
 import { useEffect } from 'react'
+import DirectMessage from './pages/ChatApp/directMessage/DirectMessage'
 
 const App = () => {
   return (
@@ -24,11 +25,15 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile/:id/*" element={<UserProfile />} />
-        <Route path="settings" element={<UserSettings />} />
+        <Route path="/settings" element={<UserSettings />} />
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/auth/*" element={<Auth />} />
         <Route path="/new-post" element={<NewPost />} />
-        <Route path="/chat" element={<ChatApp />} />
+        <Route path="/chat" element={<ChatApp />}>
+          <Route path="direct/:id" element={<DirectMessage />} />
+          <Route path="my-profile" element={<UserSettings />} />
+          <Route path="active-users" element={<UserSettings />} />
+        </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </ContextProvider>

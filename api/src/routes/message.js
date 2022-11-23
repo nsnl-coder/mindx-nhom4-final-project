@@ -4,7 +4,6 @@ const { verifyToken } = require('../utils/verify')
 const router = express.Router()
 
 router.use(verifyToken)
-
 router.get('/latest', messageController.getLastestMessages)
 
 router

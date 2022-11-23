@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { FaUserPlus, FaUser } from 'react-icons/fa'
-import { RiLogoutCircleFill } from 'react-icons/ri'
+import { RiLogoutCircleFill, RiMessageFill } from 'react-icons/ri'
 import { IoSettingsSharp } from 'react-icons/io5'
 import { AiFillHome } from 'react-icons/ai'
 import { MdAddCircle } from 'react-icons/md'
@@ -68,6 +68,12 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                   <Link to={`/profile/${userId}`}>
                     <FaUser />
                     {username}
+                  </Link>
+                </li>
+                <li>
+                  <Link to={'/chat'}>
+                    <RiMessageFill />
+                    Messenger
                   </Link>
                 </li>
                 <li>

@@ -1,6 +1,9 @@
 import MessageBoard from './messageBoard/MessageBoard'
 import SideBar from './sideBar/SideBar'
 import DirectMessage from './directMessage/DirectMessage'
+import { Outlet } from 'react-router-dom'
+
+import { loggedInOnly } from '../../components'
 
 const ChatApp = () => {
   return (
@@ -12,11 +15,11 @@ const ChatApp = () => {
         <MessageBoard />
       </div>
       <div className="flex-grow bg-gray-100">
-        <DirectMessage />
+        <Outlet />
       </div>
       <div></div>
     </div>
   )
 }
 
-export default ChatApp
+export default loggedInOnly(ChatApp)

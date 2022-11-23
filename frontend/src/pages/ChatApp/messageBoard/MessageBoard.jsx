@@ -1,6 +1,6 @@
 import { CiSearch } from 'react-icons/ci'
 import ActiveUser from './ActiveUser'
-import RecentChat from './RecentChat'
+import RecentChats from './RecentChats'
 import Seperator from './Seperator'
 
 const MessageBoard = () => {
@@ -28,21 +28,7 @@ const MessageBoard = () => {
       </div>
       <Seperator text="Chats" />
       <div className="flex-grow overflow-y-auto hide-scrollbar">
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
+        <RecentChats />
       </div>
     </div>
   )
