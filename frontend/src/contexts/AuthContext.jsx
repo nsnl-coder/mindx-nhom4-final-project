@@ -3,29 +3,44 @@ import axios from 'axios'
 export const AuthContext = createContext()
 
 const AuthContextProvider = (props) => {
-  const token =
-    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzdkNGY1ZjlmM2U1MjUxMzk2YTcwYSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NjkwNzcxODUsImV4cCI6MTY3Njg1MzE4NX0.zJV-Lf0GHN98JRi8QQ_SzEosNiQm6WMpLf8yrA_KXMo'
-  const [auth, setAuth] = useState({
-    isLoggedIn: false,
-    userId: null,
-    token: '',
-  })
+  const authLocal = JSON.parse(localStorage.getItem('auth'))
 
-  // useEffect(() => {
-  //   axios({
-  //     url: '/api/auth/checkJWT',
-  //     headers: {
-  //       token,
-  //     },
-  //   })
-  //     .then((data) => {
-  //       const id = data.data.user.id
-  //       setAuth({ userId: id, token, isLoggedIn: true })
-  //     })
-  //     .catch((err) => {
-  //       // setAuth(prev=>{return {...prev,isLoggedIn}})
-  //     })
-  // }, [])
+  let initialAuth = authLocal
+
+  if (!authLocal) {
+    initialAuth = {
+      isLoggedIn: false,
+      userId: null,
+      profileImage: '',
+      token: '',
+    }
+  }
+
+  const [auth, setAuth] = useState(initialAuth)
+
+  useEffect(() => {
+    if (authLocal && authLocal.token) {
+      axios({
+        url: '/api/auth/checkJWT',
+        headers: {
+          token: authLocal.token,
+        },
+      })
+        .then((data) => {
+          const { id, profileImage, username } = data.data.user
+          setAuth({
+            userId: id,
+            isLoggedIn: true,
+            profileImage,
+            username,
+            token: authLocal.token,
+          })
+        })
+        .catch((err) => {
+          localStorage.removeItem('auth')
+        })
+    }
+  }, [])
   const contextData = { auth, setAuth }
 
   return (

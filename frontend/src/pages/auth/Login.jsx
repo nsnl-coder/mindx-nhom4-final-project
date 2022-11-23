@@ -1,33 +1,52 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Logo from '../../assets/logo-icon-big.svg'
 import useCallApi from '../../hooks/useCallApi'
+import { AuthContext } from '../../contexts/AuthContext'
+
 const Login = () => {
+  const navigate = useNavigate()
   const { isLoading, error, sendRequest } = useCallApi()
+  const { setUser } = useContext(AuthContext)
+  const [errorMessage, setErrorMessage] = useState('')
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm()
+
   const applyApi = (user) => {
-    alert(user)
-    setData(null)
+    if (user.verified === false) {
+      navigate(`/auth/verify/${user.id}`, { email: user.email })
+    } else {
+      const auth = {
+        userId: user._id,
+        isLoggedIn: true,
+        profileImage: user.profileImage,
+        username: user.username,
+        token: 'Bearer ' + user.token_access,
+      }
+      console.log(auth)
+      setAuth(auth)
+      localStorage.setItem('auth', JSON.stringify(auth))
+    }
   }
   const onSubmit = (data) => {
     sendRequest(
       {
         data: data,
         method: 'post',
-        url: `${import.meta.env.VITE_BACKEND_HOST}`,
+        url: `${import.meta.env.VITE_BACKEND_HOST}/api/auth/login`,
       },
       applyApi
     )
   }
   useEffect(() => {
-    console.log(error)
+    setErrorMessage(error?.response?.data?.message)
   }, [error])
+
   return (
     <div className="flex items-center justify-center h-screen text-black">
       <div className="w-[550px] shadow-md shadow-gray rounded-md p-10 border-[1px] border-gray">
@@ -40,8 +59,7 @@ const Login = () => {
           </div>
           <img src={Logo} alt="" className="w-[150px] h-auto object-cover" />
         </div>
-        <div>
-          {/* {error && <p>{error}</p>} */}
+        <div className="w-[80%]">
           <form onSubmit={handleSubmit(onSubmit)}>
             <label className="text-lg font-semibold ">Email address:</label>
             <br />
@@ -52,13 +70,22 @@ const Login = () => {
                 pattern:
                   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
               })}
-              className="w-[80%] rounded-md h-12 px-4 shadow-sm shadow-black  my-2"
+              onChange={() => setErrorMessage('')}
+              className={`w-full rounded-md h-12 outline-none  px-4 shadow-sm shadow-[#33333380]  my-2 ${
+                errors?.email && 'border-[2px] border-primary'
+              } ${
+                errorMessage === 'Email not valid!' &&
+                'order-[2px] border-primary'
+              }`}
             />
             {errors?.email?.type === 'required' && (
               <p className="text-primary">This field is required</p>
             )}
             {errors?.email?.type === 'pattern' && (
-              <p className="primary">Invalid email!</p>
+              <p className="text-primary">Invalid email!</p>
+            )}
+            {errorMessage === 'Email not valid!' && !errors?.email && (
+              <span className="text-primary">Email is not registered!</span>
             )}
             <br />
             <label className="text-lg font-semibold">Password</label>
@@ -68,10 +95,19 @@ const Login = () => {
               {...register('password', {
                 required: true,
               })}
-              className="w-[80%] rounded-md h-12 px-4 shadow-sm shadow-black border-[1px] border-gray my-2"
+              onChange={() => setErrorMessage('')}
+              className={`w-full rounded-md h-12 px-4 shadow-sm shadow-[#33333380] border-[1px] border-gray my-2 ${
+                errors?.password && 'border-[2px] border-primary'
+              } ${
+                errorMessage === 'Incorrect password!' &&
+                'order-[2px] border-primary'
+              }`}
             />
             {errors?.password?.type === 'required' && (
               <p className="text-primary">This field is required</p>
+            )}
+            {errorMessage === 'Incorrect password!' && !errors?.password && (
+              <span className="text-primary">Incorrect password!</span>
             )}
             <br />
             <button
