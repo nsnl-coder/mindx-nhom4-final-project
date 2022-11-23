@@ -6,6 +6,7 @@ const useCallApi = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const { auth } = useContext(AuthContext)
+  console.log(auth)
   const { token } = auth
 
   const sendRequest = async (requestConfig, applyApiData) => {
@@ -22,7 +23,7 @@ const useCallApi = () => {
       })
       applyApiData(data)
     } catch (err) {
-      setError(err)
+      setError(err.message)
     }
     setIsLoading(false)
   }

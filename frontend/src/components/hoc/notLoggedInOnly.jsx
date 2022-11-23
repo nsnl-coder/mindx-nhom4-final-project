@@ -9,7 +9,6 @@ const notLoggedInOnly = (Component) => {
     const navigate = useNavigate()
     const { auth } = useContext(AuthContext)
     const { isLoggedIn, userId } = auth
-    console.log({ isLoggedIn, userId })
 
     // navigate if already login
     useEffect(() => {

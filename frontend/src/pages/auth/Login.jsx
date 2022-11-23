@@ -8,7 +8,7 @@ import { AuthContext } from '../../contexts/AuthContext'
 const Login = () => {
   const navigate = useNavigate()
   const { isLoading, error, sendRequest } = useCallApi()
-  const { setUser } = useContext(AuthContext)
+  const { setAuth } = useContext(AuthContext)
   const [errorMessage, setErrorMessage] = useState('')
   const {
     register,
