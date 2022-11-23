@@ -89,12 +89,14 @@ const fotgotPassword = async (req, res, next) => {
     if (!oldUser) {
       return next(createError(400, 'Email not valid'))
     }
-    const token = jwt.sign(
-      { password: oldUser.password, id: oldUser._id },
-      process.env.JWT_KEY,
-      { expiresIn: '5m' }
-    )
-    const link = `http://localhost:5000/api/auth/reset-password/${oldUser._id}/${token}`
+    let token = await Token.findOne({ userId: oldUser._id })
+    if (!token) {
+      token = await new Token({
+        userId: oldUser._id,
+        token: crypto.randomBytes(32).toString('hex'),
+      }).save()
+    }
+    const link = `http://localhost:5173/auth/newPass/${oldUser._id}/${token.token}`
     await sendEmail(email, 'Reset Password', link)
     res.status(200).json('Email Successfully')
   } catch (err) {
@@ -137,6 +139,24 @@ const checkToken = async (req, res, next) => {
     next(err)
   }
 }
+// verify password reset link
+const checkLinkResetPassword = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id)
+    if (!user) return next(createError(400, 'Invalid link'))
+
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
+    })
+
+    if (!token) return next(createError(400, 'Invalid link!!'))
+    await User.findByIdAndUpdate(user._id, { verified: true })
+    res.status(200).json('Email verified successfully')
+  } catch (err) {
+    next(err)
+  }
+}
 //ResetPassword
 const ResetPassword = async (req, res, next) => {
   const { id, token } = req.params
@@ -145,20 +165,27 @@ const ResetPassword = async (req, res, next) => {
     if (!oldUser) {
       return next(createError(400, 'User not Exists!!'))
     }
-    jwt.verify(token, process.env.JWT_KEY, async (err, userVerify) => {
-      if (err) return next(createError(401, 'Token is not valid!'))
-      const token = await User.findOne({
-        _id: userVerify.id,
-        password: userVerify.password,
-      })
-      if (!token) return next(createError(400, 'Invalid link'))
-    })
+    const checkToken = await Token.findOne({ userId: id, token: token })
+    if (!checkToken) {
+      return next(createError(400, 'User not Exists!!'))
+    }
     const newPasword = CryptoJS.AES.encrypt(
       req.body.password,
       process.env.CRYPTOJS_KEY
     ).toString()
-    await User.findByIdAndUpdate(id, { $set: { password: newPasword } })
-    res.status(200).json('Successfully')
+    const newUser = await User.findByIdAndUpdate(
+      id,
+      { $set: { password: newPasword } },
+      { new: true }
+    )
+    const { password, ...details } = newUser._doc
+    const token_access = jwt.sign(
+      { id: newUser._id, isAdmin: newUser.isAdmin },
+      process.env.JWT_KEY,
+      { expiresIn: '4d' }
+    )
+    await checkToken.remove()
+    res.status(200).json({ ...details, token_access })
   } catch (err) {
     next(err)
   }
@@ -171,4 +198,5 @@ module.exports = {
   ResetPassword,
   isJwtTokenValid,
   resendEmail,
+  checkLinkResetPassword,
 }

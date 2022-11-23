@@ -126,9 +126,12 @@ const Login = () => {
               </Link>
               now!
             </p>
-            <p className="text-black font-semibold hover:underline cursor-pointer">
-              Forgotten password?
-            </p>
+            <Link to="/auth/forgot">
+              {' '}
+              <p className="text-black font-semibold hover:underline cursor-pointer">
+                Forgotten password?
+              </p>
+            </Link>
           </form>
         </div>
       </div>
