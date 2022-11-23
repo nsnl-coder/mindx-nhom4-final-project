@@ -12,6 +12,7 @@ const AuthContextProvider = (props) => {
       isLoggedIn: false,
       userId: null,
       profileImage: '',
+      token: '',
     }
   }
 
@@ -32,6 +33,7 @@ const AuthContextProvider = (props) => {
             isLoggedIn: true,
             profileImage,
             username,
+            token: authLocal.token,
           })
         })
         .catch((err) => {
