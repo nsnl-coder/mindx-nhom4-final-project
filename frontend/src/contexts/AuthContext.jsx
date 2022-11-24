@@ -27,10 +27,9 @@ const AuthContextProvider = (props) => {
         },
       })
         .then((data) => {
-          console.log(data.data.user)
-          const { id, profileImage, username } = data.data.user
+          const { _id, profileImage, username } = data.data.user
           setAuth({
-            userId: id,
+            userId: _id,
             isLoggedIn: true,
             profileImage,
             username,

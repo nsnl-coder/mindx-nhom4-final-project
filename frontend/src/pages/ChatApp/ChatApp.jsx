@@ -1,8 +1,8 @@
-import MessageBoard from './messageBoard/MessageBoard'
-import SideBar from './sideBar/SideBar'
-import DirectMessage from './directMessage/DirectMessage'
 import { Outlet } from 'react-router-dom'
 
+//
+import MessageBoard from './messageBoard/MessageBoard'
+import SideBar from './sideBar/SideBar'
 import { loggedInOnly } from '../../components'
 
 const ChatApp = () => {

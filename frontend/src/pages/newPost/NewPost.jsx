@@ -77,7 +77,6 @@ const NewPost = () => {
     formData.append('photo', selectedPhoto)
     formData.append('content', html)
     formData.append('title', title)
-    formData.append('author', '6377d4f5f9f3e5251396a70a')
 
     sendRequest(
       {

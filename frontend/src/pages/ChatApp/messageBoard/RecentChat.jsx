@@ -5,7 +5,7 @@ const RecentChat = ({ message, isActive, isTyping, currentUserId }) => {
     message?.from?._id == currentUserId ? message?.to : message?.from
 
   return (
-    <Link to={`/chat/direct/${receiver?._id}`} state={{ receiver }}>
+    <Link to={`/chat/direct/${receiver?._id}`}>
       <div className="flex gap-x-3 py-3 hover:bg-gray-message cursor-pointer px-4">
         <div className="relative w-10 h-10">
           <img

@@ -15,7 +15,7 @@ export default function useGetAllMessages() {
     //  format data
     let formatData = []
     let i = 0
-    let previousSender = data.data[0].from
+    let previousSender = data?.data[0]?.from
 
     data.data.forEach((message) => {
       if (message.from === previousSender) {
@@ -35,7 +35,6 @@ export default function useGetAllMessages() {
   useEffect(() => {
     if (error) {
       showToastError('Fail to fetch message! Try again later')
-      console.log(error)
     }
   }, [error])
 
@@ -50,7 +49,7 @@ export default function useGetAllMessages() {
       },
       applyApiData
     )
-  }, [])
+  }, [receiverId])
 
   return { isLoadingAll: isLoading, allMessages, receiverId, setAllMessages }
 }

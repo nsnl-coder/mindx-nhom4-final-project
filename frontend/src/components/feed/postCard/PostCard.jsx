@@ -19,9 +19,11 @@ const PostCard = ({ post, user }) => {
   const handleSavePost = (post) => {
     sendRequest(
       {
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/save-post/${auth?.userId}`,
+        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/save-post/${
+          auth?.userId
+        }`,
         method: 'put',
-        data: post
+        data: post,
       },
       useApiData
     )
@@ -47,59 +49,45 @@ const PostCard = ({ post, user }) => {
     <div className="postCard">
       <div className="hover:shadow-xl image-full group relative">
         <Link to={`../post/${post._id}`}>
-          <div
-            className="w-full h-full group-hover:bg-black/30 absolute rounded-xl"
-          ></div>
-          <img
-            src={post.photo}
-            alt={post.title}
-            className="rounded-xl"
-          />
-          <p
-            className="hidden group-hover:block absolute bottom-2 left-3 right-3 text-white text-md truncate"
-          >
+          <div className="w-full h-full group-hover:bg-black/30 absolute rounded-xl"></div>
+          <img src={post.photo} alt={post.title} className="rounded-xl" />
+          <p className="hidden group-hover:block absolute bottom-2 left-3 right-3 text-white text-md truncate">
             {post.title}
           </p>
         </Link>
-        {auth?.userId === post.author._id ?
+        {auth?.userId === post.author._id ? (
           <button
             type="button"
             className="hidden group-hover:block absolute top-2 left-2"
             onClick={() => handleDeletePost(post._id)}
           >
-            <img
-              src={deleteIcon}
-              alt="delete-icon"
-            />
-          </button> :
+            <img src={deleteIcon} alt="delete-icon" />
+          </button>
+        ) : (
           <button
             type="button"
             className="hidden group-hover:block absolute top-2 left-2"
             onClick={() => handleSavePost(post)}
           >
-            <img
-              src={saveIcon}
-              alt="save-icon"
-            />
+            <img src={saveIcon} alt="save-icon" />
           </button>
-        }
+        )}
       </div>
-      {!user ?
+      {!user ? (
         <Link
           to={`../profile/${post.author._id}`}
-          className="flex py-2 items-end">
+          className="flex py-2 items-end"
+        >
           <img
             className="h-10 w-10 md:h-8 md:w-8 mr-4 rounded-full shadow-md"
             src={post.author.profileImage}
             alt="logo"
           />
-          <h4
-            className="text-text mr-2 text-lg md:text-md truncate hover:text-primary hover:font-medium"
-          >
+          <h4 className="text-text mr-2 text-lg md:text-md truncate hover:text-primary hover:font-medium">
             {`${post.author.firstName} ${post.author.lastName}`}
           </h4>
-        </Link> : null
-      }
+        </Link>
+      ) : null}
     </div>
   )
 }

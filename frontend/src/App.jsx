@@ -13,16 +13,17 @@ import {
   UserSettings,
 } from './pages/index'
 
-import ContextProvider from './contexts/ContextProvider'
+import ContextProvider from './contexts'
 import ChatApp from './pages/ChatApp/ChatApp'
-import { useEffect } from 'react'
 import DirectMessage from './pages/ChatApp/directMessage/DirectMessage'
+import Test from './components/test/Test'
 
 const App = () => {
   return (
     <ContextProvider>
       <ToastContainer />
       <Routes>
+        <Route path="/test" element={<Test />} />
         <Route path="/" element={<Home />} />
         <Route path="/profile/:id/*" element={<UserProfile />} />
         <Route path="/settings" element={<UserSettings />} />

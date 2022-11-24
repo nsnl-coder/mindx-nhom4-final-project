@@ -13,13 +13,14 @@ const UserProfile = () => {
   const { isLoading, error, sendRequest } = useCallApi()
 
   const useApiData = (data) => {
+    console.log(data)
     setUser(data)
   }
 
   useEffect(() => {
     sendRequest(
       {
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/strangerUser/${userId}`,
+        url: `/api/user/strangerUser/${userId}`,
         method: 'get',
       },
       useApiData
@@ -31,8 +32,18 @@ const UserProfile = () => {
       <div className="bg-white min-h-screen">
         <ProfileDetail user={user} />
         <Routes>
-          <Route path="saved" element={<UserSaved user={user} userId={userId} collection="saved" />} />
-          <Route path="posts" element={<UserPosts user={user} userId={userId} collection="posts" />} />
+          <Route
+            path="saved"
+            element={
+              <UserSaved user={user} userId={userId} collection="saved" />
+            }
+          />
+          <Route
+            path="posts"
+            element={
+              <UserPosts user={user} userId={userId} collection="posts" />
+            }
+          />
         </Routes>
       </div>
     </>

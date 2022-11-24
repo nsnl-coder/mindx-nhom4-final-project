@@ -3,7 +3,12 @@ import ActiveUser from './ActiveUser'
 import RecentChats from './RecentChats'
 import Seperator from './Seperator'
 
+import { SocketContext } from '../../../contexts'
+import { useContext } from 'react'
+
 const MessageBoard = () => {
+  const value = useContext(SocketContext)
+
   return (
     <div className="px-4 h-screen flex flex-col">
       <div className="py-6 relative ">

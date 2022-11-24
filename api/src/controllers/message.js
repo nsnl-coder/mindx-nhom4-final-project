@@ -13,6 +13,7 @@ const getLastestMessages = async (req, res, next) => {
       $or: [{ from: userId }, { to: userId }],
       isLastMessage: true,
     })
+      .sort('-createdAt')
       .populate({
         path: 'from',
         select: 'profileImage username createdAt',
