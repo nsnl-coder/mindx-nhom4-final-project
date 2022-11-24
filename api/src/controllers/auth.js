@@ -18,12 +18,14 @@ const isJwtTokenValid = async (req, res) => {
 }
 const register = async (req, res, next) => {
   try {
-    let user = await User.findOne({ email: req.body.email })
-    if (user)
+    let checkUser = await User.findOne({ username: req.body.username })
+    if (checkUser)
+      return next(createError(409, 'User with given username already Exist!'))
+    let checkEmail = await User.findOne({ email: req.body.email })
+    if (checkEmail)
       return next(createError(409, 'User with given email already Exist!'))
 
     const newUser = new User(req.body)
-
     const userSaved = await newUser.save()
     const updatePassword = await User.findByIdAndUpdate(
       newUser._id,
@@ -42,7 +44,7 @@ const register = async (req, res, next) => {
     }).save()
     const url = `http://localhost:5173/auth/verified/${userSaved._id}/${token.token}`
     await sendEmail(userSaved.email, 'Verify Email', url)
-    res.status(200).json('An Email sent to your account please verify')
+    res.status(200).json(newUser)
   } catch (err) {
     next(err)
   }
@@ -62,30 +64,25 @@ const login = async (req, res, next) => {
       return next(createError(400, 'Incorrect password!'))
     }
     if (!user.verified) {
-      const token = jwt.sign(
-        {
-          id: user._id,
-          username: user.username,
-        },
-        process.env.JWT_KEY,
-        { expiresIn: '3d' }
-      )
-      const url = `http://localhost:5173/auth/verified/${user._id}/${token}`
+      let token = await Token.findOne({ userId: user._id })
+      if (!token) {
+        token = await new Token({
+          userId: newUser._id,
+          token: crypto.randomBytes(32).toString('hex'),
+        }).save()
+      }
+      const url = `http://localhost:5173/auth/verified/${user._id}/${token.token}`
       sendEmail(user.email, 'Verify Email', url)
-      return next(400, 'An Email sent to your account please verify')
+      return res
+        .status(200)
+        .json({ id: user._id, email: user.email, verified: user.verified })
     }
     const { password, ...details } = user._doc
     const token_access = jwt.sign(
-      {
-        id: user._id,
-        isAdmin: user.isAdmin,
-        profileImage: user.profileImage,
-        username: user.username,
-      },
+      { id: user._id, isAdmin: user.isAdmin },
       process.env.JWT_KEY,
       { expiresIn: '4d' }
     )
-
     res.status(200).json({ ...details, token_access })
   } catch (err) {
     next(err)
@@ -99,14 +96,34 @@ const fotgotPassword = async (req, res, next) => {
     if (!oldUser) {
       return next(createError(400, 'Email not valid'))
     }
-    const token = jwt.sign(
-      { password: oldUser.password, id: oldUser._id },
-      process.env.JWT_KEY,
-      { expiresIn: '5m' }
-    )
-    const link = `http://localhost:5000/api/auth/reset-password/${oldUser._id}/${token}`
+    let token = await Token.findOne({ userId: oldUser._id })
+    if (!token) {
+      token = await new Token({
+        userId: oldUser._id,
+        token: crypto.randomBytes(32).toString('hex'),
+      }).save()
+    }
+    const link = `http://localhost:5173/auth/newPass/${oldUser._id}/${token.token}`
     await sendEmail(email, 'Reset Password', link)
     res.status(200).json('Email Successfully')
+  } catch (err) {
+    next(err)
+  }
+}
+//resend Email
+const resendEmail = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email })
+
+    const token = await Token.findOne({ userId: req.params.id }).populate(
+      'userId'
+    )
+    if (!token) {
+      return next(createError(400, 'User with given email already Exist!'))
+    }
+    const url = `http://localhost:5173/auth/verified/${req.params.id}/${token.token}`
+    sendEmail(token.userId.email, 'Verify Email', url)
+    res.status(200).json('An Email sent to your account please verify')
   } catch (err) {
     next(err)
   }
@@ -129,6 +146,24 @@ const checkToken = async (req, res, next) => {
     next(err)
   }
 }
+// verify password reset link
+const checkLinkResetPassword = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id)
+    if (!user) return next(createError(400, 'Invalid link'))
+
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
+    })
+
+    if (!token) return next(createError(400, 'Invalid link!!'))
+    await User.findByIdAndUpdate(user._id, { verified: true })
+    res.status(200).json('Email verified successfully')
+  } catch (err) {
+    next(err)
+  }
+}
 //ResetPassword
 const ResetPassword = async (req, res, next) => {
   const { id, token } = req.params
@@ -137,20 +172,27 @@ const ResetPassword = async (req, res, next) => {
     if (!oldUser) {
       return next(createError(400, 'User not Exists!!'))
     }
-    jwt.verify(token, process.env.JWT_KEY, async (err, userVerify) => {
-      if (err) return next(createError(401, 'Token is not valid!'))
-      const token = await User.findOne({
-        _id: userVerify.id,
-        password: userVerify.password,
-      })
-      if (!token) return next(createError(400, 'Invalid link'))
-    })
+    const checkToken = await Token.findOne({ userId: id, token: token })
+    if (!checkToken) {
+      return next(createError(400, 'User not Exists!!'))
+    }
     const newPasword = CryptoJS.AES.encrypt(
       req.body.password,
       process.env.CRYPTOJS_KEY
     ).toString()
-    await User.findByIdAndUpdate(id, { $set: { password: newPasword } })
-    res.status(200).json('Successfully')
+    const newUser = await User.findByIdAndUpdate(
+      id,
+      { $set: { password: newPasword } },
+      { new: true }
+    )
+    const { password, ...details } = newUser._doc
+    const token_access = jwt.sign(
+      { id: newUser._id, isAdmin: newUser.isAdmin },
+      process.env.JWT_KEY,
+      { expiresIn: '4d' }
+    )
+    await checkToken.remove()
+    res.status(200).json({ ...details, token_access })
   } catch (err) {
     next(err)
   }
@@ -162,4 +204,6 @@ module.exports = {
   checkToken,
   ResetPassword,
   isJwtTokenValid,
+  resendEmail,
+  checkLinkResetPassword,
 }

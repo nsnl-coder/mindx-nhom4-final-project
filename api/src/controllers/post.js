@@ -52,7 +52,7 @@ const GetsPost = async (req, res, next) => {
 const GetUserNamePost = async (req, res, next) => {
   const { page } = req.query
   try {
-    const LIMIT = 10
+    const LIMIT = 30
     const startIndex = (Number(page) - 1) * LIMIT
     const post = await Post.find()
       .populate({

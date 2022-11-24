@@ -5,6 +5,8 @@ import FormButtons from './FormButtons'
 import useCallApi from '../../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../../utils/toast'
 
+// const regex = //
+
 const PrivateSettings = ({ user, updateUser }) => {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -53,10 +55,10 @@ const PrivateSettings = ({ user, updateUser }) => {
       return
     }
 
-    if (!newPassword.match(/[A-Za-z0-9].{8,}/) || !oldPassword.match(/[A-Za-z0-9].{8,}/) || !newPassword2.match(/[A-Za-z0-9].{8,}/)) {
-      showToastError('Password must includes at least a capital letter, a lowercase letter, a number and the length of 8 or more')
-      return
-    }
+    // if (!newPassword.match(regex) || !newPassword2.match(regex)) {
+    //   showToastError('Password must includes at least a capital letter, a lowercase letter, a number and the length of 8 or more')
+    //   return
+    // }
 
     const formData = new FormData()
     formData.append('oldPassword', oldPassword)

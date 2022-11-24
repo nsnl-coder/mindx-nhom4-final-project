@@ -17,12 +17,15 @@ const ProfileDetail = ({ user }) => {
         className="wf-[150px] h-[150px] rounded-full"
         alt="profile-image"
       />
-      <Link to=".">
-        <h2 className="text-text text-3xl font-semibold">
-          {`${user?.firstName || ''} ${
-            user?.lastName || user.username || 'Loading...'
-          }`}
+      <Link to="." className="max-w-full text-center">
+        <h2 className="mt-4 text-text text-3xl font-semibold truncate">
+          {user?.firstName && user?.lastName
+            ? `${user?.firstName} ${user?.lastName}`
+            : `User-${user?._id}`}
         </h2>
+        <h3 className="mt-4 text-text text-2xl font-semibold truncate">
+          {`(${user?.username})`}
+        </h3>
       </Link>
       <Link to={`/chat/direct/${user?._id}`}>Message</Link>
       {data['*'] === '' ? (
