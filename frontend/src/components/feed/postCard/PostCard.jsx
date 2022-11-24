@@ -52,17 +52,6 @@ const PostCard = ({ post, user }) => {
           <div className="w-full h-full group-hover:bg-black/30 absolute rounded-xl"></div>
           <img src={post.photo} alt={post.title} className="rounded-xl" />
           <p className="hidden group-hover:block absolute bottom-2 left-3 right-3 text-white text-md truncate">
-          <div
-            className="w-full h-full group-hover:bg-black/30 absolute rounded-xl"
-          ></div>
-          <img
-            src={post.photo}
-            alt={post.title}
-            className="rounded-xl min-h-16"
-          />
-          <p
-            className="hidden group-hover:block absolute bottom-2 left-3 right-3 text-white text-md truncate"
-          >
             {post.title}
           </p>
         </Link>
