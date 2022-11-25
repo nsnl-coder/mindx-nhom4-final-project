@@ -1,15 +1,19 @@
 import { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+
 import Logo from '../../assets/logo-icon-big.svg'
 import useCallApi from '../../hooks/useCallApi'
 import { AuthContext } from '../../contexts/AuthContext'
 import IconReturn from '../../assets/icon-return.svg'
+import { BiError } from 'react-icons/bi'
+import { GoEyeClosed, GoEye } from 'react-icons/go'
 const Login = () => {
   const navigate = useNavigate()
   const { isLoading, error, sendRequest } = useCallApi()
   const { setAuth } = useContext(AuthContext)
   const [errorMessage, setErrorMessage] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const {
     register,
     handleSubmit,
@@ -46,7 +50,9 @@ const Login = () => {
   useEffect(() => {
     setErrorMessage(error?.response?.data?.message)
   }, [error])
-
+  const changeShowPassword = () => {
+    setShowPassword(!showPassword)
+  }
   return (
     <div className="flex items-center justify-center h-screen text-black">
       <Link to="/">
@@ -70,21 +76,28 @@ const Login = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <label className="text-lg font-semibold ">Email address:</label>
             <br />
-            <input
-              type="email"
-              {...register('email', {
-                required: true,
-                pattern:
-                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-              })}
-              onChange={() => setErrorMessage('')}
-              className={`w-full rounded-md h-12 outline-none  px-4 shadow-sm shadow-[#3333336d] border-[1px] border-[#3333333f]  my-2 ${
+            <div
+              className={`w-full rounded-md relative h-12 outline-none  overflow-hidden shadow-sm shadow-[#3333336d]   my-2 ${
                 errors?.email && 'border-[2px] border-primary'
               } ${
                 errorMessage === 'Email not valid!' &&
                 'order-[2px] border-primary'
               }`}
-            />
+            >
+              <input
+                onChange={() => setErrorMessage('')}
+                type="email"
+                {...register('email', {
+                  required: true,
+                  pattern:
+                    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                })}
+                className="w-full pl-4 pr-14 h-full outline-none "
+              />
+              {(errors?.email || errorMessage === 'Email not valid!') && (
+                <BiError className="absolute top-[50%] text-xl right-6 -translate-y-[50%] text-primary" />
+              )}
+            </div>
             {errors?.email?.type === 'required' && (
               <p className="text-primary">This field is required</p>
             )}
@@ -97,21 +110,42 @@ const Login = () => {
             <br />
             <label className="text-lg font-semibold">Password</label>
             <br />
-            <input
-              type="password"
-              {...register('password', {
-                required: true,
-              })}
-              onChange={() => setErrorMessage('')}
-              className={`w-full rounded-md h-12 px-4 shadow-sm shadow-[#3333336d] border-[1px] border-[#3333333f] my-2 ${
-                errors?.password && 'border-[2px] border-primary'
+            <div
+              className={`w-full rounded-md h-12 shadow-sm shadow-[#3333336d] overflow-hidden relative my-2 ${
+                errors?.password?.type && 'border-[2px] border-primary'
               } ${
                 errorMessage === 'Incorrect password!' &&
                 'order-[2px] border-primary'
               }`}
-            />
+            >
+              <input
+                onChange={() => setErrorMessage('')}
+                type={showPassword ? 'text' : 'password'}
+                {...register('password', {
+                  required: true,
+                  minLength: 8,
+                })}
+                className="w-[80%] h-full px-5 outline-none "
+              />
+              {errors?.password || errorMessage ? (
+                <BiError className="absolute top-[50%] text-xl right-6 -translate-y-[50%] text-primary" />
+              ) : (
+                <div
+                  className="absolute top-[50%] text-xl right-6 -translate-y-[50%] cursor-pointer"
+                  onClick={changeShowPassword}
+                >
+                  {showPassword ? <GoEyeClosed /> : <GoEye />}
+                </div>
+              )}
+            </div>
             {errors?.password?.type === 'required' && (
               <p className="text-primary">This field is required</p>
+            )}
+            {errors?.password?.type === 'minLength' && (
+              <p className="text-primary">
+                {' '}
+                Password must be at least 8 characters
+              </p>
             )}
             {errorMessage === 'Incorrect password!' && !errors?.password && (
               <span className="text-primary">Incorrect password!</span>
@@ -119,7 +153,7 @@ const Login = () => {
             <br />
             <button
               type="submit"
-              className="rounded-[50px] bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
+              className="rounded-[50px] shadow-sm shadow-black active:shadow-none bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
             >
               LOGIN
             </button>
@@ -127,7 +161,7 @@ const Login = () => {
               Don't you have an account?{' '}
               <Link
                 to="/auth/register"
-                className="text-primary text-lg cursor-pointer"
+                className="text-primary text-lg cursor-pointer underline"
               >
                 Create new{' '}
               </Link>
@@ -135,7 +169,7 @@ const Login = () => {
             </p>
             <Link to="/auth/forgot">
               {' '}
-              <p className="text-black font-semibold hover:underline cursor-pointer">
+              <p className="text-[#333] text-lg font-semibold hover:underline cursor-pointer">
                 Forgotten password?
               </p>
             </Link>

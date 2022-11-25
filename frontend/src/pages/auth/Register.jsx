@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import userCallApi from '../../hooks/useCallApi'
 import Logo from '../../assets/logo-icon-big.svg'
 import IconReturn from '../../assets/icon-return.svg'
+import { GoEyeClosed, GoEye } from 'react-icons/go'
+import { BiError } from 'react-icons/bi'
 const Register = () => {
   const navigate = useNavigate()
   const {
@@ -15,6 +17,7 @@ const Register = () => {
   } = useForm()
   const { isLoading, error, sendRequest } = userCallApi()
   const [errorMessage, setErrorMessage] = useState(error)
+  const [showPassword, setShowPassword] = useState(false)
   const applyApiData = (datas) => {
     navigate(`/auth/verify/${datas._id}`)
   }
@@ -27,6 +30,9 @@ const Register = () => {
       },
       applyApiData
     )
+  }
+  const changeShowPassword = () => {
+    setShowPassword(!showPassword)
   }
   useEffect(() => {
     setErrorMessage(error?.response?.data?.message)
@@ -55,26 +61,35 @@ const Register = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <label className="text-lg font-semibold ">User Name:</label>
               <br />
-              <input
-                {...register('username', {
-                  required: true,
-                  minLength: 5,
-                  maxLength: 20,
-                })}
-                onChange={() => setErrorMessage(null)}
-                className={`w-full outline-none rounded-md h-12 px-4 shadow-sm shadow-[#3333336d] border-[1px] border-[#3333333f] my-2 ${
+              <div
+                className={`w-full outline-none relative rounded-md h-12 overflow-hidden  shadow-sm shadow-[#3333336d]  my-2 ${
                   errors?.username?.type && 'border-primary border-[2px]'
                 } ${
                   errorMessage === 'User with given username already Exist!' &&
                   'border-primary border-[2px]'
                 }`}
-              />
+              >
+                <input
+                  onChange={() => setErrorMessage('')}
+                  {...register('username', {
+                    required: true,
+                    minLength: 5,
+                    maxLength: 20,
+                  })}
+                  className="w-full h-full pr-14 pl-4 outline-none"
+                />
+                {(errors?.username ||
+                  errorMessage ===
+                    'User with given username already Exist!') && (
+                  <BiError className="absolute top-[50%] text-xl right-6 -translate-y-[50%] text-primary" />
+                )}
+              </div>
               {errors?.username?.type === 'required' && (
                 <span className="text-primary">This field is required</span>
               )}
               {errors?.username?.type === 'minLength' && (
                 <span className="text-primary">
-                  Email must be at least 5 characters
+                  User Name must be at least 5 characters
                 </span>
               )}
               {errors?.username?.type === 'maxLength' && (
@@ -92,21 +107,29 @@ const Register = () => {
               <br />
               <label className="text-lg font-semibold ">Email address:</label>
               <br />
-              <input
-                type="email"
-                {...register('email', {
-                  required: true,
-                  pattern:
-                    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                })}
-                onChange={() => setErrorMessage('')}
-                className={`w-full outline-none rounded-md h-12 px-4 shadow-sm shadow-[#3333336d] border-[1px] border-[#3333333f] my-2 ${
+              <div
+                className={`w-full outline-none overflow-hidden rounded-md h-12  shadow-sm shadow-[#3333336d] relative my-2 ${
                   errors?.email?.type && 'border-primary border-[2px]'
                 } ${
                   errorMessage === 'User with given email already Exist!' &&
                   'border-[2px] border-primary'
                 }`}
-              />
+              >
+                <input
+                  onChange={() => setErrorMessage('')}
+                  type="email"
+                  {...register('email', {
+                    required: true,
+                    pattern:
+                      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  })}
+                  className="outline-none w-full h-full pr-14 pl-4"
+                />
+                {(errors?.email ||
+                  errorMessage === 'User with given email already Exist!') && (
+                  <BiError className="absolute top-[50%] text-xl right-6 -translate-y-[50%] text-primary" />
+                )}
+              </div>
               {errors?.email?.type === 'required' && (
                 <span className="text-primary">This field is required</span>
               )}
@@ -121,28 +144,43 @@ const Register = () => {
               <br />
               <label className="text-lg font-semibold">Password</label>
               <br />
-              <input
-                type="password"
-                {...register('password', {
-                  required: true,
-                  minLength: 8,
-                })}
-                className={`w-full rounded-md outline-none h-12 px-4 shadow-sm shadow-[#3333336d] border-[1px] border-[#3333333f] my-2 ${
+              <div
+                className={`w-full rounded-md relative outline-none h-12 overflow-hidden shadow-sm shadow-[#3333336d]  my-2 ${
                   errors?.password?.type && 'border-primary border-[2px]'
                 }`}
-              />
+              >
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  {...register('password', {
+                    required: true,
+                    minLength: 8,
+                  })}
+                  className="w-full h-full pl-4 pr-14 outline-none"
+                />
+                {errors?.password ? (
+                  <BiError className="absolute top-[50%] text-xl right-6 -translate-y-[50%] text-primary" />
+                ) : (
+                  <div
+                    className="absolute top-[50%] text-xl right-6 -translate-y-[50%]"
+                    onClick={changeShowPassword}
+                  >
+                    {showPassword ? <GoEyeClosed /> : <GoEye />}
+                  </div>
+                )}
+              </div>
               {errors?.password?.type === 'required' && (
                 <span className="text-primary">This field is required</span>
               )}
               {errors?.password?.type === 'minLength' && (
                 <span className="text-primary">
-                  Email must be at least 5 characters
+                  Email must be at least 8 characters
                 </span>
               )}
+
               <br />
               <button
                 type="submit"
-                className="rounded-[50px] bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
+                className="rounded-[50px] shadow-sm active:shadow-none shadow-black bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
               >
                 SIGN UP
               </button>
