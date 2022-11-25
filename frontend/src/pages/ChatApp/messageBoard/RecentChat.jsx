@@ -1,11 +1,16 @@
 import { Link } from 'react-router-dom'
 
-const RecentChat = ({ message, onlineUserIds, isTyping, currentUserId }) => {
+const RecentChat = ({
+  message,
+  onlineUserIds,
+  typingUserId,
+  currentUserId,
+}) => {
   const receiver =
     message?.from?._id == currentUserId ? message?.to : message?.from
 
+  const isTyping = typingUserId === receiver._id
   const { isRead } = message
-
   return (
     <Link to={`/chat/direct/${receiver?._id}`}>
       <div className="flex gap-x-3 py-3 hover:bg-gray-message cursor-pointer px-4">

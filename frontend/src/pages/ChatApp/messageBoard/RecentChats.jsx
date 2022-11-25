@@ -10,6 +10,7 @@ const RecentChats = () => {
   const { auth } = useContext(AuthContext)
   const { isLoading, latestMessages } = useContext(MessageContext)
   const { onlineUserIds } = useContext(SocketContext)
+  const { typingUserId } = useContext(SocketContext)
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -27,6 +28,7 @@ const RecentChats = () => {
           message={message}
           currentUserId={auth.userId}
           onlineUserIds={onlineUserIds}
+          typingUserId={typingUserId}
         />
       ))}
     </div>

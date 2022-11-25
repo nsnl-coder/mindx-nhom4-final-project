@@ -4,7 +4,7 @@ import RecentChats from './RecentChats'
 import Seperator from './Seperator'
 
 import { SocketContext } from '../../../contexts'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 
 const MessageBoard = () => {
   const { onlineUserProfiles } = useContext(SocketContext)

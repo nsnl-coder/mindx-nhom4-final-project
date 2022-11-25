@@ -18,6 +18,8 @@ const DirectMessage = () => {
   const { handleNewLatestMessage, seenAllMessagesHandler } =
     useContext(MessageContext)
 
+  const { emitTypingEvent, typingUserId, emitNewMessage, receiveMessage } =
+    useContext(SocketContext)
   const [newMessageInput, setNewMessageInput] = useState('')
   // handle send new message
   const { isSending, newMessage, sendMessage, setNewMessage } =
@@ -35,12 +37,6 @@ const DirectMessage = () => {
   //load basic info of current receiver
   const { userBasicInfo, isLoadingBasicInfo } = useGetUserBaiscInfo(receiverId)
 
-  // is current selected receiver typing
-  const [isTyping, setisTyping] = useState(false)
-  const lastTimeTypingRef = useRef()
-  const lastReceiverRef = useRef()
-  const typingTimeOutRef = useRef()
-
   // ref to a div at bottom of message page
   const boardBottomRef = useRef()
 
@@ -49,16 +45,7 @@ const DirectMessage = () => {
   // emit typing event
   useEffect(() => {
     if (newMessageInput.trim().length === 0) return
-
-    if (
-      Date.now() - lastTimeTypingRef.current < 1300 &&
-      lastReceiverRef.current === receiverId
-    )
-      return
-
-    socket.emit('typing_message', receiverId)
-    lastTimeTypingRef.current = Date.now()
-    lastReceiverRef.current = receiverId
+    emitTypingEvent(receiverId)
   }, [newMessageInput])
 
   //
@@ -66,42 +53,17 @@ const DirectMessage = () => {
     seenAllMessagesHandler(receiverId)
   }, [receiverId])
 
-  //
-  const onReceiveTypingHandler = (id) => {
-    if (id !== receiverId) return
-
-    clearTimeout(typingTimeOutRef.current)
-    setisTyping(true)
-    typingTimeOutRef.current = setTimeout(() => {
-      setisTyping(false)
-    }, 2000)
-  }
-
   // listening for incoming message
   useEffect(() => {
-    if (socket) {
-      socket.on('typing_message', onReceiveTypingHandler)
-      socket.on('new_message', (message) => {
-        if (message.from._id === receiverId) {
-          setNewMessage(message)
-        }
-      })
+    if (receiveMessage && receiveMessage.from._id === receiverId) {
+      setNewMessage(receiveMessage)
     }
-
-    return () => {
-      socket?.off('typing_message', onReceiveTypingHandler)
-      socket?.off('new_message', (message) => {
-        if (message.from._id === receiverId) {
-          setNewMessage(message)
-        }
-      })
-    }
-  }, [socket, receiverId, isTyping])
+  }, [receiveMessage])
 
   //  scroll to bottom
   useEffect(() => {
     boardBottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [allMessages, isTyping])
+  }, [allMessages])
 
   // update ui after new message
   useEffect(() => {
@@ -112,14 +74,10 @@ const DirectMessage = () => {
       from: newMessage.from._id,
       to: newMessage.to._id,
       content: newMessage.content,
+      _id: newMessage._id,
     }
 
     const newAllMessages = [...allMessages]
-
-    // emit new mesage event
-    if (socket && formartedMessage.to === receiverId) {
-      socket.emit('new_message', newMessage)
-    }
 
     if (blockLength === 0) {
       newAllMessages[0] = []
@@ -140,8 +98,16 @@ const DirectMessage = () => {
     setAllMessages(newAllMessages)
   }, [newMessage])
 
+  // emit message
+  useEffect(() => {
+    if (newMessage) {
+      emitNewMessage(newMessage)
+    }
+  }, [newMessage])
+
   const sendMessageHandler = () => {
     if (newMessageInput.length === 0) return
+
     sendMessage(newMessageInput)
     setNewMessageInput('')
   }
@@ -192,7 +158,7 @@ const DirectMessage = () => {
               <p className="text-sm">Sending...</p>
             </div>
           )}
-          {isTyping && (
+          {typingUserId === receiverId && (
             <div className="flex justify-start px-8 !mt-4">
               <Comment
                 visible={true}

@@ -1,27 +1,18 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import useGetLatestMessages from '../hooks/useGetLatestMessages'
-import { AuthContext } from './AuthContext'
-import { SocketContext } from './SocketContext'
+
+import { AuthContext, SocketContext, NotifyContext } from './index'
 
 const MessageContext = createContext()
 
 const MessageContextProvider = (props) => {
-  //
-  const [typingId, setTypingId] = useState('')
-  const [isNotification, setIsNotification] = useState(false)
-
   // latest message
   const { isLoading, latestMessages, setLatestMessages } =
     useGetLatestMessages()
-  const { socket } = useContext(SocketContext)
+
+  const { receiveMessage } = useContext(SocketContext)
   const { auth } = useContext(AuthContext)
-
-  const typingTimeOutRef = useRef()
-  const oldMessageRef = useRef()
-
-  const newMessageHandler = (message) => {
-    handleNewLatestMessage(message)
-  }
+  const { setMessageNotify } = useContext(NotifyContext)
 
   useEffect(() => {
     if (latestMessages.length) {
@@ -30,50 +21,18 @@ const MessageContextProvider = (props) => {
           !latestMessages[i].isRead &&
           latestMessages[i].from._id !== auth.userId
         ) {
-          return setIsNotification(true)
+          return setMessageNotify(true)
         }
       }
-      setIsNotification(false)
+      setMessageNotify(false)
     }
   }, [latestMessages])
 
   useEffect(() => {
-    if (socket) {
-      socket.on('typing_message', (id) => {
-        setTypingId(id)
-      })
-      socket.on('new_message', newMessageHandler)
+    if (receiveMessage) {
+      handleNewLatestMessage(receiveMessage)
     }
-  }, [socket])
-
-  useEffect(() => {
-    if (typingId) {
-      handleTypingMessage(typingId)
-      setTypingId('')
-    }
-  }, [typingId])
-
-  const handleTypingMessage = (id) => {
-    const index = latestMessages.findIndex(
-      (message) => message.from._id === id || message.to._id === id
-    )
-
-    if (index === -1) return
-    const copyArr = JSON.parse(JSON.stringify(latestMessages))
-
-    if (!oldMessageRef.current)
-      oldMessageRef.current = latestMessages[index].content
-    copyArr[index].content = 'typing...'
-
-    setLatestMessages(JSON.parse(JSON.stringify(copyArr)))
-
-    clearTimeout(typingTimeOutRef.current)
-    typingTimeOutRef.current = setTimeout(() => {
-      copyArr[index].content = oldMessageRef.current
-      oldMessageRef.current = null
-      setLatestMessages(JSON.parse(JSON.stringify(copyArr)))
-    }, 2000)
-  }
+  }, [receiveMessage])
 
   const handleNewLatestMessage = (newMessage) => {
     const index = latestMessages.findIndex((message) => {
@@ -115,8 +74,6 @@ const MessageContextProvider = (props) => {
         latestMessages,
         handleNewLatestMessage,
         seenAllMessagesHandler,
-        isNotification,
-        setIsNotification,
       }}
     >
       {props.children}

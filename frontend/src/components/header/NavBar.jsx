@@ -11,12 +11,13 @@ import searchIcon from '../../assets/icon-search.svg'
 import menuIcon from '../../assets/icon-bars.svg'
 import useLogUserOut from '../../hooks/useLogUserOut'
 import { useContext } from 'react'
-import { MessageContext } from '../../contexts'
+import { NotifyContext } from '../../contexts'
 
 const NavBar = ({ toggleSideBarVisivility, auth }) => {
   const { userId, profileImage, username, isLoggedIn } = auth
   const { logOut } = useLogUserOut()
-  const { isNotification } = useContext(MessageContext)
+  const { messageNotify, commentNotify } = useContext(NotifyContext)
+  const isNotify = messageNotify || commentNotify
 
   return (
     <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
@@ -58,7 +59,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                 alt="profile image"
                 className="w-9 aspect-square object-cover object-center rounded-full"
               />
-              {isNotification && (
+              {isNotify && (
                 <div className="w-3 aspect-square rounded-full bg-primary absolute -right-1.5 top-0.5"></div>
               )}
             </label>
@@ -80,7 +81,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                   <Link to={'/chat'}>
                     <RiMessageFill />
                     Messenger
-                    {isNotification && (
+                    {messageNotify && (
                       <div className="w-3 aspect-square rounded-full bg-primary ml-auto"></div>
                     )}
                   </Link>
