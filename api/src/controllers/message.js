@@ -13,6 +13,15 @@ const getLastestMessages = async (req, res, next) => {
       $or: [{ from: userId }, { to: userId }],
       isLastMessage: true,
     })
+      .sort('-createdAt')
+      .populate({
+        path: 'from',
+        select: 'profileImage username createdAt',
+      })
+      .populate({
+        path: 'to',
+        select: 'profileImage username createdAt',
+      })
 
     res
       .status(200)
@@ -36,6 +45,8 @@ const createMessage = async (req, res, next) => {
       return next(createError(400, 'The receiver with that id no longer exist'))
     }
 
+    console.log({ from, to, content })
+
     const newMessage = await Message.create({ from, to, content })
 
     // remove isLastMessage from previous message
@@ -53,11 +64,7 @@ const createMessage = async (req, res, next) => {
 
     res.status(201).json({
       status: 'success',
-      message: {
-        from: req.user,
-        to: receiver,
-        content,
-      },
+      data: newMessage,
     })
   } catch (err) {
     next(err)
@@ -67,7 +74,7 @@ const createMessage = async (req, res, next) => {
 // get all messages between logged in user and specific user
 const getAllMessages = async (req, res, next) => {
   const from = req.user.id
-  const to = req.body.receiverId
+  const to = req.query.receiverId
 
   if (!to) {
     return next(createError(400, 'Please provide receiver Id'))
@@ -79,7 +86,7 @@ const getAllMessages = async (req, res, next) => {
         { from, to },
         { from: to, to: from },
       ],
-    }).sort('-createdAt')
+    }).sort('createdAt')
 
     res.status(200).json({
       status: 'success',

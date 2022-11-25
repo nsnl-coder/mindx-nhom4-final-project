@@ -29,6 +29,18 @@ const deleteUser = async (req, res, next) => {
     next(err)
   }
 }
+
+const getUserBasicInfo = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id).select(
+      'profileImage username'
+    )
+    res.status(200).json({ status: 'success', data: user })
+  } catch (err) {
+    next(err)
+  }
+}
+
 const getStrangerUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate('savedPosts')
@@ -101,6 +113,7 @@ module.exports = {
   addSavedPosts,
   UpdateUser,
   getStrangerUser,
+  getUserBasicInfo,
   deleteUser,
   getAllUser,
 }

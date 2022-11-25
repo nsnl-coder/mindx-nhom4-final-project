@@ -12,7 +12,7 @@ const loggedInOnly = (Component) => {
 
     useEffect(() => {
       if (!isLoggedIn) {
-        showToastError('You need to login first to add new post')
+        showToastError('You need to login first to access the page')
         navigate('/auth/login')
       }
     }, [isLoggedIn])

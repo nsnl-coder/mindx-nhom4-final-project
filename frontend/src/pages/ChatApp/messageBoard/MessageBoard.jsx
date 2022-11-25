@@ -1,9 +1,14 @@
 import { CiSearch } from 'react-icons/ci'
 import ActiveUser from './ActiveUser'
-import RecentChat from './RecentChat'
+import RecentChats from './RecentChats'
 import Seperator from './Seperator'
 
+import { SocketContext } from '../../../contexts'
+import { useContext } from 'react'
+
 const MessageBoard = () => {
+  const value = useContext(SocketContext)
+
   return (
     <div className="px-4 h-screen flex flex-col">
       <div className="py-6 relative ">
@@ -28,21 +33,7 @@ const MessageBoard = () => {
       </div>
       <Seperator text="Chats" />
       <div className="flex-grow overflow-y-auto hide-scrollbar">
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
-        <RecentChat />
+        <RecentChats />
       </div>
     </div>
   )

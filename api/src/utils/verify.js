@@ -15,7 +15,6 @@ const verifyToken = (req, res, next) => {
       return next(createError(401, 'Token is not valid!'))
     }
     req.user = user
-    console.log(user)
     next()
   })
 }

@@ -5,8 +5,10 @@ const CreatePost = async (req, res, next) => {
     req.body.photo = req.file.filename
   }
 
+  const { title, photo, content } = req.body
+
   try {
-    const newPost = new Post(req.body)
+    const newPost = new Post({ title, photo, content, author: req.user.id })
     const post = await newPost.save()
     res.status(200).json(post)
   } catch (err) {
