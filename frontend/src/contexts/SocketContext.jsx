@@ -9,6 +9,8 @@ const SocketContext = createContext()
 const SocketContextProvider = (props) => {
   const { auth } = useContext(AuthContext)
   const [socket, setSocket] = useState()
+  const [onlineUserIds, setOnlineUserIds] = useState()
+  const [onlineUserProfiles, setOnlineUserProfiles] = useState()
 
   useEffect(() => {
     if (auth.isLoggedIn) {
@@ -23,13 +25,27 @@ const SocketContextProvider = (props) => {
   useEffect(() => {
     if (socket) {
       socket.on('connect', () => {
-        socket.emit('new_connection', auth.userId)
+        socket.emit('new_connection', {
+          userId: auth.userId,
+          profileImage: auth.profileImage,
+          username: auth.username,
+        })
+      })
+      socket.on('new_user_online', (onlineUserInfo) => {
+        setOnlineUserIds(onlineUserInfo.onlineUserIds)
+        setOnlineUserProfiles(onlineUserInfo.onlineUserProfiles)
       })
     }
   }, [socket])
 
   return (
-    <SocketContext.Provider value={{ socket }}>
+    <SocketContext.Provider
+      value={{
+        socket,
+        onlineUserIds,
+        onlineUserProfiles,
+      }}
+    >
       {props.children}
     </SocketContext.Provider>
   )

@@ -45,9 +45,10 @@ const createMessage = async (req, res, next) => {
       return next(createError(400, 'The receiver with that id no longer exist'))
     }
 
-    console.log({ from, to, content })
-
     const newMessage = await Message.create({ from, to, content })
+    const data = await Message.findById(newMessage._id)
+      .populate({ path: 'from', select: 'username profileImage' })
+      .populate({ path: 'to', select: 'username profileImage' })
 
     // remove isLastMessage from previous message
     await Message.findOneAndUpdate(
@@ -61,10 +62,12 @@ const createMessage = async (req, res, next) => {
       },
       { isLastMessage: false }
     )
+    // send notification to receiver
+    await User.findByIdAndUpdate(to, { $inc: { notifications: 1 } })
 
     res.status(201).json({
       status: 'success',
-      data: newMessage,
+      data,
     })
   } catch (err) {
     next(err)
@@ -80,13 +83,26 @@ const getAllMessages = async (req, res, next) => {
     return next(createError(400, 'Please provide receiver Id'))
   }
 
+  // clear notification
+  await Message.updateMany(
+    { from: to, to: from, isRead: false },
+    { isRead: true }
+  )
+
+  const page = +req.query.page - 1 || 0
+  const pageSize = req.query.pageSize || 15
+  const skipNum = page * pageSize
+
   try {
     const messages = await Message.find({
       $or: [
         { from, to },
         { from: to, to: from },
       ],
-    }).sort('createdAt')
+    })
+      .sort('-createdAt')
+      .skip(skipNum)
+      .limit(pageSize)
 
     res.status(200).json({
       status: 'success',

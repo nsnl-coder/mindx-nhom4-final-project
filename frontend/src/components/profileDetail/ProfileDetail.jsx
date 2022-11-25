@@ -5,7 +5,6 @@ import { IoMdMale } from 'react-icons/io'
 import { IoMdTransgender } from 'react-icons/io'
 
 const ProfileDetail = ({ user }) => {
-  console.log(user)
   const data = useParams()
 
   return (

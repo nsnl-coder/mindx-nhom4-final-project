@@ -1,14 +1,15 @@
 import RecentChat from './RecentChat'
 import { useContext } from 'react'
+import { MessageContext, SocketContext } from '../../../contexts'
 
 //
-import useGetLatestMessages from '../../../hooks/useGetLatestMessages'
 import { LoadingSpinner } from '../../../components'
 import { AuthContext } from '../../../contexts'
 
 const RecentChats = () => {
-  const { isLoading, latestMessages } = useGetLatestMessages()
   const { auth } = useContext(AuthContext)
+  const { isLoading, latestMessages } = useContext(MessageContext)
+  const { onlineUserIds } = useContext(SocketContext)
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -25,6 +26,7 @@ const RecentChats = () => {
           key={message._id}
           message={message}
           currentUserId={auth.userId}
+          onlineUserIds={onlineUserIds}
         />
       ))}
     </div>

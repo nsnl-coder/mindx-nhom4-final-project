@@ -4,10 +4,10 @@ import RecentChats from './RecentChats'
 import Seperator from './Seperator'
 
 import { SocketContext } from '../../../contexts'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 
 const MessageBoard = () => {
-  const value = useContext(SocketContext)
+  const { onlineUserProfiles } = useContext(SocketContext)
 
   return (
     <div className="px-4 h-screen flex flex-col">
@@ -23,13 +23,10 @@ const MessageBoard = () => {
       </div>
       <Seperator text="active users" />
       <div className="flex overflow-x-auto px-4 flex-shrink-0 gap-x-6 py-6 hide-scrollbar">
-        <ActiveUser />
-        <ActiveUser />
-        <ActiveUser />
-        <ActiveUser />
-        <ActiveUser />
-        <ActiveUser />
-        <ActiveUser />
+        {onlineUserProfiles &&
+          Object.keys(onlineUserProfiles).map((id) => (
+            <ActiveUser key={id} user={onlineUserProfiles[id]} id={id} />
+          ))}
       </div>
       <Seperator text="Chats" />
       <div className="flex-grow overflow-y-auto hide-scrollbar">

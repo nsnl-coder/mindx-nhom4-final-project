@@ -12,11 +12,11 @@ const SideBar = () => {
 
   return (
     <div className="flex flex-col py-4">
-      <div className="w-full h-20 hover:bg-gray-50 cursor-pointer mb-2 flex justify-center items-center  text-gray-500 font-bold text-4xl">
-        <Link to="/">
+      <Link to="/">
+        <div className="w-full h-20 hover:bg-gray-50 cursor-pointer mb-2 flex justify-center items-center  text-gray-500 font-bold text-4xl">
           <div>U.</div>
-        </Link>
-      </div>
+        </div>
+      </Link>
       <Link to="/chat">
         <div className="w-full h-20 hover:bg-gray-50 cursor-pointer mb-2 flex justify-center items-center  text-gray-500 text-2xl">
           <BsChatSquareDotsFill />

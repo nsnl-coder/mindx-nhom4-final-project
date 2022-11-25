@@ -2,10 +2,11 @@ import { useRef, useState, useEffect, useContext } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { IoIosSend } from 'react-icons/io'
 import { useParams } from 'react-router-dom'
+import InputEmoji from 'react-input-emoji'
 
 //
 import { LoadingSpinner } from '../../../components'
-import { SocketContext } from '../../../contexts'
+import { MessageContext, SocketContext } from '../../../contexts'
 import useGetAllMessages from '../../../hooks/useGetAllMessages'
 import useGetUserBaiscInfo from '../../../hooks/useGetUserBasicInfo'
 import useSendNewMessage from '../../../hooks/useSendNewMessage'
@@ -14,14 +15,22 @@ import OtherMessageBlock from './OtherMessageBlock'
 import { Comment } from 'react-loader-spinner'
 
 const DirectMessage = () => {
+  const { handleNewLatestMessage, seenAllMessagesHandler } =
+    useContext(MessageContext)
+
   const [newMessageInput, setNewMessageInput] = useState('')
   // handle send new message
   const { isSending, newMessage, sendMessage, setNewMessage } =
     useSendNewMessage()
 
   // fetch all the messages with current receiver
-  const { isLoadingAll, allMessages, setAllMessages, receiverId } =
-    useGetAllMessages()
+  const {
+    isLoadingAll,
+    allMessages,
+    setAllMessages,
+    receiverId,
+    lastElementRef,
+  } = useGetAllMessages()
 
   //load basic info of current receiver
   const { userBasicInfo, isLoadingBasicInfo } = useGetUserBaiscInfo(receiverId)
@@ -48,48 +57,44 @@ const DirectMessage = () => {
       return
 
     socket.emit('typing_message', receiverId)
-    console.log('emit timout')
     lastTimeTypingRef.current = Date.now()
     lastReceiverRef.current = receiverId
   }, [newMessageInput])
 
   //
-  const newMessageHandler = (message) => {
-    if (message.from === receiverId) {
-      setNewMessage(message)
-    }
-  }
-  const onReceiveTypingHandler = (id) => {
-    console.log('receive tumeoti')
+  useEffect(() => {
+    seenAllMessagesHandler(receiverId)
+  }, [receiverId])
 
+  //
+  const onReceiveTypingHandler = (id) => {
     if (id !== receiverId) return
 
-    console.log(isTyping)
-    if (isTyping == false) {
-      setisTyping(true)
-      typingTimeOutRef.current = setTimeout(() => {
-        console.log('🧨🧨🧨')
-        setisTyping(false)
-      }, 2000)
-    } else if (isTyping == true) {
-      console.log('this run')
-      clearTimeout(typingTimeOutRef.current)
-      typingTimeOutRef.current = setTimeout(() => {
-        setisTyping(false)
-      }, 2000)
-    }
+    clearTimeout(typingTimeOutRef.current)
+    setisTyping(true)
+    typingTimeOutRef.current = setTimeout(() => {
+      setisTyping(false)
+    }, 2000)
   }
 
   // listening for incoming message
   useEffect(() => {
     if (socket) {
-      socket.on('new_message', newMessageHandler)
       socket.on('typing_message', onReceiveTypingHandler)
+      socket.on('new_message', (message) => {
+        if (message.from._id === receiverId) {
+          setNewMessage(message)
+        }
+      })
     }
 
     return () => {
-      socket?.off('new_message', newMessageHandler)
       socket?.off('typing_message', onReceiveTypingHandler)
+      socket?.off('new_message', (message) => {
+        if (message.from._id === receiverId) {
+          setNewMessage(message)
+        }
+      })
     }
   }, [socket, receiverId, isTyping])
 
@@ -98,37 +103,45 @@ const DirectMessage = () => {
     boardBottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [allMessages, isTyping])
 
-  // update ui after sending the message
+  // update ui after new message
   useEffect(() => {
     const blockLength = allMessages.length
-
     if (!newMessage) return
-    const newAllMessage = [...allMessages]
+
+    const formartedMessage = {
+      from: newMessage.from._id,
+      to: newMessage.to._id,
+      content: newMessage.content,
+    }
+
+    const newAllMessages = [...allMessages]
 
     // emit new mesage event
-    if (socket && newMessage.to === receiverId)
+    if (socket && formartedMessage.to === receiverId) {
       socket.emit('new_message', newMessage)
+    }
 
     if (blockLength === 0) {
-      newAllMessage[0] = []
-      newAllMessage[0].push(newMessage)
+      newAllMessages[0] = []
+      newAllMessages[0].push(formartedMessage)
     } else {
       const lastBlock = allMessages[blockLength - 1]
 
-      if (newMessage.from === lastBlock[0].from) {
-        newAllMessage[blockLength - 1].push(newMessage)
+      if (formartedMessage.from === lastBlock[0].from) {
+        newAllMessages[blockLength - 1].push(formartedMessage)
       } else {
-        newAllMessage[blockLength] = []
-        newAllMessage[blockLength].push(newMessage)
+        newAllMessages[blockLength] = []
+        newAllMessages[blockLength].push(formartedMessage)
       }
+      handleNewLatestMessage(newMessage)
       setNewMessage(null)
     }
 
-    setAllMessages(newAllMessage)
+    setAllMessages(newAllMessages)
   }, [newMessage])
 
-  const sendMessageHandler = (e) => {
-    e.preventDefault()
+  const sendMessageHandler = () => {
+    if (newMessageInput.length === 0) return
     sendMessage(newMessageInput)
     setNewMessageInput('')
   }
@@ -151,10 +164,12 @@ const DirectMessage = () => {
         </div>
         <BsThreeDotsVertical />
       </div>
-      <div className="flex flex-col px-10 space-y-8 flex-grow overflow-y-auto pt-4 hide-scrollbar">
-        <div className="mt-auto">
+      <div className="flex flex-col-reverse px-10 space-y-8 flex-grow overflow-y-auto pt-4">
+        <div className="mt-auto pb-8">
+          <div ref={lastElementRef} className="mb-6"></div>
+
           {!isLoadingAll &&
-            allMessages?.map((block) => {
+            allMessages?.map((block, index) => {
               if (block[0].from === receiverId) {
                 return (
                   <OtherMessageBlock
@@ -166,54 +181,55 @@ const DirectMessage = () => {
               }
               return <MyMessageBlock key={block[0]._id} messages={block} />
             })}
+          {isLoadingAll && (
+            <div className="flex mt-auto justify-end">
+              <LoadingSpinner />
+            </div>
+          )}
+
+          {isSending && (
+            <div className="flex justify-end px-8 !mt-8">
+              <p className="text-sm">Sending...</p>
+            </div>
+          )}
+          {isTyping && (
+            <div className="flex justify-start px-8 !mt-4">
+              <Comment
+                visible={true}
+                height="40"
+                width="40"
+                ariaLabel="comment-loading"
+                wrapperStyle={{}}
+                wrapperClass="comment-wrapper"
+                color="#1e293b"
+                backgroundColor="#fff"
+              />
+            </div>
+          )}
         </div>
-        {isLoadingAll && (
-          <div className="flex mt-auto justify-end">
-            <LoadingSpinner />
-          </div>
-        )}
 
-        {isSending && (
-          <div className="flex justify-end px-8 !mt-4">
-            <p className="text-sm">Sending...</p>
-          </div>
-        )}
-        {isTyping && (
-          <div className="flex justify-start px-8 !mt-4">
-            <Comment
-              visible={true}
-              height="40"
-              width="40"
-              ariaLabel="comment-loading"
-              wrapperStyle={{}}
-              wrapperClass="comment-wrapper"
-              color="#1e293b"
-              backgroundColor="#fff"
-            />
-          </div>
-        )}
-
-        <div ref={boardBottomRef}></div>
+        {/* <div ref={boardBottomRef}></div> */}
       </div>
       <div className="w-full px-10 mb-8">
-        <form onSubmit={sendMessageHandler} className="relative">
-          <input
-            type="text"
-            className="w-full py-4 rounded-md outline-none px-6 placeholder:text-sm"
-            placeholder="Type something..."
-            onChange={(e) => setNewMessageInput(e.target.value)}
+        <div onSubmit={sendMessageHandler} className="flex">
+          <InputEmoji
             value={newMessageInput}
+            onChange={setNewMessageInput}
+            cleanOnEnter
+            onEnter={sendMessageHandler}
+            placeholder="Type a message"
           />
           <button
             className={
               newMessageInput.trim() !== ''
-                ? 'absolute right-4 top-1/2 -translate-y-1/2 text-3xl text-blue-message'
-                : 'absolute right-4 top-1/2 -translate-y-1/2 text-3xl text-blue-message/50 cursor-none pointer-events-none'
+                ? 'text-3xl text-blue-message'
+                : 'text-3xl text-text cursor-none pointer-events-none'
             }
+            onClick={sendMessageHandler}
           >
             <IoIosSend />
           </button>
-        </form>
+        </div>
       </div>
     </div>
   )

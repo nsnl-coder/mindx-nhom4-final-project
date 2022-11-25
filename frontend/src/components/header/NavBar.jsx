@@ -10,10 +10,13 @@ import logo from '../../assets/logo-full.svg'
 import searchIcon from '../../assets/icon-search.svg'
 import menuIcon from '../../assets/icon-bars.svg'
 import useLogUserOut from '../../hooks/useLogUserOut'
+import { useContext } from 'react'
+import { MessageContext } from '../../contexts'
 
 const NavBar = ({ toggleSideBarVisivility, auth }) => {
   const { userId, profileImage, username, isLoggedIn } = auth
   const { logOut } = useLogUserOut()
+  const { isNotification } = useContext(MessageContext)
 
   return (
     <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
@@ -55,6 +58,9 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                 alt="profile image"
                 className="w-9 aspect-square object-cover object-center rounded-full"
               />
+              {isNotification && (
+                <div className="w-3 aspect-square rounded-full bg-primary absolute -right-1.5 top-0.5"></div>
+              )}
             </label>
             <div tabIndex={0} className="dropdown-content menu w-52 pt-6">
               <ul className="bg-base-100 shadow-md">
@@ -74,6 +80,9 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                   <Link to={'/chat'}>
                     <RiMessageFill />
                     Messenger
+                    {isNotification && (
+                      <div className="w-3 aspect-square rounded-full bg-primary ml-auto"></div>
+                    )}
                   </Link>
                 </li>
                 <li>
@@ -88,7 +97,6 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                     settings
                   </Link>
                 </li>
-
                 <li className="text-text" onClick={logOut}>
                   <a>
                     <RiLogoutCircleFill />

@@ -4,7 +4,7 @@ import useCallApi from './useCallApi'
 
 export default function useGetLatestMessages() {
   const { isLoading, error, sendRequest } = useCallApi()
-  const [latestMessages, setLatestMessages] = useState()
+  const [latestMessages, setLatestMessages] = useState([])
 
   const applyApiData = (data) => {
     setLatestMessages(data.data)
@@ -20,5 +20,5 @@ export default function useGetLatestMessages() {
     }
   }, [error])
 
-  return { latestMessages, isLoading }
+  return { latestMessages, isLoading, setLatestMessages }
 }

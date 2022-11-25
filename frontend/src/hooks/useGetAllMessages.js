@@ -2,22 +2,39 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 //
-import useCallApi from './useCallApi'
 import { showToastError } from '../utils/toast'
+import useInfiniteFetch from './useInfiniteFetch'
 
 export default function useGetAllMessages() {
-  const { isLoading, error, sendRequest } = useCallApi()
+  const {
+    isLoading,
+    hasMore,
+    sendRequest,
+    error,
+    setHasMore,
+    lastElementRef,
+    pageNumber,
+    setPageNumber,
+  } = useInfiniteFetch()
   const receiverId = useParams().id
 
   const [allMessages, setAllMessages] = useState([])
 
-  const applyApiData = (data) => {
+  const applyApiData = (res) => {
+    if (!res.data.length) {
+      setHasMore(false)
+      return
+    } else {
+      setHasMore(true)
+    }
+    res.data = res.data.reverse()
+
     //  format data
     let formatData = []
     let i = 0
-    let previousSender = data?.data[0]?.from
+    let previousSender = res.data[0].from
 
-    data.data.forEach((message) => {
+    res.data.forEach((message) => {
       if (message.from === previousSender) {
         if (!formatData[i]) formatData[i] = []
         formatData[i].push(message)
@@ -29,7 +46,7 @@ export default function useGetAllMessages() {
       }
     })
 
-    setAllMessages(formatData)
+    setAllMessages((prev) => [...formatData, ...prev])
   }
 
   useEffect(() => {
@@ -39,17 +56,26 @@ export default function useGetAllMessages() {
   }, [error])
 
   useEffect(() => {
+    if (pageNumber !== 1) setPageNumber(1)
+    setAllMessages([])
+  }, [receiverId])
+
+  useEffect(() => {
     sendRequest(
       {
-        url: `/api/message?receiverId=${receiverId}`,
+        url: `/api/message?receiverId=${receiverId}&page=${pageNumber}`,
         method: 'get',
-        data: {
-          receiverId,
-        },
       },
       applyApiData
     )
-  }, [receiverId])
+  }, [receiverId, pageNumber])
 
-  return { isLoadingAll: isLoading, allMessages, receiverId, setAllMessages }
+  return {
+    isLoadingAll: isLoading,
+    allMessages,
+    receiverId,
+    setAllMessages,
+    hasMore,
+    lastElementRef,
+  }
 }

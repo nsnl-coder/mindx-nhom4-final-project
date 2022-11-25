@@ -41,6 +41,9 @@ const userSchema = mongoose.Schema(
       default:
         'https://dvdn247.net/wp-content/uploads/2020/07/avatar-mac-dinh-1.png',
     },
+    notifications: {
+      type: Number,
+    },
   },
   { timestamps: true }
 )
