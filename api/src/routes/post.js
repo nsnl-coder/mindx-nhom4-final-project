@@ -8,6 +8,7 @@ const {
   GetsPost,
   UpdatePost,
   GetUserNamePost,
+  GetsSearchPost,
 } = require('../controllers/post')
 
 const { verifyUser, verifyToken } = require('../utils/verify')
@@ -19,4 +20,5 @@ router.delete('/:id', verifyUser, DeletePost)
 router.get('/find/:id', GetPost)
 router.get('/', GetsPost)
 router.get('/name/:id', GetUserNamePost)
+router.get('/search', GetsSearchPost)
 module.exports = router

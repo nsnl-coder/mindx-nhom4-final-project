@@ -1,5 +1,7 @@
 const nodemailer = require('nodemailer')
-module.exports = async (email, subject, text) => {
+const path = require('path')
+const hbs = require('nodemailer-express-handlebars')
+module.exports = async (email, username, title, text, link) => {
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -12,19 +14,42 @@ module.exports = async (email, subject, text) => {
         accessToken: process.env.GOOGLE_MAILER_ACCESS_TOKEN,
       },
     })
-    const mailOptions = {
-      to: email,
-      subject: subject,
-      text: text,
+    const handlebarOptions = {
+      viewEngine: {
+        extName: '.handlebars',
+        partialsDir: path.resolve('./src/views'),
+        defaultLayout: false,
+      },
+      viewPath: path.resolve('./src/views'),
+      extName: '.handlebars',
     }
-    await transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error)
-      } else {
-        console.log('email sent successfully')
+    transporter.use('compile', hbs(handlebarOptions))
+    const mailOptions = {
+      from: 'nguyenquochaolop9145645@gmail.com',
+      to: email,
+      subject: 'Sending Email using Node.js',
+      template: 'email',
+      context: {
+        title: title,
+        text: text,
+        link: link,
+        username: username,
+      },
+    }
+    await transporter.sendMail(
+      mailOptions,
+      function (error, info) {
+        if (error) {
+          console.log(error)
+        } else {
+          console.log('email sent successfully')
+        }
+      },
+      (err) => {
+        return console.log(err)
       }
-    })
+    )
   } catch (err) {
-    return next(err)
+    return console.log(err)
   }
 }

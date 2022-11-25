@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import useCallApi from '../../hooks/useCallApi'
 import { showToastSuccess } from '../../utils/toast'
+import IconReturn from '../../assets/icon-return.svg'
+import { BiError } from 'react-icons/bi'
 const ForgottenPass = () => {
   const {
     register,
@@ -32,7 +35,14 @@ const ForgottenPass = () => {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className="w-[600px] px-20 py-24 shadow-md shadow-[#333] rounded-lg">
+      <Link to="/auth/login">
+        <img
+          src={IconReturn}
+          alt=""
+          className="cursor-pointer absolute top-10 left-20"
+        />
+      </Link>
+      <div className="w-[600px] px-20 py-24 shadow-sm shadow-[#333] rounded-lg">
         <h1 className="text-3xl font-bold tracking-wider mb-20">
           Forgotten Password?
         </h1>
@@ -40,24 +50,40 @@ const ForgottenPass = () => {
           <label className="text-lg font-semibold mb-3">
             Enter your email:
           </label>
-          <input
-            type="email"
-            {...register('email', {
-              required: true,
-              pattern:
-                /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            })}
-            onChange={() => setErrorMessage('')}
-            className={`w-full outline-none mb-8 rounded-md h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2 ${
-              errors?.email?.type && 'border-primary border-[2px]'
+          <div
+            className={`w-full outline-none  rounded-md relative    h-12 px-4 shadow-sm shadow-[#3333336d]  my-2 ${
+              errors?.email && 'border-primary border-[2px]'
             } ${
-              errorMessage === 'User with given email already Exist!' &&
-              'border-[2px] border-primary'
+              errorMessage === 'Email not valid' &&
+              ' border-primary border-[2px]'
             }`}
-          />
+          >
+            <input
+              type="email"
+              {...register('email', {
+                required: true,
+                pattern:
+                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              })}
+              onChange={() => setErrorMessage('')}
+              className="w-[80%] h-full outline-none "
+            />
+            {(errors?.email || errorMessage) && (
+              <BiError className="absolute top-[50%] text-xl right-6 -translate-y-[50%] text-primary" />
+            )}
+          </div>
+          {errors?.email?.type === 'required' && (
+            <p className="text-primary">This field is required</p>
+          )}
+          {errors?.email?.type === 'pattern' && (
+            <p className="text-primary">Email not valid!</p>
+          )}
+          {errorMessage === 'Email not valid' && (
+            <p className="text-primary">Email is not registered!</p>
+          )}
           <button
             type="submit"
-            className="rounded-[50px] shadow-sm shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
+            className="rounded-[50px] mt-8 shadow-sm shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
           >
             SEND EMAIL
           </button>

@@ -21,7 +21,6 @@ const main = async () => {
     console.log(err)
   }
 }
-
 app.use(express.static(path.join(__dirname, '..', '..', 'public')))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))

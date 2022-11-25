@@ -43,7 +43,13 @@ const register = async (req, res, next) => {
       token: crypto.randomBytes(32).toString('hex'),
     }).save()
     const url = `http://localhost:5173/auth/verified/${userSaved._id}/${token.token}`
-    await sendEmail(userSaved.email, 'Verify Email', url)
+    await sendEmail(
+      userSaved.email,
+      userSaved.username,
+      'Verify Email',
+      "We've received signUp request",
+      url
+    )
     res.status(200).json(newUser)
   } catch (err) {
     next(err)
@@ -72,7 +78,13 @@ const login = async (req, res, next) => {
         }).save()
       }
       const url = `http://localhost:5173/auth/verified/${user._id}/${token.token}`
-      sendEmail(user.email, 'Verify Email', url)
+      await sendEmail(
+        user.email,
+        user.username,
+        'Verify Email',
+        "We've received signUp request",
+        url
+      )
       return res
         .status(200)
         .json({ id: user._id, email: user.email, verified: user.verified })
@@ -104,7 +116,13 @@ const fotgotPassword = async (req, res, next) => {
       }).save()
     }
     const link = `http://localhost:5173/auth/newPass/${oldUser._id}/${token.token}`
-    await sendEmail(email, 'Reset Password', link)
+    await sendEmail(
+      email,
+      oldUser.username,
+      'Password Change Request',
+      "We've received a password change request",
+      link
+    )
     res.status(200).json('Email Successfully')
   } catch (err) {
     next(err)
@@ -122,7 +140,13 @@ const resendEmail = async (req, res, next) => {
       return next(createError(400, 'User with given email already Exist!'))
     }
     const url = `http://localhost:5173/auth/verified/${req.params.id}/${token.token}`
-    sendEmail(token.userId.email, 'Verify Email', url)
+    await sendEmail(
+      user.email,
+      user.username,
+      'Verify Email',
+      "We've received signUp request",
+      url
+    )
     res.status(200).json('An Email sent to your account please verify')
   } catch (err) {
     next(err)
