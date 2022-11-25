@@ -1,0 +1,37 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <meta http-equiv='X-UA-Compatible' content='ie=edge' />
+
+    <title>Document</title>
+    <style>
+      .content{ background-color: rgb(244, 237, 237);text-align:
+      center;font-size: 25px; padding:20px; margin-bottom: 20px; width: 600px;
+      margin: 0 auto;overflow: hidden} span{text-decoration:
+      underline;color:red} p{ font-size: 18px} .content-link{width: 80%;
+      padding:20px; background-color: white; margin-top: 30px; margin: 0 auto;}
+      a{font-size: 18px; padding:10px 30px; border:1px solid
+      #333;background-color: rgb(206, 33, 33); font-weight: 500;border-radius:
+      5px; box-shadow: 0px 0px 10px 10px red;text-decoration: none;color:#333 ;}
+
+    </style>
+  </head>
+  <body>
+    <div class='content'>
+      <h1 class='aa'>{{title}}</h1>
+      <p>{{text}}</p>
+      <p>This link will expire in 24 hours.If you did no request a pasword
+        change, please ignore this email, no changes will be made to your
+        accout. Anothe player may have entered your account. Another player may
+        have entered your username by mistake, but we encourage you to view our
+        tips for
+        <span>Protecting Your Account </span>if your have any concerns.</p>
+      <div class='content-link'>
+        <h2>{{username}}</h2>
+        <p>To change your password, click the link below</p>
+        <a href={{link}}>Click me</a>
+      </div>
+    </div>
+  </body>
+</html>
