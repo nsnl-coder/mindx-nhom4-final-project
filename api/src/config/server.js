@@ -10,6 +10,7 @@ const commentRoute = require('../routes/comment')
 const authRoute = require('../routes/auth')
 const userRoute = require('../routes/user')
 const messageRoute = require('../routes/message')
+const notifyRoute = require('../routes/notify')
 
 const app = express()
 
@@ -30,6 +31,7 @@ app.use('/api/comment', commentRoute)
 app.use('/api/user', userRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/message', messageRoute)
+app.use('/api/notify', notifyRoute)
 
 app.use((err, req, res, next) => {
   console.log(err)

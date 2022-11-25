@@ -4,7 +4,7 @@ const notifySchema = mongoose.Schema(
   {
     notifyType: {
       type: String,
-      enum: ['new-message', 'new-save', 'new-comment'],
+      enum: ['new-message', 'new-save', 'new-comment', 'new-mention'],
     },
     notifyFrom: {
       type: mongoose.Schema.Types.ObjectId,
@@ -22,7 +22,7 @@ const notifySchema = mongoose.Schema(
     },
     isRead: {
       type: Boolean,
-      default: fault,
+      default: false,
     },
     count: {
       type: Number,

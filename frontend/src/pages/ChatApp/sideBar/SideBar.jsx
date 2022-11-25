@@ -17,7 +17,7 @@ const SideBar = () => {
       <NavLinkWrapper to="/">
         <BiArrowBack />
       </NavLinkWrapper>
-      <NavLinkWrapper to="/chat/notifications">
+      <NavLinkWrapper to="/chat/notify">
         <BsBell />
       </NavLinkWrapper>
       <NavLinkWrapper to="/chat" isNotify={messageNotify}>
