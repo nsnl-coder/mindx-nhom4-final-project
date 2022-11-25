@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import Logo from '../../assets/logo-icon-big.svg'
 import useCallApi from '../../hooks/useCallApi'
 import { AuthContext } from '../../contexts/AuthContext'
-
+import IconReturn from '../../assets/icon-return.svg'
 const Login = () => {
   const navigate = useNavigate()
   const { isLoading, error, sendRequest } = useCallApi()
@@ -49,6 +49,13 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center h-screen text-black">
+      <Link to="/">
+        <img
+          src={IconReturn}
+          alt=""
+          className="cursor-pointer absolute top-10 left-20"
+        />
+      </Link>
       <div className="w-[550px] shadow-md shadow-gray rounded-md p-10 border-[1px] border-gray">
         <div className="flex justify-between">
           <div>
@@ -71,7 +78,7 @@ const Login = () => {
                   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
               })}
               onChange={() => setErrorMessage('')}
-              className={`w-full rounded-md h-12 outline-none  px-4 shadow-sm shadow-[#33333380]  my-2 ${
+              className={`w-full rounded-md h-12 outline-none  px-4 shadow-sm shadow-[#3333336d] border-[1px] border-[#3333333f]  my-2 ${
                 errors?.email && 'border-[2px] border-primary'
               } ${
                 errorMessage === 'Email not valid!' &&
@@ -96,7 +103,7 @@ const Login = () => {
                 required: true,
               })}
               onChange={() => setErrorMessage('')}
-              className={`w-full rounded-md h-12 px-4 shadow-sm shadow-[#33333380] border-[1px] border-gray my-2 ${
+              className={`w-full rounded-md h-12 px-4 shadow-sm shadow-[#3333336d] border-[1px] border-[#3333333f] my-2 ${
                 errors?.password && 'border-[2px] border-primary'
               } ${
                 errorMessage === 'Incorrect password!' &&

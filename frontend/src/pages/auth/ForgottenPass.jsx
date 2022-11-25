@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import useCallApi from '../../hooks/useCallApi'
 import { showToastSuccess } from '../../utils/toast'
+import IconReturn from '../../assets/icon-return.svg'
 const ForgottenPass = () => {
   const {
     register,
@@ -32,7 +34,14 @@ const ForgottenPass = () => {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className="w-[600px] px-20 py-24 shadow-md shadow-[#333] rounded-lg">
+      <Link to="/auth/login">
+        <img
+          src={IconReturn}
+          alt=""
+          className="cursor-pointer absolute top-10 left-20"
+        />
+      </Link>
+      <div className="w-[600px] px-20 py-24 shadow-sm shadow-[#333] rounded-lg">
         <h1 className="text-3xl font-bold tracking-wider mb-20">
           Forgotten Password?
         </h1>
@@ -48,16 +57,24 @@ const ForgottenPass = () => {
                 /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             })}
             onChange={() => setErrorMessage('')}
-            className={`w-full outline-none mb-8 rounded-md h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2 ${
-              errors?.email?.type && 'border-primary border-[2px]'
+            className={`w-full outline-none  rounded-md h-12 px-4 shadow-sm shadow-[#3333336d]  my-2 ${
+              errors?.email
+                ? 'border-primary border-[2px]'
+                : ' border-[1px] border-[#3333333f]'
             } ${
-              errorMessage === 'User with given email already Exist!' &&
+              errorMessage === 'Email not valid' &&
               'border-[2px] border-primary'
             }`}
           />
+          {errors?.email?.type === 'required' && (
+            <p className="text-primary">This field is required</p>
+          )}
+          {errorMessage === 'Email not valid' && (
+            <p className="text-primary">Email not valid</p>
+          )}
           <button
             type="submit"
-            className="rounded-[50px] shadow-sm shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
+            className="rounded-[50px] mt-8 shadow-sm shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
           >
             SEND EMAIL
           </button>

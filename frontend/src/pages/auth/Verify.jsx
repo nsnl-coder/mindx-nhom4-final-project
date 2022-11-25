@@ -1,15 +1,22 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
+import Countdown from 'react-countdown'
 import Logo from '../../assets/logo-icon-small.svg'
 import useCallApi from '../../hooks/useCallApi'
+import { showToastSuccess, showToastError } from '../../utils/toast'
 const Verify = () => {
   const { id } = useParams()
   const { error, isLoading, sendRequest } = useCallApi()
+  const [delay, setDelay] = useState(false)
+
   const applyData = (data) => {
-    console.log(data)
+    showToastSuccess('successfully')
+    setTimeout(() => {
+      setDelay(false)
+    }, 10000)
+    setDelay(true)
   }
   const resendEmail = () => {
-    setTimeout()
     sendRequest(
       {
         method: 'post',
@@ -18,9 +25,11 @@ const Verify = () => {
       applyData
     )
   }
+
   useEffect(() => {
-    console.log(error)
+    showToastError('Error')
   }, [error])
+
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="w-[500px] shadow-md shadow-[#33333374] text-center border-[1px] border-[#33333338] rounded-sm p-5 relative">
@@ -42,11 +51,26 @@ const Verify = () => {
         </p>
         <p>Still can't the email?</p>
         <button
+          disabled={delay ? true : false}
           onClick={resendEmail}
-          className="w-[150px] h-[40px] bg-primary text-white rounded-md text-md font-roboto  mt-4 shadow-sm shadow-black active:shadow-none font-semibold"
+          className={` disabled:opacity-50 relative w-[150px] h-[40px] bg-primary text-white rounded-md text-md font-roboto  mt-4 shadow-sm shadow-black active:shadow-none font-semibold`}
         >
           Resend Email
         </button>
+
+        {delay && (
+          <p className="mt-2">
+            Please wait until later to resend email{' '}
+            <Countdown
+              date={Date.now() + 10000}
+              renderer={(props) => (
+                <div className="text-xl font-bold text-primary">
+                  {Math.round(props.total / 1000)}
+                </div>
+              )}
+            />
+          </p>
+        )}
       </div>
     </div>
   )

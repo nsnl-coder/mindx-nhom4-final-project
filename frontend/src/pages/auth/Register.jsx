@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import userCallApi from '../../hooks/useCallApi'
 import Logo from '../../assets/logo-icon-big.svg'
+import IconReturn from '../../assets/icon-return.svg'
 const Register = () => {
   const navigate = useNavigate()
   const {
@@ -32,6 +33,13 @@ const Register = () => {
   }, [error])
   return (
     <>
+      <Link to="/">
+        <img
+          src={IconReturn}
+          alt=""
+          className="cursor-pointer absolute top-10 left-20"
+        />
+      </Link>
       <div className="flex items-center justify-center h-screen text-black">
         <div className="w-[550px] shadow-md shadow-gray rounded-md p-10 border-[1px] border-gray">
           <div className="flex justify-between">
@@ -54,7 +62,7 @@ const Register = () => {
                   maxLength: 20,
                 })}
                 onChange={() => setErrorMessage(null)}
-                className={`w-full outline-none rounded-md h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2 ${
+                className={`w-full outline-none rounded-md h-12 px-4 shadow-sm shadow-[#3333336d] border-[1px] border-[#3333333f] my-2 ${
                   errors?.username?.type && 'border-primary border-[2px]'
                 } ${
                   errorMessage === 'User with given username already Exist!' &&
@@ -92,7 +100,7 @@ const Register = () => {
                     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 })}
                 onChange={() => setErrorMessage('')}
-                className={`w-full outline-none rounded-md h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2 ${
+                className={`w-full outline-none rounded-md h-12 px-4 shadow-sm shadow-[#3333336d] border-[1px] border-[#3333333f] my-2 ${
                   errors?.email?.type && 'border-primary border-[2px]'
                 } ${
                   errorMessage === 'User with given email already Exist!' &&
@@ -119,7 +127,7 @@ const Register = () => {
                   required: true,
                   minLength: 8,
                 })}
-                className={`w-full rounded-md outline-none h-12 px-4 shadow-sm shadow-gray border-[1px] border-gray my-2 ${
+                className={`w-full rounded-md outline-none h-12 px-4 shadow-sm shadow-[#3333336d] border-[1px] border-[#3333333f] my-2 ${
                   errors?.password?.type && 'border-primary border-[2px]'
                 }`}
               />

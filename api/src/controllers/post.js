@@ -47,6 +47,28 @@ const GetsPost = async (req, res, next) => {
     next(err)
   }
 }
+const GetsSearchPost = async (req, res, next) => {
+  const { page } = req.query
+  try {
+    const LIMIT = 10
+    const startIndex = (Number(page) - 1) * LIMIT
+    const post = await Post.find({
+      title: { $regex: '.*' + req.query.search + '.*', $options: 'i' },
+    })
+      .sort({ createdAt: -1 })
+      .limit(LIMIT)
+      .skip(startIndex)
+      .populate({
+        path: 'author',
+        select:
+          'username firstName lastName gender createdAt profileImage _id dateOfBirth savedUsers',
+      })
+
+    res.status(200).json(post)
+  } catch (err) {
+    next(err)
+  }
+}
 const GetUserNamePost = async (req, res, next) => {
   const { page } = req.query
   try {
@@ -123,4 +145,5 @@ module.exports = {
   GetsPost,
   UpdatePost,
   GetUserNamePost,
+  GetsSearchPost,
 }
