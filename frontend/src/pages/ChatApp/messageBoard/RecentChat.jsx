@@ -20,7 +20,7 @@ const RecentChat = ({
             alt="Profile image"
             className="w-full h-full object-cover object-center rounded-full flex-shrink-0"
           />
-          {onlineUserIds.includes(receiver._id) && (
+          {onlineUserIds?.includes(receiver._id) && (
             <div className="w-2.5 h-2.5 bg-green-500 rounded-full absolute right-0.5 -bottom-0.5"></div>
           )}
         </div>

@@ -18,7 +18,7 @@ const ChatApp = () => {
   }
 
   if (pathname === '/chat') {
-    sidebarClass = 'hidden sm:block'
+    sidebarClass = 'hidden ss:block'
     outletClass = 'hidden md:block'
     messageBoardClass = 'flex-grow md:flex-grow-0 w-80'
   }
@@ -36,7 +36,7 @@ const ChatApp = () => {
   }
 
   return (
-    <div className="flex h-screen max-w-full">
+    <div className="flex h-screen max-w-full overflow-hidden">
       <div className={`w-20 border-r ${sidebarClass}`}>
         <SideBar />
       </div>

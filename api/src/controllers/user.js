@@ -15,7 +15,9 @@ const getUser = async (req, res, next) => {
 
 // search by username or email address or firstname or lastname
 const searchUsers = async (req, res, next) => {
-  const keyword = req.query.keyword
+  const { keyword, page = 1, pageSize = 20 } = req.query
+  const skip = (+page - 1) * pageSize
+
   let query = {}
 
   if (keyword) {
@@ -30,9 +32,10 @@ const searchUsers = async (req, res, next) => {
   }
 
   try {
-    const users = await User.find(query).select(
-      'username firstName lastName profileImage email'
-    )
+    const users = await User.find(query)
+      .select('username firstName lastName profileImage email')
+      .skip(skip)
+      .limit(pageSize)
 
     res.status(200).json({
       status: 'success',

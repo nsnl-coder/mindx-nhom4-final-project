@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { CiSearch } from 'react-icons/ci'
+import { LoadingSpinner } from '../../../components'
 
 //
 import { SocketContext } from '../../../contexts'
@@ -10,8 +11,9 @@ const UserList = () => {
   const { onlineUserProfiles, onlineUserIds } = useContext(SocketContext)
 
   const [keyword, setKeyword] = useState('')
-  const [tab, setTab] = useState('active-users')
-  const { isLoading, users } = useSearchUsers(keyword)
+  const [tab, setTab] = useState('all-users')
+  const { isLoading, users, lastElementRef, noResultFound } =
+    useSearchUsers(keyword)
 
   return (
     <div className="flex-grow border-r bg-white md:w-80 h-screen flex flex-col">
@@ -61,6 +63,7 @@ const UserList = () => {
             else return null
           })}
         {tab === 'all-users' &&
+          users.length > 0 &&
           users?.map((user) => (
             <UserListItem
               key={user._id}
@@ -68,6 +71,16 @@ const UserList = () => {
               active={onlineUserIds.includes(user._id)}
             />
           ))}
+        {tab === 'all-users' && noResultFound && (
+          <div className="px-4">No user found with that keywords</div>
+        )}
+
+        {isLoading && (
+          <div className="px-4">
+            <LoadingSpinner />
+          </div>
+        )}
+        <div ref={lastElementRef}></div>
       </div>
     </div>
   )

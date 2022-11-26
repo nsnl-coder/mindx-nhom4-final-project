@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useCallApi from './useCallApi'
 
 const useInfiniteFetch = () => {
@@ -6,24 +6,20 @@ const useInfiniteFetch = () => {
   const [hasMore, setHasMore] = useState(true)
   const [pageNumber, setPageNumber] = useState(1)
 
-  const observer = useRef()
-  const lastElementRef = useCallback(
-    (node) => {
-      if (isLoading) return
-      if (observer.current) observer.current.disconnect()
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          setPageNumber((prevPageNumber) => prevPageNumber + 1)
-        }
-      })
-      if (node) observer.current.observe(node)
-    },
-    [isLoading, hasMore]
+  const lastElementRef = useRef()
+
+  const observer = useRef(
+    new IntersectionObserver((entries) => {
+      const first = entries[0]
+      if (first.isIntersecting && hasMore) {
+        setPageNumber((prev) => prev + 1)
+      }
+    })
   )
 
   useEffect(() => {
     if (lastElementRef.current) {
-      observer.observe(lastElementRef.current)
+      observer.current.observe(lastElementRef.current)
     }
   }, [])
 

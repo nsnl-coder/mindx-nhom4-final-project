@@ -9,7 +9,7 @@ const MessageBoard = () => {
   const { onlineUserProfiles } = useContext(SocketContext)
 
   return (
-    <div className="px-4 h-screen flex flex-col pt-4">
+    <div className="px-4 h-screen flex flex-col pt-4 md:w-80">
       <Seperator text="active users" />
       <div className="flex overflow-x-auto px-4 flex-shrink-0 gap-x-6 py-6 hide-scrollbar">
         {onlineUserProfiles &&
