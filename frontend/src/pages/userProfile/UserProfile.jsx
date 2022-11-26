@@ -13,7 +13,6 @@ const UserProfile = () => {
   const { isLoading, error, sendRequest } = useCallApi()
 
   const useApiData = (data) => {
-    console.log(data)
     setUser(data)
   }
 

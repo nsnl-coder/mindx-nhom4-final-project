@@ -3,7 +3,7 @@ import { wrapperWithHeader, Feed } from '../../components'
 const Home = () => {
   return (
     <div className="min-h-screen">
-      <Feed />
+      <Feed apiUrl={`/api/post`} />
     </div>
   )
 }
