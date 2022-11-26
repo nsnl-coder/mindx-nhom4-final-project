@@ -28,9 +28,9 @@ const PrivateSettings = ({ user, updateUser }) => {
   }
 
   const applyApiData = (data) => {
+    if (data) showToastSuccess('Password changed successfully')
     updateUser()
     handleChangeInput()
-    showToastSuccess('Password changed successfully')
   }
 
   const handleChangeInput = (e) => {
@@ -60,15 +60,14 @@ const PrivateSettings = ({ user, updateUser }) => {
     //   return
     // }
 
-    const formData = new FormData()
-    formData.append('oldPassword', oldPassword)
-    formData.append('newPassword', newPassword)
-
     sendRequest(
       {
         method: 'put',
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/change-password/${user?._id}`,
-        data: formData,
+        url: `/api/user/change-password/${user?._id}`,
+        data: {
+          oldPassword: oldPassword,
+          newPassword: newPassword
+        },
       },
       applyApiData
     )

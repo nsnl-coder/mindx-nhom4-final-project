@@ -19,7 +19,7 @@ const SettingsDetail = ({ setting }) => {
   const updateUser = () => {
     sendRequest(
       {
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/strangerUser/${auth?.userId}`,
+        url: `/api/user/${auth?.userId}`,
         method: 'get',
       },
       useApiData
