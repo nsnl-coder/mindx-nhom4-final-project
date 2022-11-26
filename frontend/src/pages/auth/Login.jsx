@@ -115,7 +115,7 @@ const Login = () => {
                 errors?.password?.type && 'border-[2px] border-primary'
               } ${
                 errorMessage === 'Incorrect password!' &&
-                'order-[2px] border-primary'
+                'border-[2px] border-primary'
               }`}
             >
               <input
