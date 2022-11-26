@@ -1,8 +1,11 @@
 import { useState } from 'react'
-import { BsChatSquareDotsFill, BsPerson, BsHeart, BsBell } from 'react-icons/bs'
-import { BiArrowBack } from 'react-icons/bi'
-import { Link } from 'react-router-dom'
+import {
+  BsChatSquareDotsFill,
+  BsFillPersonFill,
+  BsFillBellFill,
+} from 'react-icons/bs'
 import { useContext } from 'react'
+import { FaHome } from 'react-icons/fa'
 
 //
 import { AuthContext, NotifyContext } from '../../../contexts'
@@ -15,16 +18,16 @@ const SideBar = () => {
   return (
     <div className="flex flex-col py-4">
       <NavLinkWrapper to="/">
-        <BiArrowBack />
+        <FaHome />
       </NavLinkWrapper>
       <NavLinkWrapper to="/chat/notify">
-        <BsBell />
+        <BsFillBellFill />
       </NavLinkWrapper>
       <NavLinkWrapper to="/chat" isNotify={messageNotify}>
         <BsChatSquareDotsFill />
       </NavLinkWrapper>
-      <NavLinkWrapper to="/other-people">
-        <BsPerson />
+      <NavLinkWrapper to="/chat/users">
+        <BsFillPersonFill />
       </NavLinkWrapper>
       <NavLinkWrapper to="/chat/my-profile">
         <img

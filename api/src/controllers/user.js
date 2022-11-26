@@ -1,12 +1,44 @@
 const User = require('../models/user')
 const CryptoJS = require('crypto-js')
 const { createError } = require('../utils/createError')
+const user = require('../models/user')
 
 const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate('savedPosts')
     const { password, ...details } = user._doc
     res.status(200).json(details)
+  } catch (err) {
+    next(err)
+  }
+}
+
+// search by username or email address or firstname or lastname
+const searchUsers = async (req, res, next) => {
+  const keyword = req.query.keyword
+  let query = {}
+
+  if (keyword) {
+    query = {
+      $or: [
+        { username: { $regex: keyword, $options: 'i' } },
+        { email: { $regex: keyword, $options: 'i' } },
+        { firstName: { $regex: keyword, $options: 'i' } },
+        { lastName: { $regex: keyword, $options: 'i' } },
+      ],
+    }
+  }
+
+  try {
+    const users = await User.find(query).select(
+      'username firstName lastName profileImage email'
+    )
+
+    res.status(200).json({
+      status: 'success',
+      result: users.length,
+      data: users,
+    })
   } catch (err) {
     next(err)
   }
@@ -116,4 +148,5 @@ module.exports = {
   getUserBasicInfo,
   deleteUser,
   getAllUser,
+  searchUsers,
 }

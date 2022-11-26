@@ -10,7 +10,7 @@ const ChatApp = () => {
   const pathname = window.location.pathname
   let sidebarClass = ''
   let messageBoardClass = ''
-  let directMessageClass = ''
+  let outletClass = ''
 
   if (pathname.startsWith('/chat/direct')) {
     sidebarClass = 'hidden sm:block'
@@ -19,11 +19,19 @@ const ChatApp = () => {
 
   if (pathname === '/chat') {
     sidebarClass = 'hidden sm:block'
-    directMessageClass = 'hidden md:block'
+    outletClass = 'hidden md:block'
     messageBoardClass = 'flex-grow md:flex-grow-0 w-80'
   }
 
   if (pathname === '/chat/my-profile') {
+    messageBoardClass = 'hidden'
+  }
+
+  if (pathname === '/chat/notify') {
+    messageBoardClass = 'hidden'
+    outletClass = ''
+  }
+  if (pathname === '/chat/users') {
     messageBoardClass = 'hidden'
   }
 
@@ -35,10 +43,9 @@ const ChatApp = () => {
       <div className={`border-r ${messageBoardClass}`}>
         <MessageBoard />
       </div>
-      <div className={`flex-grow bg-gray-100 ${directMessageClass}`}>
+      <div className={`flex-grow bg-gray-100 ${outletClass}`}>
         <Outlet />
       </div>
-      <div></div>
     </div>
   )
 }

@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect, useContext } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { IoIosSend } from 'react-icons/io'
-import { useParams } from 'react-router-dom'
+import { BiArrowBack } from 'react-icons/bi'
 import InputEmoji from 'react-input-emoji'
+import { Comment } from 'react-loader-spinner'
 
 //
 import { LoadingSpinner } from '../../../components'
@@ -12,7 +13,7 @@ import useGetUserBaiscInfo from '../../../hooks/useGetUserBasicInfo'
 import useSendNewMessage from '../../../hooks/useSendNewMessage'
 import MyMessageBlock from './MyMessageBlock'
 import OtherMessageBlock from './OtherMessageBlock'
-import { Comment } from 'react-loader-spinner'
+import { Link } from 'react-router-dom'
 
 const DirectMessage = () => {
   const { handleNewLatestMessage, seenAllMessagesHandler } =
@@ -116,12 +117,15 @@ const DirectMessage = () => {
     <div className="flex flex-col h-screen">
       <div className="flex justify-between bg-white items-center px-4 shadow-md py-3">
         <div className="flex items-center space-x-2">
+          <Link to="/chat" className="mr-2">
+            <BiArrowBack />
+          </Link>
           {!isLoadingBasicInfo && (
             <>
               <img
                 src={userBasicInfo?.profileImage}
                 alt="receiver photo"
-                className="w-10 h-10 rounded-full shadow-md"
+                className="w-10 h-10 rounded-full shadow-md object-cover"
               />
               <p className="font-bold">{userBasicInfo?.username}</p>
             </>

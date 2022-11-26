@@ -8,10 +8,14 @@ const getAllNotify = async (req, res, next) => {
 
   if (notifyType) query.notifyType = notifyType
 
-  console.log(query)
-
   try {
-    const notify = await Notify.find(query).skip(skip).limit(pageSize)
+    const notify = await Notify.find(query)
+      .skip(skip)
+      .limit(pageSize)
+      .populate({
+        path: 'notifyFrom',
+        select: 'username profileImage',
+      })
 
     res.status(200).json({
       message: 'success',

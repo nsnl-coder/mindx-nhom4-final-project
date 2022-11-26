@@ -20,6 +20,12 @@
   border-radius: 100vh;
 }
 
+.small-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 2px;
+  background: white;
+}
+
 .hide-scrollbar {
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */

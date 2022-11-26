@@ -6,9 +6,7 @@ const NavLinkWrapper = (props) => {
   return (
     <NavLink
       to={to}
-      className={({ isActive }) =>
-        isActive ? 'text-primary' : 'text-gray-500'
-      }
+      className={({ isActive }) => (isActive ? 'text-primary' : 'text-text')}
       end
     >
       <div className="w-full h-20 hover:bg-gray-50 cursor-pointer mb-2 flex justify-center items-center text-2xl">

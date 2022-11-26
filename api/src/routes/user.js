@@ -10,10 +10,15 @@ const {
   deleteUser,
   getAllUser,
   getUserBasicInfo,
+  searchUsers,
 } = require('../controllers/user')
 
 const { verifyUser } = require('../utils/verify')
 const router = express.Router()
+
+router.get('/search-users', searchUsers)
+
+//
 router.get('/:id', getUser)
 router.put('/change-password/:id', verifyUser, changePassword)
 router.put('/save-post/:id', verifyUser, addSavedPosts)
@@ -29,5 +34,5 @@ router.get('/basic-info/:id', getUserBasicInfo)
 router.get('/strangerUser/:id', getStrangerUser)
 router.delete('/delete/:id', deleteUser)
 router.get('/', getAllUser)
-router
+
 module.exports = router

@@ -17,6 +17,7 @@ import ContextProvider from './contexts'
 import ChatApp from './pages/ChatApp/ChatApp'
 import DirectMessage from './pages/ChatApp/directMessage/DirectMessage'
 import Notify from './pages/ChatApp/notify/Notify'
+import UserList from './pages/ChatApp/userList/UserList'
 
 const App = () => {
   return (
@@ -33,7 +34,7 @@ const App = () => {
           <Route path="direct/:id" element={<DirectMessage />} />
           <Route path="my-profile" element={<UserSettings />} />
           <Route path="notify" element={<Notify />} />
-          <Route path="active-users" element={<UserSettings />} />
+          <Route path="/chat/users" element={<UserList />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
