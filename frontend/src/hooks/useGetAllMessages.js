@@ -56,8 +56,8 @@ export default function useGetAllMessages() {
   }, [error])
 
   useEffect(() => {
-    if (pageNumber !== 1) setPageNumber(1)
     setAllMessages([])
+    if (pageNumber !== 1) setPageNumber(1)
   }, [receiverId])
 
   useEffect(() => {
@@ -69,6 +69,10 @@ export default function useGetAllMessages() {
       applyApiData
     )
   }, [receiverId, pageNumber])
+
+  useEffect(() => {
+    console.log(allMessages)
+  }, [allMessages])
 
   return {
     isLoadingAll: isLoading,

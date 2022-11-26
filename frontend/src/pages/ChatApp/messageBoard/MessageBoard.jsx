@@ -16,6 +16,9 @@ const MessageBoard = () => {
           Object.keys(onlineUserProfiles).map((id) => (
             <ActiveUser key={id} user={onlineUserProfiles[id]} id={id} />
           ))}
+        {!onlineUserProfiles && (
+          <p className="text-sm">Something went wrong! Try again later</p>
+        )}
       </div>
       <Seperator text="Chats" />
       <div className="flex-grow overflow-y-auto hide-scrollbar">

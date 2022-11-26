@@ -1,8 +1,8 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { CiSearch } from 'react-icons/ci'
-import { LoadingSpinner } from '../../../components'
 
 //
+import { LoadingSpinner, ScrollToTop } from '../../../components'
 import { SocketContext } from '../../../contexts'
 import useSearchUsers from '../../../hooks/useSearchUsers'
 import UserListItem from './UserListItem'
@@ -12,11 +12,29 @@ const UserList = () => {
 
   const [keyword, setKeyword] = useState('')
   const [tab, setTab] = useState('all-users')
+  const topContainerRef = useRef()
+  const containerRef = useRef()
+
   const { isLoading, users, lastElementRef, noResultFound } =
     useSearchUsers(keyword)
 
+  const [showButton, setShowButton] = useState(true)
+
+  useEffect(() => {
+    if (
+      containerRef.current.scrollHeight - 100 >
+      containerRef.current.clientHeight
+    ) {
+      setShowButton(true)
+    } else {
+      setShowButton(false)
+    }
+    console.log(containerRef.current.scrollHeight)
+    console.log(containerRef.current.clientHeight)
+  }, [tab, users])
+
   return (
-    <div className="flex-grow border-r bg-white md:w-80 h-screen flex flex-col">
+    <div className="flex-grow border-r bg-white md:w-80 h-screen flex flex-col relative">
       <div className="font-medium flex border-b mb-2 [&>button]:flex-grow [&>button]:py-4">
         <button
           className={
@@ -49,7 +67,11 @@ const UserList = () => {
           onChange={(e) => setKeyword(e.target.value)}
         />
       </div>
-      <div className="space-y-4 overflow-y-auto flex-grow small-scrollbar">
+      <div
+        className="space-y-4 overflow-y-auto flex-grow small-scrollbar relative"
+        ref={containerRef}
+      >
+        <div ref={topContainerRef}></div>
         {tab === 'active-users' &&
           onlineUserIds?.map((id) => {
             if (onlineUserProfiles[id].username.includes(keyword))
@@ -82,6 +104,12 @@ const UserList = () => {
         )}
         <div ref={lastElementRef}></div>
       </div>
+      {showButton && (
+        <ScrollToTop
+          topContainerRef={topContainerRef}
+          containerRef={containerRef}
+        />
+      )}
     </div>
   )
 }
