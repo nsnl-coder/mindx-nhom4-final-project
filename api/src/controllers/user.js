@@ -1,8 +1,8 @@
+const CryptoJS = require('crypto-js')
 const User = require('../models/user')
 const Post = require('../models/post')
-const CryptoJS = require('crypto-js')
-const { createError } = require('../utils/createError')
 
+const { createError } = require('../utils/createError')
 const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate('savedPosts')
@@ -79,9 +79,7 @@ const getUserBasicInfo = async (req, res, next) => {
 
 const getStrangerUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id)
-      .populate('savedPosts')
-      .populate('userPosts')
+    const user = await User.findById(req.params.id).populate('savedPosts')
     const { password, email, isAdmin, verified, ...details } = user._doc
     res.status(200).json(details)
   } catch (err) {
@@ -144,6 +142,23 @@ const addSavedPosts = async (req, res, next) => {
     next(err)
   }
 }
+const getsSearchUser = async (req, res, next) => {
+  const { search, page } = req.query
+  try {
+    const LIMIT = 10
+    const startIndex = (Number(page) - 1) * LIMIT
+    const user = await User.find({
+      username: { $regex: '.*' + search + '.*', $options: 'i' },
+    })
+      .sort({ createdAt: -1 })
+      .limit(LIMIT)
+      .skip(startIndex)
+
+    res.status(200).json(user)
+  } catch (err) {
+    next(err)
+  }
+}
 
 module.exports = {
   getUser,
@@ -154,5 +169,4 @@ module.exports = {
   getUserBasicInfo,
   deleteUser,
   getAllUser,
-  searchUsers,
 }

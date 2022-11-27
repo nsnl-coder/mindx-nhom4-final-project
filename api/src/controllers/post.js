@@ -54,12 +54,12 @@ const GetsPost = async (req, res, next) => {
   }
 }
 const GetsSearchPost = async (req, res, next) => {
-  const { page } = req.query
+  const { page, search } = req.query
   try {
     const LIMIT = 20
     const startIndex = (Number(page) - 1) * LIMIT
     const post = await Post.find({
-      title: { $regex: '.*' + req.query.search + '.*', $options: 'i' },
+      title: { $regex: '.*' + search + '.*', $options: 'i' },
     })
       .sort({ createdAt: -1 })
       .limit(LIMIT)
@@ -75,6 +75,7 @@ const GetsSearchPost = async (req, res, next) => {
     next(err)
   }
 }
+
 const GetUserNamePost = async (req, res, next) => {
   const { page = 1 } = req.query
   try {
