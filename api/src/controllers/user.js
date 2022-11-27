@@ -1,8 +1,8 @@
-const CryptoJS = require('crypto-js')
 const User = require('../models/user')
-const Post = require('../models/post')
-
+const CryptoJS = require('crypto-js')
 const { createError } = require('../utils/createError')
+const user = require('../models/user')
+
 const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate('savedPosts')
@@ -33,8 +33,7 @@ const searchUsers = async (req, res, next) => {
 
   try {
     const users = await User.find(query)
-      .select('username firstName lastName profileImage email userPosts')
-      .populate('userPosts')
+      .select('username firstName lastName profileImage email')
       .skip(skip)
       .limit(pageSize)
 
@@ -142,23 +141,6 @@ const addSavedPosts = async (req, res, next) => {
     next(err)
   }
 }
-const getsSearchUser = async (req, res, next) => {
-  const { search, page } = req.query
-  try {
-    const LIMIT = 10
-    const startIndex = (Number(page) - 1) * LIMIT
-    const user = await User.find({
-      username: { $regex: '.*' + search + '.*', $options: 'i' },
-    })
-      .sort({ createdAt: -1 })
-      .limit(LIMIT)
-      .skip(startIndex)
-
-    res.status(200).json(user)
-  } catch (err) {
-    next(err)
-  }
-}
 
 module.exports = {
   getUser,
@@ -169,4 +151,5 @@ module.exports = {
   getUserBasicInfo,
   deleteUser,
   getAllUser,
+  searchUsers,
 }
