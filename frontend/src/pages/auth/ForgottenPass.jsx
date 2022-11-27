@@ -60,12 +60,12 @@ const ForgottenPass = () => {
           >
             <input
               type="email"
+              onChange={() => setErrorMessage('')}
               {...register('email', {
                 required: true,
                 pattern:
                   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
               })}
-              onChange={() => setErrorMessage('')}
               className="w-[80%] h-full outline-none "
             />
             {(errors?.email || errorMessage) && (

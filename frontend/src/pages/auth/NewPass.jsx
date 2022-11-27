@@ -108,12 +108,12 @@ const NewPass = () => {
                     }`}
                   >
                     <input
+                      onChange={() => setErrorMessage('')}
                       type={showPassword ? 'text' : 'password'}
                       {...register('password', {
                         required: true,
                         minLength: 8,
                       })}
-                      onChange={() => setErrorMessage('')}
                       className="w-[80%] h-full outline-none"
                     />
                     <span

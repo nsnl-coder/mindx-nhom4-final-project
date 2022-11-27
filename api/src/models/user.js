@@ -35,6 +35,7 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    userPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     profileImage: {
       type: String,

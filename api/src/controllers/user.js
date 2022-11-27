@@ -1,7 +1,7 @@
 const User = require('../models/user')
+const Post = require('../models/post')
 const CryptoJS = require('crypto-js')
 const { createError } = require('../utils/createError')
-const user = require('../models/user')
 
 const getUser = async (req, res, next) => {
   try {
@@ -33,7 +33,8 @@ const searchUsers = async (req, res, next) => {
 
   try {
     const users = await User.find(query)
-      .select('username firstName lastName profileImage email')
+      .select('username firstName lastName profileImage email userPosts')
+      .populate('userPosts')
       .skip(skip)
       .limit(pageSize)
 
@@ -78,7 +79,9 @@ const getUserBasicInfo = async (req, res, next) => {
 
 const getStrangerUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id).populate('savedPosts')
+    const user = await User.findById(req.params.id)
+      .populate('savedPosts')
+      .populate('userPosts')
     const { password, email, isAdmin, verified, ...details } = user._doc
     res.status(200).json(details)
   } catch (err) {

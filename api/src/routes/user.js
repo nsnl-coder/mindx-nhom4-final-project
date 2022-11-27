@@ -19,7 +19,7 @@ const router = express.Router()
 router.get('/search-users', searchUsers)
 
 //
-router.get('/:id', getUser)
+router.get('/find/:id', getUser)
 router.put('/change-password/:id', verifyUser, changePassword)
 router.put('/save-post/:id', verifyUser, addSavedPosts)
 
