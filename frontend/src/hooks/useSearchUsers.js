@@ -41,6 +41,7 @@ const useSearchUsers = (keyword) => {
 
   useEffect(() => {
     setPageNumber(1)
+    setNoResultFound(false)
     setHasMore(true)
     setUsers([])
   }, [keyword])

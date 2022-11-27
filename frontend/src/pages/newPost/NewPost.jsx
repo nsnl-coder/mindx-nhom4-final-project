@@ -1,5 +1,5 @@
 import { AiOutlineFileAdd } from 'react-icons/ai'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useNavigate } from 'react-router-dom'
@@ -12,11 +12,13 @@ import {
   PageContainer,
   loggedInOnly,
 } from '../../components'
+import MemoImg from './MemoImg'
 
 const NewPost = () => {
   const [selectedPhoto, setSelectedPhoto] = useState()
   const [title, setTitle] = useState('')
   const navigate = useNavigate()
+  const selectedPhotoRef = useRef()
 
   const [formError, setFormError] = useState({})
   const { error, isLoading, sendRequest } = useCallApi()
@@ -53,7 +55,7 @@ const NewPost = () => {
     event.preventDefault()
     const formData = new FormData()
     const html = editor.getHTML()
-    const errors = []
+    const errors = { ...formError }
 
     if (!title || title.trim().length < 5) {
       errors.title = 'Your post title should have at least 5 characters'
@@ -67,7 +69,9 @@ const NewPost = () => {
       errors.photo = 'Please provide your image'
     }
 
-    setFormError(errors)
+    setFormError((prev) => {
+      return { ...prev, ...errors }
+    })
 
     if (errors.title || errors.photo || errors.content) {
       showToastError('Please provide valid input!')
@@ -93,6 +97,15 @@ const NewPost = () => {
     }
   }, [error])
 
+  useEffect(() => {
+    console.log(formError)
+  }, [formError])
+
+  const imageUrl = useMemo(() => {
+    if (selectedPhoto) return URL.createObjectURL(selectedPhoto)
+    return ''
+  }, [selectedPhoto])
+
   return (
     <PageContainer title="Create New Post">
       <form onSubmit={onSubmitHandler} className="py-12">
@@ -107,10 +120,16 @@ const NewPost = () => {
             >
               {selectedPhoto && (
                 <>
-                  <img
+                  {/* <img
                     src={URL.createObjectURL(selectedPhoto)}
-                    className=""
+                    onLoad={onImageLoad}
+                    ref={selectedPhotoRef}
                     alt="Selected Photo"
+                  /> */}
+                  <MemoImg
+                    link={imageUrl}
+                    alt="selected photo for new post"
+                    setFormError={setFormError}
                   />
                   <label
                     htmlFor="uploadPhoto"
@@ -152,7 +171,7 @@ const NewPost = () => {
                 onChange={photoChangeHandler}
               />
             </div>
-            {!selectedPhoto && formError.photo && (
+            {formError.photo && (
               <div className="bg-white text-red-400 mt-2 ml-2 text-sm">
                 {formError.photo}
               </div>

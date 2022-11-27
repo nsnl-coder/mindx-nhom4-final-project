@@ -49,11 +49,10 @@ const MessageContextProvider = (props) => {
 
     if (index !== -1) {
       coppyArr[index] = newMessage
+      setLatestMessages(coppyArr)
     } else {
-      coppyArr.unshift(newMessage)
+      setLatestMessages((prev) => [newMessage, ...prev])
     }
-
-    setLatestMessages(coppyArr)
   }
 
   const seenAllMessagesHandler = (receiverId) => {

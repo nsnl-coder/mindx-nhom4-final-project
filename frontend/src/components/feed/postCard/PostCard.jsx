@@ -48,7 +48,7 @@ const PostCard = ({ post, user }) => {
   return (
     <div className="postCard">
       <div className="hover:shadow-xl image-full group relative rounded-xl">
-        <Link to={`../../post/${post._id}`}>
+        <Link to={`../../post/${post?._id}`}>
           <div className="w-full h-full group-hover:bg-black/30 absolute rounded-xl"></div>
           <img
             src={post.photo}
@@ -56,14 +56,14 @@ const PostCard = ({ post, user }) => {
             className="rounded-xl min-h-16"
           />
           <p className="hidden group-hover:block absolute bottom-2 left-3 right-3 text-white text-md truncate">
-            {post.title}
+            {post?.title}
           </p>
         </Link>
-        {auth?.userId === post.author._id ? (
+        {auth?.userId === post?.author?._id ? (
           <button
             type="button"
             className="hidden group-hover:block absolute top-2 left-2"
-            onClick={() => handleDeletePost(post._id)}
+            onClick={() => handleDeletePost(post?._id)}
           >
             <img src={deleteIcon} alt="delete-icon" />
           </button>
@@ -79,12 +79,12 @@ const PostCard = ({ post, user }) => {
       </div>
       {!user ? (
         <Link
-          to={`../profile/${post.author._id}`}
+          to={`../profile/${post?.author?._id}`}
           className="flex py-2 items-end"
         >
           <img
             className="h-10 w-10 md:h-8 md:w-8 mr-4 rounded-full shadow-md"
-            src={post.author.profileImage}
+            src={post?.author?.profileImage}
             alt="logo"
           />
           <h4 className="text-text mr-2 text-lg md:text-md truncate hover:text-primary hover:font-medium">

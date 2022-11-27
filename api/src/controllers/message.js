@@ -1,7 +1,7 @@
 const { createError } = require('../utils/createError')
 const Message = require('../models/message')
 const User = require('../models/user')
-const mongoose = require('mongoose')
+const Notify = require('../models/notify')
 
 // get latest messages
 
@@ -46,6 +46,18 @@ const createMessage = async (req, res, next) => {
     }
 
     const newMessage = await Message.create({ from, to, content })
+
+    // create notify
+    await Notify.findOneAndUpdate(
+      { notifyFrom: from, notifyTo: to, notifyType: 'new-message' },
+      {
+        $inc: { count: 1 },
+      },
+      {
+        upsert: true,
+      }
+    )
+
     const data = await Message.findById(newMessage._id)
       .populate({ path: 'from', select: 'username profileImage' })
       .populate({ path: 'to', select: 'username profileImage' })
@@ -83,17 +95,17 @@ const getAllMessages = async (req, res, next) => {
     return next(createError(400, 'Please provide receiver Id'))
   }
 
-  // clear notification
-  await Message.updateMany(
-    { from: to, to: from, isRead: false },
-    { isRead: true }
-  )
-
   const page = +req.query.page - 1 || 0
   const pageSize = req.query.pageSize || 15
   const skipNum = page * pageSize
 
   try {
+    // clear notification
+    await Message.updateMany(
+      { from: to, to: from, isRead: false },
+      { isRead: true }
+    )
+
     const messages = await Message.find({
       $or: [
         { from, to },

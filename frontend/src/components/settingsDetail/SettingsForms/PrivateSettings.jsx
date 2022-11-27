@@ -77,8 +77,7 @@ const PrivateSettings = ({ user, updateUser }) => {
     sendRequest(
       {
         method: 'delete',
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/delete/${user?._id}`,
-        data: formData,
+        url: `/api/user/delete/${user?._id}`,
       },
       useApiData
     )

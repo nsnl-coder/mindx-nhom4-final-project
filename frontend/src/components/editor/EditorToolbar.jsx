@@ -22,7 +22,7 @@ const EditorToolbar = ({ editor }) => {
 
   return (
     <div className="w-full">
-      <div className="flex py-2 gap-x-2 border-b px-4 items-center [&>*]:px-2 [&>*]:py-2 [&>*:hover]:hover:bg-gray-100 [&>*]:rounded-lg overflow-x-auto">
+      <div className="flex py-2 gap-x-2 border-b px-4 items-center [&>*]:px-2 [&>*]:h-10 [&>*:hover]:hover:bg-gray-100 [&>*]:rounded-lg overflow-x-auto">
         <button
           type="button"
           onClick={() => editor.chain().focus().undo().run()}
@@ -43,7 +43,7 @@ const EditorToolbar = ({ editor }) => {
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editor.can().chain().focus().toggleBold().run()}
-          className={editor.isActive('bold') ? 'is-active' : ''}
+          className={editor.isActive('bold') ? 'bg-gray-100' : ''}
         >
           <BsTypeBold size={22} className="h-5" />
         </button>
@@ -51,7 +51,7 @@ const EditorToolbar = ({ editor }) => {
           type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={!editor.can().chain().focus().toggleItalic().run()}
-          className={editor.isActive('italic') ? 'is-active' : ''}
+          className={editor.isActive('italic') ? 'bg-gray-100' : ''}
         >
           <BsTypeItalic size={22} className="h-5" />
         </button>
@@ -59,35 +59,35 @@ const EditorToolbar = ({ editor }) => {
           type="button"
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={!editor.can().chain().focus().toggleStrike().run()}
-          className={editor.isActive('strike') ? 'is-active' : ''}
+          className={editor.isActive('strike') ? 'bg-gray-100' : ''}
         >
           <BsTypeStrikethrough size={22} className="h-5" />
         </button>
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive('bulletList') ? 'is-active' : ''}
+          className={editor.isActive('bulletList') ? 'bg-gray-100' : ''}
         >
           <MdOutlineFormatListBulleted size={22} className="h-5" />
         </button>
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive('orderedList') ? 'is-active' : ''}
+          className={editor.isActive('orderedList') ? 'bg-gray-100' : ''}
         >
           <MdFormatListNumbered size={22} className="h-5" />
         </button>
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive('blockquote') ? 'is-active' : ''}
+          className={editor.isActive('blockquote') ? 'bg-gray-100' : ''}
         >
           <BsChatRightQuote size={20} className="h-4" />
         </button>
         <button
           type="button"
           onClick={() => editor.chain().focus().setParagraph().run()}
-          className={editor.isActive('paragraph') ? 'is-active' : ''}
+          className={editor.isActive('paragraph') ? 'bg-gray-100' : ''}
         >
           <span className="h-5">Text</span>
         </button>
@@ -97,7 +97,7 @@ const EditorToolbar = ({ editor }) => {
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
           className={
-            editor.isActive('heading', { level: 1 }) ? 'is-active' : ''
+            editor.isActive('heading', { level: 3 }) ? 'bg-gray-100' : ''
           }
         >
           <span className="h-5">Heading</span>

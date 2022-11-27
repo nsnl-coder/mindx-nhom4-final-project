@@ -1,4 +1,5 @@
 import OtherMessage from './OtherMessage'
+import React from 'react'
 
 const OtherMessageGroup = ({ messages, receiver }) => {
   return (

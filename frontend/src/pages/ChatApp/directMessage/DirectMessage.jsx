@@ -38,11 +38,6 @@ const DirectMessage = () => {
   //load basic info of current receiver
   const { userBasicInfo, isLoadingBasicInfo } = useGetUserBaiscInfo(receiverId)
 
-  // ref to a div at bottom of message page
-  const boardBottomRef = useRef()
-
-  const { socket } = useContext(SocketContext)
-
   // emit typing event
   useEffect(() => {
     if (newMessageInput.trim().length === 0) return
@@ -60,11 +55,6 @@ const DirectMessage = () => {
       setNewMessage(receiveMessage)
     }
   }, [receiveMessage])
-
-  //  scroll to bottom
-  useEffect(() => {
-    boardBottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [allMessages])
 
   // update ui after new message
   useEffect(() => {
@@ -92,10 +82,10 @@ const DirectMessage = () => {
         newAllMessages[blockLength] = []
         newAllMessages[blockLength].push(formartedMessage)
       }
-      handleNewLatestMessage(newMessage)
       setNewMessage(null)
     }
 
+    handleNewLatestMessage(newMessage)
     setAllMessages(newAllMessages)
   }, [newMessage])
 
@@ -138,6 +128,8 @@ const DirectMessage = () => {
         <div className="mt-auto pb-8">
           <div ref={lastElementRef} className="mb-6"></div>
 
+          {/*  */}
+
           {!isLoadingAll &&
             allMessages?.map((block, index) => {
               if (block[0].from === receiverId) {
@@ -151,6 +143,8 @@ const DirectMessage = () => {
               }
               return <MyMessageBlock key={block[0]._id} messages={block} />
             })}
+
+          {/*  */}
           {isLoadingAll && (
             <div className="flex mt-auto justify-end">
               <LoadingSpinner />
@@ -177,8 +171,6 @@ const DirectMessage = () => {
             </div>
           )}
         </div>
-
-        {/* <div ref={boardBottomRef}></div> */}
       </div>
       <div className="w-full px-10 mb-8">
         <div onSubmit={sendMessageHandler} className="flex">

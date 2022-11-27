@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 const ActiveUser = ({ user, id }) => {
   return (
     <Link to={`/chat/direct/${id}`}>
-      <div className="cursor-pointer">
+      <div className="cursor-pointer flex flex-col items-center gap-y-1">
         <div className="relative w-12 h-12">
           <img
             src={user.profileImage}

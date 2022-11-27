@@ -33,7 +33,7 @@ const SideBar = () => {
         <img
           src={auth?.profileImage}
           alt="profile image"
-          className="w-10 h-10 rounded-full"
+          className="w-10 h-10 rounded-full object-cover"
         />
       </NavLinkWrapper>
     </div>
