@@ -14,39 +14,53 @@ const useSearchUsers = (keyword) => {
   } = useInfiniteFetch()
   const [users, setUsers] = useState([])
   const [noResultFound, setNoResultFound] = useState(false)
-
+  const [request, setRequest] = useState(false)
   const applyApiData = (data) => {
-    if (data.data.length === 0) {
+    if (data?.data.length === 0) {
       if (users.length === 0) setNoResultFound(true)
-
       setHasMore(false)
       return
+    } else {
+      setUsers((prev) => [...prev, ...data.data])
     }
-    setUsers((prev) => [...prev, ...data.data])
   }
-
+  const applyApiData2 = (data) => {
+    if (data.length == 0) setNoResultFound(true)
+    else {
+      setUsers(data.data)
+      setRequest(true)
+    }
+  }
   const timeoutRef = useRef()
 
   useEffect(() => {
     // reset pagination
-
-    clearTimeout(timeoutRef.current)
-    timeoutRef.current = setTimeout(() => {
-      sendRequest(
-        { url: `/api/user/search-users?keyword=${keyword}&page=${pageNumber}` },
-        applyApiData
-      )
-    }, 1000)
-  }, [keyword, pageNumber])
+    if (request) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = setTimeout(() => {
+        sendRequest(
+          {
+            url: `/api/user/search-users?keyword=${keyword}&page=${pageNumber}`,
+          },
+          applyApiData
+        )
+      }, 1000)
+    }
+    console.log(pageNumber)
+  }, [pageNumber, request])
 
   useEffect(() => {
-    setPageNumber(1)
     setNoResultFound(false)
     setHasMore(true)
+    setRequest(false)
+    sendRequest(
+      {
+        url: `/api/user/search-users?keyword=${keyword}&page=1`,
+      },
+      applyApiData2
+    )
     setUsers([])
   }, [keyword])
-
-  console.log(users)
 
   useEffect(() => {
     if (error) {

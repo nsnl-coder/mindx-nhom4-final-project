@@ -23,7 +23,7 @@ const Login = () => {
 
   const applyApi = (user) => {
     if (user.verified === false) {
-      navigate(`/auth/verify/${user.id}`, { email: user.email })
+      navigate(`/auth/verify/${user.id}`, { state: { email: user.email } })
     } else {
       const auth = {
         userId: user._id,
@@ -32,7 +32,7 @@ const Login = () => {
         username: user.username,
         token: 'Bearer ' + user.token_access,
       }
-      console.log(auth)
+
       setAuth(auth)
       localStorage.setItem('auth', JSON.stringify(auth))
     }
@@ -62,7 +62,7 @@ const Login = () => {
           className="cursor-pointer absolute top-10 left-20"
         />
       </Link>
-      <div className="w-[550px] shadow-md shadow-gray rounded-md p-10 border-[1px] border-gray">
+      <div className="md:w-[550px] w-[350px] shadow-md shadow-gray rounded-md p-10 border-[1px] border-gray">
         <div className="flex justify-between">
           <div>
             <h1 className="text-3xl font-semibold text-black mb-5">
@@ -70,7 +70,11 @@ const Login = () => {
             </h1>
             <p className="text-dark-gray">Good to see again.</p>
           </div>
-          <img src={Logo} alt="" className="w-[150px] h-auto object-cover" />
+          <img
+            src={Logo}
+            alt=""
+            className="md:w-[150px] w-[100px] h-[100px] md:h-auto object-cover"
+          />
         </div>
         <div className="w-[80%]">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -99,13 +103,15 @@ const Login = () => {
               )}
             </div>
             {errors?.email?.type === 'required' && (
-              <p className="text-primary">This field is required</p>
+              <p className="text-primary text-sm">This field is required</p>
             )}
             {errors?.email?.type === 'pattern' && (
-              <p className="text-primary">Invalid email!</p>
+              <p className="text-primary text-sm">Invalid email!</p>
             )}
             {errorMessage === 'Email not valid!' && !errors?.email && (
-              <span className="text-primary">Email is not registered!</span>
+              <span className="text-primary text-sm">
+                Email is not registered!
+              </span>
             )}
             <br />
             <label className="text-lg font-semibold">Password</label>
@@ -125,7 +131,7 @@ const Login = () => {
                   required: true,
                   minLength: 8,
                 })}
-                className="w-[80%] h-full px-5 outline-none "
+                className="w-full pr-24 h-full px-5 outline-none "
               />
               {errors?.password || errorMessage ? (
                 <BiError className="absolute top-[50%] text-xl right-6 -translate-y-[50%] text-primary" />
@@ -139,16 +145,16 @@ const Login = () => {
               )}
             </div>
             {errors?.password?.type === 'required' && (
-              <p className="text-primary">This field is required</p>
+              <p className="text-primary text-sm">This field is required</p>
             )}
             {errors?.password?.type === 'minLength' && (
-              <p className="text-primary">
+              <p className="text-primary text-sm">
                 {' '}
                 Password must be at least 8 characters
               </p>
             )}
             {errorMessage === 'Incorrect password!' && !errors?.password && (
-              <span className="text-primary">Incorrect password!</span>
+              <span className="text-primary texl-sm">Incorrect password!</span>
             )}
             <br />
             <button

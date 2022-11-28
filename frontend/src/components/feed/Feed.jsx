@@ -52,7 +52,10 @@ const Feed = ({ user, collection, apiUrl }) => {
 
     timeoutRef.current = setTimeout(() => {
       if (collection === 'saved') {
-        let saved = user?.savedPosts?.slice(pageNumber * 10, pageNumber * 10 + 9)
+        let saved = user?.savedPosts?.slice(
+          pageNumber * 10,
+          pageNumber * 10 + 9
+        )
         if (saved?.length > 0 || pageNumber === 0) {
           setHasMore(true)
           const newData = [...new Set([...posts, ...saved])]
@@ -78,8 +81,8 @@ const Feed = ({ user, collection, apiUrl }) => {
   if (error) return <Error />
 
   return (
-    <div className={`bg-white relative ${!user && "min-h-screen"}`}>
-      {posts.length > 0 ?
+    <div className={`bg-white relative ${!user && 'min-h-screen'}`}>
+      {posts.length > 0 ? (
         <div className="min-h-screen">
           <Masonry
             breakpointCols={breakpointColumnsObj}
@@ -89,25 +92,14 @@ const Feed = ({ user, collection, apiUrl }) => {
           >
             {posts.map((post, index) => {
               if (posts.length === index + 1) {
-                return (
-                  <PostCard
-                    key={post._id}
-                    user={user}
-                    post={post}
-                  />
-                )
+                return <PostCard key={post._id} user={user} post={post} />
               } else {
-                return (
-                  <PostCard
-                    key={post._id}
-                    user={user}
-                    post={post}
-                  />
-                )
+                return <PostCard key={post._id} user={user} post={post} />
               }
             })}
           </Masonry>
-        </div> :
+        </div>
+      ) : (
         <div
           className="h-[50vh] flex flex-col items-center justify-center"
           key={1}
@@ -116,16 +108,13 @@ const Feed = ({ user, collection, apiUrl }) => {
             It seems there is no post.
           </h3>
         </div>
-      }
+      )}
       <ScrollToTop
         smooth
         className="w-11 h-11 flex justify-center items-center rounded-full"
         component={<img src={iconUp} alt="icon-up" />}
       />
-      {isLoading ?
-        <Spinner /> :
-        null
-      }
+      {isLoading ? <Spinner /> : null}
       <div className="h-2 absolute bottom-0" ref={lastElementRef}></div>
     </div>
   )

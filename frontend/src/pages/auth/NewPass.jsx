@@ -23,7 +23,7 @@ const NewPass = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const [successs, setSuccess] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const applyApicheck = (data) => {
+  const applyApicheck = () => {
     setSuccess(true)
   }
 
