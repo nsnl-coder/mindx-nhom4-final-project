@@ -14,11 +14,12 @@ const ForgottenPass = () => {
   } = useForm()
   const { error, isLoading, sendRequest } = useCallApi()
   const [errorMessage, setErrorMessage] = useState('')
+
   const applyApiData = (data) => {
     showToastSuccess('An email has been sent')
+    setEmail('')
   }
   const onSubmit = (data) => {
-    console.log(data)
     sendRequest(
       {
         url: `${import.meta.env.VITE_BACKEND_HOST}/api/auth/forgot-password`,
@@ -27,10 +28,11 @@ const ForgottenPass = () => {
       },
       applyApiData
     )
+    data = ''
   }
+
   useEffect(() => {
     setErrorMessage(error?.response?.data?.message)
-    console.log(error)
   }, [error])
 
   return (
@@ -82,8 +84,9 @@ const ForgottenPass = () => {
             <p className="text-primary">Email is not registered!</p>
           )}
           <button
+            disabled={isLoading ? true : false}
             type="submit"
-            className="rounded-[50px] mt-8 shadow-sm shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
+            className="rounded-[50px] mt-8 shadow-sm disabled:opacity-50 shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
           >
             SEND EMAIL
           </button>

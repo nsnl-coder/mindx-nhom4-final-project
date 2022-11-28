@@ -272,6 +272,7 @@ const Register = () => {
 
               <br />
               <button
+                disabled={isLoading ? true : false}
                 type="submit"
                 className="rounded-[50px] shadow-sm active:shadow-none shadow-black bg-primary w-[130px] md:my-4 my-2 text-white py-1 text-[17px] font-roboto font-semibold"
               >

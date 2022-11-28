@@ -158,8 +158,9 @@ const Login = () => {
             )}
             <br />
             <button
+              disabled={isLoading ? true : false}
               type="submit"
-              className="rounded-[50px] shadow-sm shadow-black active:shadow-none bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
+              className="rounded-[50px] disabled:opacity-50 shadow-sm shadow-black active:shadow-none bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
             >
               LOGIN
             </button>
