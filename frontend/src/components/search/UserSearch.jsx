@@ -3,7 +3,7 @@ import ScrollToTop from 'react-scroll-to-top'
 import { Link } from 'react-router-dom'
 import { Spinner } from '..'
 import iconUp from '../../assets/icon-angle-up.svg'
-import useSearchUsers from '../../hooks/useSearchUsers.js'
+import useSearchUsers from '../../hooks/useSearchUsers'
 import SearchCart from './ItemUser.jsx'
 
 const SearchUsers = ({ search }) => {

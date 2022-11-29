@@ -35,19 +35,15 @@ const useSearchUsers = (keyword) => {
 
   useEffect(() => {
     // reset pagination
-    if (request) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = setTimeout(() => {
-        sendRequest(
-          {
-            url: `/api/user/search-users?keyword=${keyword}&page=${pageNumber}`,
-          },
-          applyApiData
-        )
-      }, 1000)
-    }
-    console.log(pageNumber)
-  }, [pageNumber, request])
+
+    clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => {
+      sendRequest(
+        { url: `/api/user/search-users?keyword=${keyword}&page=${pageNumber}` },
+        applyApiData
+      )
+    }, 1500)
+  }, [keyword, pageNumber])
 
   useEffect(() => {
     setNoResultFound(false)
