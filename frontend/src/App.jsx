@@ -20,10 +20,33 @@ import DirectMessage from './pages/ChatApp/directMessage/DirectMessage'
 import Notify from './pages/ChatApp/notify/Notify'
 import UserList from './pages/ChatApp/userList/UserList'
 
+import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
+
 const App = () => {
+  const { i18n } = useTranslation()
+  const [language, setLanguage] = useState(localStorage.getItem('language'))
+
+  const onLanguageChange = (e) => {
+    const newLanguage = e.target.value
+    setLanguage(newLanguage)
+    i18n.changeLanguage(newLanguage)
+    localStorage.setItem('language', newLanguage)
+  }
+
   return (
     <ContextProvider>
-      <ToastContainer />
+      <label htmlFor="language"></label>
+      <select
+        name="language"
+        id="language"
+        onChange={onLanguageChange}
+        value={language}
+      >
+        <option value="en">English</option>
+        <option value="vi">Tiếng việt</option>
+      </select>
+      <ToastContainer limit={3} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />

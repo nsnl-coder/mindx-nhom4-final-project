@@ -26,6 +26,11 @@
   background: white;
 }
 
+.small-scrollbar::-webkit-scrollbar-thumb {
+  background: #dedede;
+  border-radius: 100vh;
+}
+
 .hide-scrollbar {
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */

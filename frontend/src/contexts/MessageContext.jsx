@@ -12,21 +12,6 @@ const MessageContextProvider = (props) => {
 
   const { receiveMessage } = useContext(SocketContext)
   const { auth } = useContext(AuthContext)
-  const { setMessageNotify } = useContext(NotifyContext)
-
-  useEffect(() => {
-    if (latestMessages.length) {
-      for (let i = 0; i < latestMessages.length; i++) {
-        if (
-          !latestMessages[i].isRead &&
-          latestMessages[i].from._id !== auth.userId
-        ) {
-          return setMessageNotify(true)
-        }
-      }
-      setMessageNotify(false)
-    }
-  }, [latestMessages])
 
   useEffect(() => {
     if (receiveMessage) {
@@ -55,24 +40,12 @@ const MessageContextProvider = (props) => {
     }
   }
 
-  const seenAllMessagesHandler = (receiverId) => {
-    const index = latestMessages.findIndex(
-      (message) => message.from._id === receiverId
-    )
-    const copyArr = [...latestMessages]
-    if (index != -1) {
-      copyArr[index].isRead = true
-      setLatestMessages(copyArr)
-    }
-  }
-
   return (
     <MessageContext.Provider
       value={{
         isLoading,
         latestMessages,
         handleNewLatestMessage,
-        seenAllMessagesHandler,
       }}
     >
       {props.children}

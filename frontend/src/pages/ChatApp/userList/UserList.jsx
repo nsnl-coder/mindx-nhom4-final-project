@@ -29,8 +29,6 @@ const UserList = () => {
     } else {
       setShowButton(false)
     }
-    console.log(containerRef.current.scrollHeight)
-    console.log(containerRef.current.clientHeight)
   }, [tab, users])
 
   return (
@@ -80,6 +78,7 @@ const UserList = () => {
                   key={id}
                   user={onlineUserProfiles[id]}
                   active={true}
+                  id={id}
                 />
               )
             else return null

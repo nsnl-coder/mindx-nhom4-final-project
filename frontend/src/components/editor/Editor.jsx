@@ -2,7 +2,7 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import React from 'react'
 
 import EditorToolbar from './EditorToolbar'
-import './editor.css'
+import './Editor.css'
 
 export default ({ editor }) => {
   return (

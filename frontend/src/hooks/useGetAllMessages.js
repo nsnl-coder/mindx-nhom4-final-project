@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 
 //
 import { showToastError } from '../utils/toast'
+import useErrorHandler from './useErrorHandler'
 import useInfiniteFetch from './useInfiniteFetch'
 
 export default function useGetAllMessages() {
@@ -19,6 +20,8 @@ export default function useGetAllMessages() {
   const receiverId = useParams().id
 
   const [allMessages, setAllMessages] = useState([])
+
+  useErrorHandler('Failed to fetch messages! Try again later')
 
   const applyApiData = (res) => {
     if (!res.data.length) {
@@ -46,14 +49,11 @@ export default function useGetAllMessages() {
       }
     })
 
+    if (pageNumber === 1) {
+      return setAllMessages(formatData)
+    }
     setAllMessages((prev) => [...formatData, ...prev])
   }
-
-  useEffect(() => {
-    if (error) {
-      showToastError('Fail to fetch message! Try again later')
-    }
-  }, [error])
 
   useEffect(() => {
     setAllMessages([])
@@ -69,10 +69,6 @@ export default function useGetAllMessages() {
       applyApiData
     )
   }, [receiverId, pageNumber])
-
-  useEffect(() => {
-    console.log(allMessages)
-  }, [allMessages])
 
   return {
     isLoadingAll: isLoading,

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import dompurify from 'dompurify'
 import { BsThreeDotsVertical } from 'react-icons/bs'
+import { useTranslation } from 'react-i18next'
 
 import {
   Error,
@@ -12,10 +13,22 @@ import useGetPostDetail from '../../hooks/useGetPostDetail'
 import Comments from './Comments'
 import SavedUsers from './SavedUsers'
 import ProfileImageAndName from './ProfileImageAndName'
+import { useContext } from 'react'
+import { AuthContext, NotifyContext } from '../../contexts'
 
 const PostDetail = () => {
-  const { isLoading, error, post } = useGetPostDetail()
+  const reload = window.location.search
+  const { t } = useTranslation()
+  const { isLoading, error, post } = useGetPostDetail(reload)
   const [currentTab, setCurrentTab] = useState('comment')
+  const { auth } = useContext(AuthContext)
+  const { clearCommentNotifications } = useContext(NotifyContext)
+
+  useEffect(() => {
+    if (auth.userId === post?.author._id) {
+      clearCommentNotifications(post._id)
+    }
+  }, [post])
 
   if (error) return <Error />
   if (isLoading)
@@ -48,7 +61,7 @@ const PostDetail = () => {
               } flex-grow py-4 hover:bg-gray-100 border-b-2`}
               onClick={() => setCurrentTab('comment')}
             >
-              Comments ({post?.comments.length})
+              {t('comments')} ({post?.comments.length})
             </button>
             <button
               className={`${
@@ -56,7 +69,7 @@ const PostDetail = () => {
               } flex-grow py-4 hover:bg-gray-100 border-b-2`}
               onClick={() => setCurrentTab('save')}
             >
-              Save ({post?.savedUsers.length})
+              {t('saved')} ({post?.savedUsers.length})
             </button>
             <div>
               <div className="dropdown dropdown-end">
@@ -80,7 +93,7 @@ const PostDetail = () => {
               </div>
             </div>
           </div>
-          <div className="h-[450px] flex-grow overflow-y-auto space-y-8 py-6 px-8 border mt-4 flex flex-col">
+          <div className="h-[450px] flex-grow overflow-y-auto space-y-2 py-6 px-4 border mt-4 flex flex-col small-scrollbar">
             {currentTab === 'comment' && (
               <Comments comments={post?.comments || []} />
             )}

@@ -4,10 +4,11 @@ import { IoIosSend } from 'react-icons/io'
 import { BiArrowBack } from 'react-icons/bi'
 import InputEmoji from 'react-input-emoji'
 import { Comment } from 'react-loader-spinner'
+import { toast } from 'react-toastify'
 
 //
 import { LoadingSpinner } from '../../../components'
-import { MessageContext, SocketContext } from '../../../contexts'
+import { MessageContext, NotifyContext, SocketContext } from '../../../contexts'
 import useGetAllMessages from '../../../hooks/useGetAllMessages'
 import useGetUserBaiscInfo from '../../../hooks/useGetUserBasicInfo'
 import useSendNewMessage from '../../../hooks/useSendNewMessage'
@@ -16,11 +17,24 @@ import OtherMessageBlock from './OtherMessageBlock'
 import { Link } from 'react-router-dom'
 
 const DirectMessage = () => {
-  const { handleNewLatestMessage, seenAllMessagesHandler } =
-    useContext(MessageContext)
+  const { handleNewLatestMessage } = useContext(MessageContext)
 
-  const { emitTypingEvent, typingUserId, emitNewMessage, receiveMessage } =
-    useContext(SocketContext)
+  const {
+    emitTypingEvent,
+    typingUserId,
+    emitNewMessage,
+    receiveMessage,
+    setReceiveMessage,
+    onlineUserIds,
+  } = useContext(SocketContext)
+
+  useEffect(() => {
+    toast.clearWaitingQueue()
+    toast.dismiss()
+  }, [])
+
+  const { reduceMessageNotifyCount } = useContext(NotifyContext)
+
   const [newMessageInput, setNewMessageInput] = useState('')
   // handle send new message
   const { isSending, newMessage, sendMessage, setNewMessage } =
@@ -38,6 +52,10 @@ const DirectMessage = () => {
   //load basic info of current receiver
   const { userBasicInfo, isLoadingBasicInfo } = useGetUserBaiscInfo(receiverId)
 
+  useEffect(() => {
+    setReceiveMessage(null)
+  }, [])
+
   // emit typing event
   useEffect(() => {
     if (newMessageInput.trim().length === 0) return
@@ -46,7 +64,7 @@ const DirectMessage = () => {
 
   //
   useEffect(() => {
-    seenAllMessagesHandler(receiverId)
+    reduceMessageNotifyCount(receiverId)
   }, [receiverId])
 
   // listening for incoming message
@@ -112,11 +130,16 @@ const DirectMessage = () => {
           </Link>
           {!isLoadingBasicInfo && (
             <>
-              <img
-                src={userBasicInfo?.profileImage}
-                alt="receiver photo"
-                className="w-10 h-10 rounded-full shadow-md object-cover"
-              />
+              <div className="relative">
+                <img
+                  src={userBasicInfo?.profileImage}
+                  alt="receiver photo"
+                  className="w-10 h-10 rounded-full shadow-md object-cover"
+                />
+                {onlineUserIds.includes(receiverId) && (
+                  <div className="w-2.5 h-2.5 bg-green-500 rounded-full absolute right-0.5 -bottom-0.5"></div>
+                )}
+              </div>
               <p className="font-bold">{userBasicInfo?.username}</p>
             </>
           )}
@@ -125,12 +148,10 @@ const DirectMessage = () => {
         <BsThreeDotsVertical />
       </div>
       <div className="flex flex-col-reverse px-10 space-y-8 flex-grow overflow-y-auto pt-4">
-        <div className="mt-auto pb-8">
+        <div className="mt-auto pb-8 space-y-8">
           <div ref={lastElementRef} className="mb-6"></div>
 
-          {/*  */}
-
-          {!isLoadingAll &&
+          {allMessages &&
             allMessages?.map((block, index) => {
               if (block[0].from === receiverId) {
                 return (

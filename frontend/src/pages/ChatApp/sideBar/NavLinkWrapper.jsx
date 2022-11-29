@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 
 const NavLinkWrapper = (props) => {
-  const { to, isNotify = false } = props
+  const { to, notifyCount = 0 } = props
 
   return (
     <NavLink
@@ -12,8 +12,10 @@ const NavLinkWrapper = (props) => {
       <div className="w-full h-20 hover:bg-gray-50 cursor-pointer mb-2 flex justify-center items-center text-2xl">
         <div className="relative">
           {props.children}
-          {isNotify && (
-            <div className="w-3 aspect-square rounded-full bg-primary absolute -right-1.5 -top-1.5"></div>
+          {notifyCount > 0 && (
+            <div className="w-5 aspect-square rounded-full text-white text-xs flex justify-center items-center bg-primary absolute -right-2.5 -top-2">
+              {notifyCount > 9 ? '9+' : notifyCount}
+            </div>
           )}
         </div>
       </div>

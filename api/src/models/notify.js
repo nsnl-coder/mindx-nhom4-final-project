@@ -20,13 +20,16 @@ const notifySchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Post',
     },
-    isRead: {
-      type: Boolean,
-      default: false,
+    commentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
     },
     count: {
       type: Number,
       default: 1,
+    },
+    content: {
+      type: String,
     },
   },
   { timestamps: true }

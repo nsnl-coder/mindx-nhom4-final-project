@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import getRelativeTimeFromNow from '../../utils/getRelativeTimeFromNow'
 
 const ProfileImageAndName = ({ user, date }) => {
   return (
@@ -18,7 +19,7 @@ const ProfileImageAndName = ({ user, date }) => {
         </Link>
         {date && (
           <p className="text-sm text-gray-500">
-            {new Date(date).toDateString()}
+            {getRelativeTimeFromNow(date)}
           </p>
         )}
       </div>

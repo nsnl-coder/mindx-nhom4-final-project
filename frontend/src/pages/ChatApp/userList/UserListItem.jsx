@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 
 const UserListItem = (props) => {
-  const { user, active } = props
+  const { user, active, id } = props
   return (
-    <Link to={`/chat/direct/${user?._id}`}>
+    <Link to={`/chat/direct/${user?._id || id}`}>
       <div className="px-4 py-2 hover:bg-gray-100 font-bold flex space-x-2">
         <div className="relative w-12 h-12">
           <img

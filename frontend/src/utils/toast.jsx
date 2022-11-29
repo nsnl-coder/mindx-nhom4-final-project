@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify'
+import { NotificationToast } from '../components'
 
 export const showToastSuccess = (message) => {
   toast.success(message, {
@@ -24,4 +25,16 @@ export const showToastError = (message) => {
     theme: 'light',
   })
 }
-export const showToastWarning = (message) => {}
+
+export const showNotification = (noti) => {
+  toast(<NotificationToast noti={noti} isToast={true} />, {
+    position: 'bottom-left',
+    autoClose: 10000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'light',
+  })
+}

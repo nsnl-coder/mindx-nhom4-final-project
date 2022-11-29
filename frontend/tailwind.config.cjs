@@ -16,6 +16,7 @@ module.exports = {
         'blue-message': '#1555FF',
         'gray-message': '#f8f8f8',
         'text-message': '#4f5e7b',
+        mention: '#1877f233',
       },
     },
 
