@@ -42,7 +42,7 @@ const register = async (req, res, next) => {
       userId: newUser._id,
       token: crypto.randomBytes(32).toString('hex'),
     }).save()
-    const url = `http://localhost:5173/auth/verified/${userSaved._id}/${token.token}`
+    const url = `${process.env.FRONTEND_HOST}/auth/verified/${userSaved._id}/${token.token}`
     await sendEmail(
       userSaved.email,
       userSaved.username,
@@ -78,7 +78,7 @@ const login = async (req, res, next) => {
           token: crypto.randomBytes(32).toString('hex'),
         }).save()
       }
-      const url = `http://localhost:5173/auth/verified/${user._id}/${token.token}`
+      const url = `${process.env.FRONTEND_HOST}/auth/verified/${user._id}/${token.token}`
       await sendEmail(
         user.email,
         user.username,
@@ -117,7 +117,7 @@ const fotgotPassword = async (req, res, next) => {
         token: crypto.randomBytes(32).toString('hex'),
       }).save()
     }
-    const link = `http://localhost:5173/auth/newPass/${oldUser._id}/${token.token}`
+    const link = `${process.env.FRONTEND_HOST}/auth/newPass/${oldUser._id}/${token.token}`
     await sendEmail(
       email,
       oldUser.username,
@@ -142,7 +142,7 @@ const resendEmail = async (req, res, next) => {
     if (!token) {
       return next(createError(400, 'User with given email already Exist!'))
     }
-    const url = `http://localhost:5173/auth/verified/${req.params.id}/${token.token}`
+    const url = `${process.env.FRONTEND_HOST}/auth/verified/${req.params.id}/${token.token}`
     await sendEmail(
       user.email,
       user.username,

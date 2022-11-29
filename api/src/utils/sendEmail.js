@@ -23,6 +23,14 @@ module.exports = async (email, username, title, text, link, text2) => {
       viewPath: path.resolve('./src/views'),
       extName: '.handlebars',
     }
+    transporter.set('oauth2_provision_cb', (user, renew, callback) => {
+      let accessToken = userTokens[user]
+      if (!accessToken) {
+        return callback(new Error('Unknown user'))
+      } else {
+        return callback(null, accessToken)
+      }
+    })
     transporter.use('compile', hbs(handlebarOptions))
     const mailOptions = {
       from: 'nguyenquochaolop9145645@gmail.com',
