@@ -22,7 +22,7 @@ const ForgottenPass = () => {
   const onSubmit = (data) => {
     sendRequest(
       {
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/auth/forgot-password`,
+        url: `/api/auth/forgot-password`,
         method: 'post',
         data,
       },
