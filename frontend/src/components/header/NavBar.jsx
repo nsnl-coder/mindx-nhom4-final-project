@@ -28,7 +28,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
   const [useSearchParam, setUserSearchParam] = useSearchParams()
 
   const [text, setText] = useState(useSearchParam.get('q'))
-  const isNotify = messageNotify || commentNotify
+
   const handleInput = (e) => {
     setText(e.target.value)
   }
