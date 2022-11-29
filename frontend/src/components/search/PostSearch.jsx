@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import Masonry from 'react-masonry-css'
 import ScrollToTop from 'react-scroll-to-top'
 
-import './Feed.css'
-import { Spinner } from '../'
-import PostCard from './postCard/PostCard'
+import '../feed/Feed.jsx'
+import { Spinner } from '..'
+import PostCard from '../feed/postCard/PostCard'
 import iconUp from '../../assets/icon-angle-up.svg'
 import Error from '../ui/Error'
 import useInfiniteFetch from '../../hooks/useInfiniteFetch'
@@ -17,7 +17,7 @@ const breakpointColumnsObj = {
   640: 2,
 }
 
-const Feed = ({ user, collection, apiUrl }) => {
+const SearchPost = ({ search }) => {
   const {
     isLoading,
     error,
@@ -28,7 +28,8 @@ const Feed = ({ user, collection, apiUrl }) => {
   } = useInfiniteFetch()
 
   const [posts, setPosts] = useState([])
-
+  const [request, setRequest] = useState(false)
+  const [notFound, setNotFound] = useState(false)
   const timeoutRef = useRef()
 
   const useApiData = (data) => {
@@ -37,52 +38,67 @@ const Feed = ({ user, collection, apiUrl }) => {
       return
     } else {
       setHasMore(true)
-      const newData = [...new Set([...posts, ...data])]
+      const newData = [...posts, ...data]
       setPosts(newData)
       return
     }
   }
-
+  const useApiData2 = (data) => {
+    if (data.length == 0) {
+      setNotFound(true)
+    }
+    setPosts(data)
+    setRequest(true)
+  }
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
   useEffect(() => {
-    clearTimeout(timeoutRef.current)
+    if (request) {
+      clearTimeout(timeoutRef.current)
 
-    timeoutRef.current = setTimeout(() => {
-      if (collection === 'saved') {
-        let saved = user?.savedPosts?.slice(
-          pageNumber * 10,
-          pageNumber * 10 + 9
-        )
-        if (saved?.length > 0 || pageNumber === 0) {
-          setHasMore(true)
-          const newData = [...new Set([...posts, ...saved])]
-          setPosts(newData)
-          console.log(saved)
-          return
-        } else {
-          setHasMore(false)
-          return
-        }
-      } else {
+      timeoutRef.current = setTimeout(() => {
         sendRequest(
           {
-            url: `${apiUrl}?page=${pageNumber}`,
+            url: `/api/post/search?search=${search}&page=${pageNumber}`,
             method: 'get',
           },
           useApiData
         )
-      }
-    }, 500)
-  }, [pageNumber, apiUrl])
-
+      })
+    }
+  }, [pageNumber, request])
+  useEffect(() => {
+    setRequest(false)
+    sendRequest(
+      {
+        url: `/api/post/search?search=${search}&page=1`,
+        method: 'get',
+      },
+      useApiData2
+    )
+    console.log('a')
+  }, [search])
+  useEffect(() => {
+    console.log(posts)
+  }, [posts])
+  if (notFound)
+    return (
+      <div
+        className="h-[50vh] flex flex-col items-center justify-center"
+        key={1}
+      >
+        <h3 className="text-text font-semibold text-2xl">
+          It seems there is no post.
+        </h3>
+      </div>
+    )
   if (error) return <Error />
 
   return (
-    <div className={`bg-white relative ${!user && 'min-h-screen'}`}>
-      {posts.length > 0 ? (
+    <div className={`bg-white relative`}>
+      {posts.length > 0 && (
         <div className="min-h-screen">
           <Masonry
             breakpointCols={breakpointColumnsObj}
@@ -92,21 +108,12 @@ const Feed = ({ user, collection, apiUrl }) => {
           >
             {posts.map((post, index) => {
               if (posts.length === index + 1) {
-                return <PostCard key={post._id} user={user} post={post} />
+                return <PostCard key={post._id} post={post} />
               } else {
-                return <PostCard key={post._id} user={user} post={post} />
+                return <PostCard key={post._id} post={post} />
               }
             })}
           </Masonry>
-        </div>
-      ) : (
-        <div
-          className="h-[50vh] flex flex-col items-center justify-center"
-          key={1}
-        >
-          <h3 className="text-text font-semibold text-2xl">
-            It seems there is no post.
-          </h3>
         </div>
       )}
       <ScrollToTop
@@ -120,4 +127,4 @@ const Feed = ({ user, collection, apiUrl }) => {
   )
 }
 
-export default Feed
+export default SearchPost

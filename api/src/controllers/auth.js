@@ -48,9 +48,10 @@ const register = async (req, res, next) => {
       userSaved.username,
       'Verify Email',
       "We've received signUp request",
-      url
+      url,
+      'To verify your account, click the link below:'
     )
-    res.status(200).json(newUser)
+    res.status(200).json({ email: newUser.email })
   } catch (err) {
     next(err)
   }
@@ -83,7 +84,8 @@ const login = async (req, res, next) => {
         user.username,
         'Verify Email',
         "We've received signUp request",
-        url
+        url,
+        'To verify your account, click the link below:'
       )
       return res
         .status(200)
@@ -121,7 +123,8 @@ const fotgotPassword = async (req, res, next) => {
       oldUser.username,
       'Password Change Request',
       "We've received a password change request",
-      link
+      link,
+      'To change your password, click the link below:'
     )
     res.status(200).json('Email Successfully')
   } catch (err) {
@@ -145,7 +148,8 @@ const resendEmail = async (req, res, next) => {
       user.username,
       'Verify Email',
       "We've received signUp request",
-      url
+      url,
+      'To verify your account, click the link below:'
     )
     res.status(200).json('An Email sent to your account please verify')
   } catch (err) {

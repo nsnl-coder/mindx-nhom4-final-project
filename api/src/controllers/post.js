@@ -1,5 +1,6 @@
 const Post = require('../models/post')
 const Notify = require('../models/notify')
+const User = require('../models/user')
 //create
 const CreatePost = async (req, res, next) => {
   if (req.file) {
@@ -11,6 +12,9 @@ const CreatePost = async (req, res, next) => {
   try {
     const newPost = new Post({ title, photo, content, author: req.user.id })
     const post = await newPost.save()
+    await User.findByIdAndUpdate(req.user.id, {
+      $push: { userPosts: newPost._id },
+    })
     res.status(200).json(post)
   } catch (err) {
     next(err)
@@ -51,12 +55,12 @@ const GetsPost = async (req, res, next) => {
   }
 }
 const GetsSearchPost = async (req, res, next) => {
-  const { page } = req.query
+  const { page, search } = req.query
   try {
-    const LIMIT = 10
+    const LIMIT = 20
     const startIndex = (Number(page) - 1) * LIMIT
     const post = await Post.find({
-      title: { $regex: '.*' + req.query.search + '.*', $options: 'i' },
+      title: { $regex: '.*' + search + '.*', $options: 'i' },
     })
       .sort({ createdAt: -1 })
       .limit(LIMIT)
@@ -72,8 +76,9 @@ const GetsSearchPost = async (req, res, next) => {
     next(err)
   }
 }
+
 const GetUserNamePost = async (req, res, next) => {
-  const { page } = req.query
+  const { page = 1 } = req.query
   try {
     const LIMIT = 30
     const startIndex = (Number(page) - 1) * LIMIT
@@ -97,6 +102,7 @@ const GetUserNamePost = async (req, res, next) => {
         }
       }, [])
       .slice(startIndex, startIndex + LIMIT)
+
     res.status(200).json(posts)
   } catch (err) {
     next(err)

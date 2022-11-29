@@ -5,6 +5,8 @@ const userSchema = mongoose.Schema(
     username: {
       type: String,
       required: true,
+      unique: true,
+      match: [/^[a-zA-Z0-9]+$/, 'Please provide a valid username'],
     },
     email: {
       type: String,
@@ -20,8 +22,16 @@ const userSchema = mongoose.Schema(
       required: true,
       minLength: 8,
     },
-    firstName: String,
-    lastName: String,
+    firstName: {
+      type: String,
+      required: true,
+      match: [/^[A-Za-z]+$/i, 'Please provide a valid firstName'],
+    },
+    lastName: {
+      type: String,
+      required: true,
+      match: [/^[A-Za-z]+$/i, 'Please provide a valid lastName'],
+    },
     gender: String,
     dateOfBirth: {
       type: Date,
@@ -35,6 +45,7 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    userPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     profileImage: {
       type: String,

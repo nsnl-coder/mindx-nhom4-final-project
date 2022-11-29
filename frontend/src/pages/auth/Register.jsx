@@ -7,6 +7,7 @@ import Logo from '../../assets/logo-icon-big.svg'
 import IconReturn from '../../assets/icon-return.svg'
 import { GoEyeClosed, GoEye } from 'react-icons/go'
 import { BiError } from 'react-icons/bi'
+
 const Register = () => {
   const navigate = useNavigate()
   const {
@@ -19,7 +20,8 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState(error)
   const [showPassword, setShowPassword] = useState(false)
   const applyApiData = (datas) => {
-    navigate(`/auth/verify/${datas._id}`)
+    console.log(datas)
+    navigate(`/auth/verify/${datas._id}`, { state: { email: datas.email } })
   }
   const onSubmit = (data) => {
     sendRequest(
@@ -43,22 +45,103 @@ const Register = () => {
         <img
           src={IconReturn}
           alt=""
-          className="cursor-pointer absolute top-10 left-20"
+          className="cursor-pointer absolute md:top-10 md:left-20 top-0 left-0"
         />
       </Link>
       <div className="flex items-center justify-center h-screen text-black">
-        <div className="w-[550px] shadow-md shadow-gray rounded-md p-10 border-[1px] border-gray">
+        <div className="md:w-[550px] w-[400px] shadow-md shadow-gray rounded-md p-2 md:p-10 border-[1px] border-gray">
           <div className="flex justify-between">
             <div>
-              <h1 className="text-3xl font-semibold text-black mb-5">
+              <h1 className="text-3xl font-semibold text-black  mb-5">
                 Sign Up
               </h1>
               <p className="text-dark-gray">We're happy to see you here!</p>
             </div>
-            <img src={Logo} alt="" className="w-[150px] h-auto object-cover" />
+            <img
+              src={Logo}
+              alt=""
+              className="md:w-[150px] w-[80px] h-[80px]  md:h-auto object-cover"
+            />
           </div>
           <div className="w-[80%]">
             <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="flex justify-between flex-wrap ">
+                <div className="md:w-[48%] w-full ">
+                  <label className="text-lg font-semibold ">First Name:</label>
+
+                  <div
+                    className={`w-full outline-none relative rounded-md h-12 overflow-hidden  shadow-sm shadow-[#3333336d]  my-2 ${
+                      errors?.firstName?.type && 'border-primary border-[2px]'
+                    } `}
+                  >
+                    <input
+                      onChange={() => setErrorMessage('')}
+                      {...register('firstName', {
+                        required: true,
+                        maxLength: 20,
+                        pattern: /^[A-Za-z]+$/i,
+                      })}
+                      className="w-full h-full pr-14 pl-4 outline-none"
+                    />
+                    {errors?.firstName && (
+                      <BiError className="absolute top-[50%] text-xl right-6 md:right-2 -translate-y-[50%] text-primary" />
+                    )}
+                  </div>
+                  {errors?.firstName?.type === 'required' && (
+                    <span className="text-primary text-sm">
+                      This field is required
+                    </span>
+                  )}
+                  {errors?.firstName?.type === 'maxLength' && (
+                    <span className="text-primary text-sm">
+                      Cannot exceed 20 characters
+                    </span>
+                  )}
+                  {errors?.firstName?.type === 'pattern' && (
+                    <span className="text-primary text-sm">
+                      First Name Invalid !
+                    </span>
+                  )}
+                </div>
+                <div className="md:w-[48%] w-full ">
+                  <label className="text-lg font-semibold ">Last Name:</label>
+                  <br />
+                  <div
+                    className={` outline-none relative rounded-md h-12 overflow-hidden  shadow-sm shadow-[#3333336d]  my-2 ${
+                      errors?.lastName?.type && 'border-primary border-[2px]'
+                    } `}
+                  >
+                    <input
+                      onChange={() => setErrorMessage('')}
+                      {...register('lastName', {
+                        required: true,
+                        pattern: /^[A-Za-z]+$/i,
+                        maxLength: 20,
+                      })}
+                      className="w-full h-full pr-14 pl-4 outline-none"
+                    />
+                    {errors?.lastName?.type && (
+                      <BiError className="absolute top-[50%] text-xl md:right-2 right-6 -translate-y-[50%] text-primary" />
+                    )}
+                  </div>
+                  {errors?.lastName?.type === 'required' && (
+                    <span className="text-primary text-sm">
+                      This field is required!
+                    </span>
+                  )}
+                  {errors?.lastName?.type === 'maxLength' && (
+                    <span className="text-primary text-sm">
+                      {' '}
+                      Cannot exceed 20 characters!
+                    </span>
+                  )}
+                  {errors?.lastName?.type === 'pattern' && (
+                    <span className="text-primary text-sm">
+                      Last Name Invalid!
+                    </span>
+                  )}
+                </div>
+              </div>
               <label className="text-lg font-semibold ">User Name:</label>
               <br />
               <div
@@ -75,6 +158,7 @@ const Register = () => {
                     required: true,
                     minLength: 5,
                     maxLength: 20,
+                    pattern: /^[a-zA-Z0-9]+$/,
                   })}
                   className="w-full h-full pr-14 pl-4 outline-none"
                 />
@@ -85,21 +169,26 @@ const Register = () => {
                 )}
               </div>
               {errors?.username?.type === 'required' && (
-                <span className="text-primary">This field is required</span>
+                <span className="text-primary text-sm">
+                  This field is required
+                </span>
               )}
               {errors?.username?.type === 'minLength' && (
-                <span className="text-primary">
+                <span className="text-primary text-sm">
                   User Name must be at least 5 characters
                 </span>
               )}
               {errors?.username?.type === 'maxLength' && (
-                <span className="text-primary">
+                <span className="text-primary text-sm">
                   User Name cannot axceed 20 characters
                 </span>
               )}
+              {errors?.username?.type === 'pattern' && (
+                <span className="text-primary text-sm">UserName Invalid!</span>
+              )}
               {errorMessage === 'User with given username already Exist!' &&
                 !errors?.username && (
-                  <span className="text-primary">
+                  <span className="text-primary text-sm">
                     User with given username already Exist!
                   </span>
                 )}
@@ -131,13 +220,15 @@ const Register = () => {
                 )}
               </div>
               {errors?.email?.type === 'required' && (
-                <span className="text-primary">This field is required</span>
+                <span className="text-primary text-sm">
+                  This field is required
+                </span>
               )}
               {errors?.email?.type === 'pattern' && (
                 <span className="primary">Invalid email!</span>
               )}
               {errorMessage === 'User with given email already Exist!' && (
-                <span className="text-primary">
+                <span className="text-primary text-sm">
                   User with given username already Exist!
                 </span>
               )}
@@ -169,18 +260,21 @@ const Register = () => {
                 )}
               </div>
               {errors?.password?.type === 'required' && (
-                <span className="text-primary">This field is required</span>
+                <span className="text-primary text-sm">
+                  This field is required
+                </span>
               )}
               {errors?.password?.type === 'minLength' && (
-                <span className="text-primary">
+                <span className="text-primary text-sm">
                   Email must be at least 8 characters
                 </span>
               )}
 
               <br />
               <button
+                disabled={isLoading ? true : false}
                 type="submit"
-                className="rounded-[50px] shadow-sm active:shadow-none shadow-black bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
+                className="rounded-[50px] shadow-sm active:shadow-none shadow-black bg-primary w-[130px] md:my-4 my-2 text-white py-1 text-[17px] font-roboto font-semibold"
               >
                 SIGN UP
               </button>

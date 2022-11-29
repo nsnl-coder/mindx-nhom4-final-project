@@ -23,7 +23,7 @@ const NewPass = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const [successs, setSuccess] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const applyApicheck = (data) => {
+  const applyApicheck = () => {
     setSuccess(true)
   }
 
@@ -108,12 +108,12 @@ const NewPass = () => {
                     }`}
                   >
                     <input
+                      onChange={() => setErrorMessage('')}
                       type={showPassword ? 'text' : 'password'}
                       {...register('password', {
                         required: true,
                         minLength: 8,
                       })}
-                      onChange={() => setErrorMessage('')}
                       className="w-[80%] h-full outline-none"
                     />
                     <span

@@ -19,7 +19,7 @@ const SettingsDetail = ({ setting }) => {
   const updateUser = () => {
     sendRequest(
       {
-        url: `/api/user/${auth?.userId}`,
+        url: `/api/user/find/${auth?.userId}`,
         method: 'get',
       },
       useApiData
@@ -33,17 +33,11 @@ const SettingsDetail = ({ setting }) => {
   const Details = ({ user, updateUser }) => {
     switch (setting) {
       case 'other':
-        return (
-          <OtherSettings user={user} updateUser={updateUser} />
-        )
+        return <OtherSettings user={user} updateUser={updateUser} />
       case 'private':
-        return (
-          <PrivateSettings user={user} updateUser={updateUser} />
-        )
+        return <PrivateSettings user={user} updateUser={updateUser} />
       default:
-        return (
-          <PublicSettings user={user} updateUser={updateUser} />
-        )
+        return <PublicSettings user={user} updateUser={updateUser} />
     }
   }
 

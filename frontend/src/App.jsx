@@ -11,6 +11,7 @@ import {
   PageNotFound,
   PostDetail,
   UserSettings,
+  Search,
 } from './pages/index'
 
 import ContextProvider from './contexts'
@@ -48,6 +49,7 @@ const App = () => {
       <ToastContainer limit={3} />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/profile/:id/*" element={<UserProfile />} />
         <Route path="/settings" element={<UserSettings />} />
         <Route path="/post/:id" element={<PostDetail />} />
@@ -59,6 +61,7 @@ const App = () => {
           <Route path="notify" element={<Notify />} />
           <Route path="/chat/users" element={<UserList />} />
         </Route>
+
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </ContextProvider>

@@ -32,15 +32,37 @@ const searchUsers = async (req, res, next) => {
   }
 
   try {
-    const users = await User.find(query)
-      .select('username firstName lastName profileImage email')
+    const users = await User.aggregate([
+      {
+        $project: {
+          firstName: 1,
+          lastName: 1,
+          profileImage: 1,
+          email: 1,
+          userPosts: 1,
+          username: 1,
+          numberOfColors: {
+            $cond: {
+              if: { $isArray: '$userPosts' },
+              then: { $size: '$userPosts' },
+              else: 0,
+            },
+          },
+        },
+      },
+
+      {
+        $match: query,
+      },
+      { $sort: { numberOfColors: -1 } },
+    ])
       .skip(skip)
       .limit(pageSize)
-
+    const populate = await User.populate(users, { path: 'userPosts' })
     res.status(200).json({
       status: 'success',
       result: users.length,
-      data: users,
+      data: populate,
     })
   } catch (err) {
     next(err)
@@ -50,6 +72,7 @@ const searchUsers = async (req, res, next) => {
 const getAllUser = async (req, res, next) => {
   try {
     const user = await User.find().sort({ createdAt: -1 })
+
     const { password, ...details } = user
     res.status(200).json(details)
   } catch {

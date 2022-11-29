@@ -1,13 +1,15 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useLocation, useParams, Link } from 'react-router-dom'
 import Countdown from 'react-countdown'
 import Logo from '../../assets/logo-icon-small.svg'
 import useCallApi from '../../hooks/useCallApi'
 import { showToastSuccess, showToastError } from '../../utils/toast'
+import IconReturn from '../../assets/icon-return.svg'
 const Verify = () => {
   const { id } = useParams()
   const { error, isLoading, sendRequest } = useCallApi()
   const [delay, setDelay] = useState(false)
+  const location = useLocation()
 
   const applyData = (data) => {
     showToastSuccess('successfully')
@@ -26,13 +28,16 @@ const Verify = () => {
     )
   }
 
-  useEffect(() => {
-    showToastError('Error')
-  }, [error])
-
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className="w-[500px] shadow-md shadow-[#33333374] text-center border-[1px] border-[#33333338] rounded-sm p-5 relative">
+      <Link to="/auth/register">
+        <img
+          src={IconReturn}
+          alt=""
+          className="cursor-pointer absolute md:top-10 md:left-20 top-0 left-0"
+        />
+      </Link>
+      <div className="w-[500px]  shadow-md shadow-[#33333374] text-center border-[1px] border-[#33333338] rounded-md p-5 relative">
         <img
           src={Logo}
           alt=""
@@ -43,7 +48,7 @@ const Verify = () => {
         </h2>
         <p className="mb-5">
           You're almost there! We sent an email to{' '}
-          <span className="font-bold">nguyenquochaolop91@gmail.com</span>
+          <span className="font-bold">{location.state.email}</span>
         </p>
         <p className="mb-5">
           Just click on the link that email to complete your signup.If you

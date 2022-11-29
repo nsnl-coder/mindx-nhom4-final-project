@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
 import { FaUserPlus, FaUser } from 'react-icons/fa'
 import { RiLogoutCircleFill, RiMessageFill } from 'react-icons/ri'
 import { IoSettingsSharp } from 'react-icons/io5'
@@ -19,11 +20,24 @@ import { NotifyContext } from '../../contexts'
 import Notify from '../../pages/ChatApp/notify/Notify'
 
 const NavBar = ({ toggleSideBarVisivility, auth }) => {
+  const navigate = useNavigate()
   const { userId, profileImage, username, isLoggedIn } = auth
   const { logOut } = useLogUserOut()
   const { messageNotifyCount, otherNotifyCount } = useContext(NotifyContext)
   const { t } = useTranslation()
+  const [useSearchParam, setUserSearchParam] = useSearchParams()
 
+  const [text, setText] = useState(useSearchParam.get('q'))
+  const isNotify = messageNotify || commentNotify
+  const handleInput = (e) => {
+    setText(e.target.value)
+  }
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (text) {
+      navigate(`/search?q=${text}`)
+    }
+  }
   return (
     <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
       <div className="max-w-6xl mx-auto flex items-center gap-x-14 px-10">
@@ -43,17 +57,24 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
             <Link to="/">
               <img src={logo} alt="logo" className="h-10" />
             </Link>
-            <div className="flex w-full items-center gap-x-3">
+            <form
+              className="flex w-full items-center gap-x-3"
+              onSubmit={handleSearch}
+            >
               <input
                 type="text"
+                value={text}
+                onChange={(e) => handleInput(e)}
                 className="border px-4 flex-grow ml-8 h-9 rounded-full bg-gray-50 outline-none text-md text-gray-500 focus:shadow-sm"
               />
-              <img
-                src={searchIcon}
-                alt="search"
-                className="w-6 h-6 cursor-pointer"
-              />
-            </div>
+              <button type="submit">
+                <img
+                  src={searchIcon}
+                  alt="search"
+                  className="w-6 h-6 cursor-pointer"
+                />
+              </button>
+            </form>
           </div>
         </div>
         {isLoggedIn && (
