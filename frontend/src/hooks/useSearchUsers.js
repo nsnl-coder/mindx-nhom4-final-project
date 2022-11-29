@@ -36,7 +36,7 @@ const useSearchUsers = (keyword) => {
         { url: `/api/user/search-users?keyword=${keyword}&page=${pageNumber}` },
         applyApiData
       )
-    }, 1000)
+    }, 1500)
   }, [keyword, pageNumber])
 
   useEffect(() => {
@@ -45,8 +45,6 @@ const useSearchUsers = (keyword) => {
     setHasMore(true)
     setUsers([])
   }, [keyword])
-
-  console.log(users)
 
   useEffect(() => {
     if (error) {

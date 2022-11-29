@@ -44,6 +44,18 @@ io.on('connection', (socket) => {
     socket.to(message.to._id).emit('new_message', message)
   })
 
+  // new comment
+  socket.on('new_comment', (newComment) => {
+    socket.to(newComment.postAuthor).emit('new_comment', newComment)
+    const mentions = newComment.mentions
+
+    if (mentions.length > 0) {
+      mentions.forEach((mention) => {
+        socket.to(mention).emit('new_mention', newComment)
+      })
+    }
+  })
+
   // on user typing
   socket.on('typing_message', (receiverId) => {
     const senderId = getUserIdBySocketId(socket.id)

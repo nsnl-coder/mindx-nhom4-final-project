@@ -1,4 +1,5 @@
 const Post = require('../models/post')
+const Notify = require('../models/notify')
 //create
 const CreatePost = async (req, res, next) => {
   if (req.file) {
@@ -109,10 +110,13 @@ const GetPost = async (req, res, next) => {
     const post = await Post.findById(req.params.id)
       .populate({
         path: 'comments',
-        populate: {
-          path: 'authorId',
-          select: 'username profileImage createdAt',
-        },
+        populate: [
+          {
+            path: 'authorId',
+            select: 'username profileImage createdAt',
+          },
+        ],
+
         options: {
           sort: '-createdAt',
         },
@@ -125,6 +129,24 @@ const GetPost = async (req, res, next) => {
         path: 'savedUsers',
         select: 'username profileImage',
       })
+
+    if (req.user && req.user.id === post.author._id.toString()) {
+      // clear comment notify
+      await Notify.updateMany(
+        { notifyTo: post.author, postId: post._id, notifyType: 'new-comment' },
+        { count: 0 }
+      )
+      // clear mention notify
+      await Notify.updateMany(
+        {
+          notifyTo: req.user.id,
+          postId: post._id,
+          notifyType: 'new-mention',
+        },
+        { count: 0 }
+      )
+    }
+
     res.status(200).json(post)
   } catch (err) {
     next(err)

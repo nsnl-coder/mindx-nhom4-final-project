@@ -13,17 +13,15 @@ import NavLinkWrapper from './NavLinkWrapper'
 
 const SideBar = () => {
   const { auth } = useContext(AuthContext)
-  const { commentNotify, messageNotify } = useContext(NotifyContext)
+  const { otherNotifyCount, messageNotifyCount } = useContext(NotifyContext)
 
+  console.log({ otherNotifyCount })
   return (
     <div className="flex flex-col py-4">
       <NavLinkWrapper to="/">
         <FaHome />
       </NavLinkWrapper>
-      <NavLinkWrapper to="/chat/notify">
-        <BsFillBellFill />
-      </NavLinkWrapper>
-      <NavLinkWrapper to="/chat" isNotify={messageNotify}>
+      <NavLinkWrapper to="/chat" notifyCount={messageNotifyCount}>
         <BsChatSquareDotsFill />
       </NavLinkWrapper>
       <NavLinkWrapper to="/chat/users">

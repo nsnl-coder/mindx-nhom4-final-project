@@ -100,10 +100,15 @@ const getAllMessages = async (req, res, next) => {
   const skipNum = page * pageSize
 
   try {
-    // clear notification
+    // set isRead to true
     await Message.updateMany(
       { from: to, to: from, isRead: false },
       { isRead: true }
+    )
+    // clear message notify
+    await Notify.findOneAndUpdate(
+      { notifyFrom: to, notifyTo: from, notifyType: 'new-message' },
+      { count: 0 }
     )
 
     const messages = await Message.find({

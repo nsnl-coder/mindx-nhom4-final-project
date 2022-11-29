@@ -4,12 +4,16 @@ import { useEffect } from 'react'
 
 //
 import { AuthContext } from './AuthContext'
+import { NotifyContext } from '.'
+import { showNotification } from '../utils/toast'
 const SocketContext = createContext()
 
 const SocketContextProvider = (props) => {
   const { auth } = useContext(AuthContext)
+  const { increaseNotifyCount, showNewMessageToast, setOtherNotify } =
+    useContext(NotifyContext)
   const [socket, setSocket] = useState()
-  const [onlineUserIds, setOnlineUserIds] = useState()
+  const [onlineUserIds, setOnlineUserIds] = useState([])
   const [onlineUserProfiles, setOnlineUserProfiles] = useState()
 
   // typing state manager
@@ -31,11 +35,53 @@ const SocketContextProvider = (props) => {
     }
   }, [auth.isLoggedIn])
 
-  if (socket) {
-    socket.on('connect', onUserConnect)
-    socket.on('new_user_online', onNewUserOnline)
-    socket.on('typing_message', onReceiveTypingEvent)
-    socket.on('new_message', onReceiveNewMessage)
+  useEffect(() => {
+    if (socket) {
+      socket.on('connect', onUserConnect)
+      socket.on('new_user_online', onNewUserOnline)
+      socket.on('typing_message', onReceiveTypingEvent)
+      socket.on('new_message', onReceiveNewMessage)
+      socket.on('new_comment', onReceiveNewComment)
+      socket.on('new_mention', onReceiveNewMention)
+    }
+  }, [socket])
+
+  useEffect(() => {
+    if (receiveMessage) {
+      increaseNotifyCount(receiveMessage.from._id)
+      showNewMessageToast(receiveMessage)
+    }
+  }, [receiveMessage])
+
+  function createNotifyFromNewComment(receiveComment, type) {
+    console.log(receiveComment)
+    if (receiveComment) {
+      const noti = {
+        _id: Date.now(),
+        commentId: receiveComment._id,
+        notifyFrom: receiveComment.authorId,
+        notifyType: type,
+        createdAt: receiveComment.createdAt,
+        count: 1,
+        content: receiveComment.content.slice(0, 20) + '...',
+        notifyContent: receiveComment.notifyContent,
+        postId: receiveComment.postId,
+      }
+
+      setOtherNotify((prev) => [noti, ...prev])
+      return noti
+    }
+    return null
+  }
+  //
+  function onReceiveNewComment(receiveComment) {
+    const noti = createNotifyFromNewComment(receiveComment, 'new-comment')
+    if (noti) showNotification(noti)
+  }
+  //
+  function onReceiveNewMention(receiveComment) {
+    const noti = createNotifyFromNewComment(receiveComment, 'new-mention')
+    if (noti) showNotification(noti)
   }
 
   // SOCKET LISTENER
@@ -85,6 +131,10 @@ const SocketContextProvider = (props) => {
     socket.emit('new_message', newMessage)
   }
 
+  function emitCommentEvent(newComment) {
+    socket.emit('new_comment', newComment)
+  }
+
   return (
     <SocketContext.Provider
       value={{
@@ -96,6 +146,8 @@ const SocketContextProvider = (props) => {
         typingUserId,
         emitNewMessage,
         receiveMessage,
+        setReceiveMessage,
+        emitCommentEvent,
       }}
     >
       {props.children}

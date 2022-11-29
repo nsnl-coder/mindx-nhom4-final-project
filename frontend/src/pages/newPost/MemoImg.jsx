@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MemoImg = ({ link, setFormError }) => {
+const MemoImg = ({ link, setFormError, errorMessage }) => {
   const onImageLoad = (e) => {
     const width = e.target.offsetWidth
     const height = e.target.offsetHeight
@@ -9,7 +9,7 @@ const MemoImg = ({ link, setFormError }) => {
       setFormError((prev) => {
         return {
           ...prev,
-          photo: 'Your photo dimension should be at least 300x300',
+          photo: errorMessage,
         }
       })
     } else {

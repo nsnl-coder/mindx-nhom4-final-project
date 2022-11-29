@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { showToastError } from '../utils/toast'
 import useCallApi from './useCallApi'
+import useErrorHandler from './useErrorHandler'
 
-export default function useGetPostDetail() {
+export default function useGetPostDetail(reload) {
   const { isLoading, error, sendRequest } = useCallApi()
   const [post, setPost] = useState()
   const id = useParams().id
 
   const applyApiData = (data) => {
-    console.log(data)
     setPost(data)
   }
 
@@ -21,13 +21,9 @@ export default function useGetPostDetail() {
       },
       applyApiData
     )
-  }, [])
+  }, [reload])
 
-  useEffect(() => {
-    if (error) {
-      showToastError('Something went wrong! Please try again later')
-    }
-  }, [error])
+  useErrorHandler('Something went wrong! Please try again later', error)
 
   return { isLoading, error, post }
 }

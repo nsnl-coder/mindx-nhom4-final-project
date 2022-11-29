@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { showToastError } from '../utils/toast'
 import useCallApi from './useCallApi'
+import useErrorHandler from './useErrorHandler'
 
 export default function useGetUserBaiscInfo(receiverId) {
   const { isLoading, error, sendRequest } = useCallApi()
@@ -17,11 +18,7 @@ export default function useGetUserBaiscInfo(receiverId) {
     )
   }, [receiverId])
 
-  useEffect(() => {
-    if (error) {
-      showToastError('Failed to load receiver Info! Try again later!')
-    }
-  }, [error])
+  useErrorHandler('Failed to load receiver Info! Try again later!', error)
 
   return { userBasicInfo, isLoadingBasicInfo: isLoading }
 }

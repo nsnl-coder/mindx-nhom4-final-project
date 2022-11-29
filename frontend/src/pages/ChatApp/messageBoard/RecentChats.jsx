@@ -1,6 +1,6 @@
 import RecentChat from './RecentChat'
 import { useContext } from 'react'
-import { MessageContext, SocketContext } from '../../../contexts'
+import { MessageContext, NotifyContext, SocketContext } from '../../../contexts'
 
 //
 import { LoadingSpinner } from '../../../components'
@@ -11,6 +11,7 @@ const RecentChats = () => {
   const { isLoading, latestMessages } = useContext(MessageContext)
   const { onlineUserIds } = useContext(SocketContext)
   const { typingUserId } = useContext(SocketContext)
+  const { messageNotify } = useContext(NotifyContext)
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -29,6 +30,7 @@ const RecentChats = () => {
           currentUserId={auth.userId}
           onlineUserIds={onlineUserIds}
           typingUserId={typingUserId}
+          messageNotify={messageNotify}
         />
       ))}
     </div>

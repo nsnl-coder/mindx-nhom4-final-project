@@ -1,9 +1,11 @@
 import { AiOutlineFileAdd } from 'react-icons/ai'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
+//
 import useCallApi from '../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../utils/toast'
 import {
@@ -18,10 +20,9 @@ const NewPost = () => {
   const [selectedPhoto, setSelectedPhoto] = useState()
   const [title, setTitle] = useState('')
   const navigate = useNavigate()
-  const selectedPhotoRef = useRef()
-
   const [formError, setFormError] = useState({})
   const { error, isLoading, sendRequest } = useCallApi()
+  const { t } = useTranslation()
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -47,7 +48,7 @@ const NewPost = () => {
   }
 
   const applyApiData = (data) => {
-    showToastSuccess('Post created')
+    showToastSuccess(t('posted_success'))
     navigate(`/post/${data._id}`)
   }
 
@@ -58,15 +59,19 @@ const NewPost = () => {
     const errors = { ...formError }
 
     if (!title || title.trim().length < 5) {
-      errors.title = 'Your post title should have at least 5 characters'
+      errors.title = t('title_required')
+    }
+
+    if (title && title.trim().length > 100) {
+      errors.title = t('post_max_length')
     }
 
     if (html.replaceAll(' ', '') === '<p></p>') {
-      errors.content = 'Post content is required'
+      errors.content = t('content_required')
     }
 
     if (!selectedPhoto) {
-      errors.photo = 'Please provide your image'
+      errors.photo = t('image_required')
     }
 
     setFormError((prev) => {
@@ -74,7 +79,7 @@ const NewPost = () => {
     })
 
     if (errors.title || errors.photo || errors.content) {
-      showToastError('Please provide valid input!')
+      showToastError(t('invalid_toast_content'))
       return
     }
 
@@ -107,7 +112,7 @@ const NewPost = () => {
   }, [selectedPhoto])
 
   return (
-    <PageContainer title="Create New Post">
+    <PageContainer title={t('new_post_page_title')}>
       <form onSubmit={onSubmitHandler} className="py-12">
         <div className="flex flex-col md:flex-row mx-auto gap-x-8 gap-y-12">
           <div className="w-full md:w-5/12">
@@ -120,16 +125,11 @@ const NewPost = () => {
             >
               {selectedPhoto && (
                 <>
-                  {/* <img
-                    src={URL.createObjectURL(selectedPhoto)}
-                    onLoad={onImageLoad}
-                    ref={selectedPhotoRef}
-                    alt="Selected Photo"
-                  /> */}
                   <MemoImg
                     link={imageUrl}
                     alt="selected photo for new post"
                     setFormError={setFormError}
+                    errorMessage={t('wrong_image_dimen')}
                   />
                   <label
                     htmlFor="uploadPhoto"
@@ -137,7 +137,7 @@ const NewPost = () => {
                   >
                     <a className="border flex gap-x-2 ml-auto mt-4 py-4 px-2 items-center w-full justify-center hover:bg-text hover:text-white">
                       <AiOutlineFileAdd fontSize={24} />
-                      Change your image
+                      {t('change_image')}
                     </a>
                   </label>
                 </>
@@ -148,14 +148,14 @@ const NewPost = () => {
                     htmlFor="uploadPhoto"
                     className="flex flex-col items-center gap-y-1.5 cursor-pointer w-full justify-center "
                   >
-                    <h3 className="font-bold">Drag and drop your image here</h3>
-                    <span className=" inline-block my-4">or</span>
+                    <h3 className="font-bold">{t('choose_image')}</h3>
+                    <span className=" inline-block my-4"></span>
                     <button className=" pointer-events-none bg-primary text-white px-6 py-2 rounded-md flex items-center gap-x-3">
                       <AiOutlineFileAdd />
-                      Add file
+                      {t('add_file')}
                     </button>
                     <h4 className=" font-bold text-sm mt-10">
-                      Supported files
+                      {t('supported_files')}
                     </h4>
                     <p>jpg, png, webp</p>
                   </label>
@@ -183,7 +183,7 @@ const NewPost = () => {
               <input
                 type="text"
                 className="outline-0 py-4 px-4 w-full border-b"
-                placeholder="Enter your title here"
+                placeholder={t('title')}
                 value={title}
                 onChange={titleChangeHandler}
               />
@@ -207,7 +207,7 @@ const NewPost = () => {
               }
               disabled={isLoading ? true : false}
             >
-              {isLoading ? 'Posting...' : 'Post'}
+              {isLoading ? t('posting') : t('post')}
             </button>
           </div>
         </div>

@@ -18,6 +18,23 @@ const verifyToken = (req, res, next) => {
     next()
   })
 }
+// dont limit user but want to know who user is
+const decodeToken = (req, res, next) => {
+  const authHeader = req.headers.token
+
+  if (!authHeader) {
+    return next()
+  }
+  const token = authHeader.split(' ')[1]
+
+  jwt.verify(token, process.env.JWT_KEY, (err, user) => {
+    if (err) {
+      return next()
+    }
+    req.user = user
+    next()
+  })
+}
 
 // check if user authorize to edit other resource
 const verifyUser = (req, res, next) => {
@@ -43,4 +60,4 @@ const verifyAdmin = (req, res, next) => {
     }
   })
 }
-module.exports = { verifyAdmin, verifyUser, verifyToken }
+module.exports = { verifyAdmin, verifyUser, verifyToken, decodeToken }

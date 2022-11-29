@@ -4,20 +4,25 @@ import { RiLogoutCircleFill, RiMessageFill } from 'react-icons/ri'
 import { IoSettingsSharp } from 'react-icons/io5'
 import { AiFillHome } from 'react-icons/ai'
 import { MdAddCircle } from 'react-icons/md'
+import { BsFillBellFill } from 'react-icons/bs'
+import { useContext } from 'react'
 
 //
 import logo from '../../assets/logo-full.svg'
 import searchIcon from '../../assets/icon-search.svg'
 import menuIcon from '../../assets/icon-bars.svg'
 import useLogUserOut from '../../hooks/useLogUserOut'
-import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
+
+//
 import { NotifyContext } from '../../contexts'
+import Notify from '../../pages/ChatApp/notify/Notify'
 
 const NavBar = ({ toggleSideBarVisivility, auth }) => {
   const { userId, profileImage, username, isLoggedIn } = auth
   const { logOut } = useLogUserOut()
-  const { messageNotify, commentNotify } = useContext(NotifyContext)
-  const isNotify = messageNotify || commentNotify
+  const { messageNotifyCount, otherNotifyCount } = useContext(NotifyContext)
+  const { t } = useTranslation()
 
   return (
     <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
@@ -34,7 +39,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
               onClick={toggleSideBarVisivility}
             />
           </label>
-          <div className="w-full gap-x-4 hidden md:flex">
+          <div className="w-full gap-x-4 hidden md:flex ">
             <Link to="/">
               <img src={logo} alt="logo" className="h-10" />
             </Link>
@@ -52,65 +57,82 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
           </div>
         </div>
         {isLoggedIn && (
-          <div className="dropdown dropdown-hover dropdown-end pl-6">
-            <label tabIndex={0} className="text-3xl cursor-pointer bg-red-400">
-              <img
-                src={profileImage}
-                alt="profile image"
-                className="w-9 aspect-square object-cover object-center rounded-full"
-              />
-              {isNotify && (
-                <div className="w-3 aspect-square rounded-full bg-primary absolute -right-1.5 top-0.5"></div>
-              )}
-            </label>
-            <div tabIndex={0} className="dropdown-content menu w-52 pt-6">
-              <ul className="bg-base-100 shadow-md">
-                <li>
-                  <Link to={'/'}>
-                    <AiFillHome />
-                    Feeds
-                  </Link>
-                </li>
-                <li>
-                  <Link to={`/profile/${userId}`}>
-                    <FaUser />
-                    {username}
-                  </Link>
-                </li>
-                <li>
-                  <Link to={'/chat'}>
-                    <RiMessageFill />
-                    Messenger
-                    {messageNotify && (
-                      <div className="w-3 aspect-square rounded-full bg-primary ml-auto"></div>
-                    )}
-                  </Link>
-                </li>
-                <li>
-                  <Link to={`/new-post`}>
-                    <MdAddCircle />
-                    New post
-                  </Link>
-                </li>
-                <li>
-                  <Link to={`/settings`}>
-                    <IoSettingsSharp />
-                    settings
-                  </Link>
-                </li>
-                <li className="text-text" onClick={logOut}>
-                  <a>
-                    <RiLogoutCircleFill />
-                    Log out
-                  </a>
-                </li>
-              </ul>
+          <div className="flex items-center">
+            <div className="dropdown dropdown-hover dropdown-end pl-6">
+              <label tabIndex={0} className="text-3xl cursor-pointer">
+                <img
+                  src={profileImage}
+                  alt="profile image"
+                  className="w-9 aspect-square object-cover object-center rounded-full"
+                />
+                {messageNotifyCount > 0 && (
+                  <div className="w-3 aspect-square rounded-full bg-primary absolute -right-1.5 top-0.5"></div>
+                )}
+              </label>
+              <div tabIndex={0} className="dropdown-content menu w-52 pt-6">
+                <ul className="bg-base-100 shadow-md">
+                  <li>
+                    <Link to={'/'}>
+                      <AiFillHome />
+                      {t('feed')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={`/profile/${userId}`}>
+                      <FaUser />
+                      {username}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={'/chat'}>
+                      <RiMessageFill />
+                      {t('messages')}
+                      {messageNotifyCount > 0 && (
+                        <div className="w-6 aspect-square rounded-full bg-primary ml-auto text-white text-sm flex justify-center items-center">
+                          {messageNotifyCount > 9 ? '9+' : messageNotifyCount}
+                        </div>
+                      )}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={`/new-post`}>
+                      <MdAddCircle />
+                      {t('new_post')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={`/settings`}>
+                      <IoSettingsSharp />
+                      {t('settings')}
+                    </Link>
+                  </li>
+                  <li className="text-text" onClick={logOut}>
+                    <a>
+                      <RiLogoutCircleFill />
+                      {t('log_out')}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="dropdown dropdown-hover dropdown-end pl-6">
+              <label tabIndex={0}>
+                <div className="text-2xl w-10 aspect-square bg-gray-100 flex items-center justify-center rounded-full cursor-pointer">
+                  <BsFillBellFill />
+                </div>
+                {otherNotifyCount > 0 && (
+                  <div className="w-3 aspect-square rounded-full bg-primary absolute -right-1.5 top-0.5"></div>
+                )}
+              </label>
+              <div className="dropdown-content menu pt-5" tabIndex={0}>
+                <Notify />
+              </div>
             </div>
           </div>
         )}
         {!isLoggedIn && (
           <div className="dropdown dropdown-hover dropdown-end pl-6">
-            <label tabIndex={0} className="text-2xl cursor-pointer bg-red-400">
+            <label tabIndex={0} className="text-2xl cursor-pointer">
               <FaUserPlus />
             </label>
             <div tabIndex={0} className="dropdown-content menu w-52 pt-4">
@@ -120,7 +142,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                     to="/auth/login"
                     className="text-text focus:bg-gray-200"
                   >
-                    Login
+                    {t('login')}
                   </Link>
                 </li>
                 <li>
@@ -128,7 +150,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                     to="/auth/register"
                     className="text-text focus:bg-gray-200"
                   >
-                    Register
+                    {t('register')}
                   </Link>
                 </li>
               </ul>

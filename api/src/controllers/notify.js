@@ -16,6 +16,7 @@ const getAllNotify = async (req, res, next) => {
         path: 'notifyFrom',
         select: 'username profileImage',
       })
+      .sort('-createdAt')
 
     res.status(200).json({
       message: 'success',
