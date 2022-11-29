@@ -3,7 +3,7 @@ import ScrollToTop from 'react-scroll-to-top'
 import { Link } from 'react-router-dom'
 import { Spinner } from '..'
 import iconUp from '../../assets/icon-angle-up.svg'
-import useSearchUsers from '../../hooks/useSearchUsers.js'
+import useSearchUsers from '../../hooks/useSearchUser2'
 import SearchCart from './ItemUser.jsx'
 
 const SearchUsers = ({ search }) => {
@@ -58,7 +58,7 @@ const SearchUsers = ({ search }) => {
                           className=" 2xl:h-[250px] 2xl:w-[250px] xl:h-[200px] xl:w-[200px] sm:w-[150px] sm:h-[170px] lg:w-[170px] lg:h-[180px] md:w-[160px] md:h-[160px] w-[140px] h-[140px] overflow-hidden"
                           key={post._id}
                         >
-                          <SearchCart post={post} user={user} />
+                          <SearchCart post={post} />
                         </div>
                       )
                     })}
