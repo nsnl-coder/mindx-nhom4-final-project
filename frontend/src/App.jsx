@@ -33,7 +33,7 @@ const App = () => {
     i18n.changeLanguage(newLanguage)
     localStorage.setItem('language', newLanguage)
   }
-
+  console.log(import.meta.env.VITE_BACKEND_HOST)
   return (
     <ContextProvider>
       <label htmlFor="language"></label>
