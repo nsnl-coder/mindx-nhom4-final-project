@@ -51,7 +51,7 @@ const register = async (req, res, next) => {
       url,
       'To verify your account, click the link below:'
     )
-    res.status(200).json({ email: newUser.email })
+    res.status(200).json({ email: newUser.email, _id: newUser._id })
   } catch (err) {
     next(err)
   }
@@ -134,8 +134,6 @@ const fotgotPassword = async (req, res, next) => {
 //resend Email
 const resendEmail = async (req, res, next) => {
   try {
-    const user = await User.findOne({ email: req.body.email })
-
     const token = await Token.findOne({ userId: req.params.id }).populate(
       'userId'
     )
@@ -144,8 +142,8 @@ const resendEmail = async (req, res, next) => {
     }
     const url = `${process.env.FRONTEND_HOST}/auth/verified/${req.params.id}/${token.token}`
     await sendEmail(
-      user.email,
-      user.username,
+      token.userId.email,
+      token.userId.username,
       'Verify Email',
       "We've received signUp request",
       url,
@@ -217,7 +215,7 @@ const ResetPassword = async (req, res, next) => {
     const token_access = jwt.sign(
       { id: newUser._id, isAdmin: newUser.isAdmin },
       process.env.JWT_KEY,
-      { expiresIn: '4d' }
+      { expiresIn: '1d' }
     )
     await checkToken.remove()
     res.status(200).json({ ...details, token_access })

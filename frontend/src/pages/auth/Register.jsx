@@ -7,7 +7,7 @@ import Logo from '../../assets/logo-icon-big.svg'
 import IconReturn from '../../assets/icon-return.svg'
 import { GoEyeClosed, GoEye } from 'react-icons/go'
 import { BiError } from 'react-icons/bi'
-
+import { LoadingSpinner } from '../../components'
 const Register = () => {
   const navigate = useNavigate()
   const {
@@ -27,7 +27,7 @@ const Register = () => {
     sendRequest(
       {
         method: 'post',
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/auth/register`,
+        url: `/api/auth/register`,
         data: data,
       },
       applyApiData
@@ -45,7 +45,7 @@ const Register = () => {
         <img
           src={IconReturn}
           alt=""
-          className="cursor-pointer absolute md:top-10 md:left-20 top-0 left-0"
+          className="cursor-pointer absolute md:top-10 md:left-20 top-0 left-0 md:w-[30px] w-[20px]"
         />
       </Link>
       <div className="flex items-center justify-center h-screen text-black">
@@ -63,7 +63,7 @@ const Register = () => {
               className="md:w-[150px] w-[80px] h-[80px]  md:h-auto object-cover"
             />
           </div>
-          <div className="w-[80%]">
+          <div className="md:w-[80%] w-full">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex justify-between flex-wrap ">
                 <div className="md:w-[48%] w-full ">
@@ -75,7 +75,6 @@ const Register = () => {
                     } `}
                   >
                     <input
-                      onChange={() => setErrorMessage('')}
                       {...register('firstName', {
                         required: true,
                         maxLength: 20,
@@ -112,7 +111,6 @@ const Register = () => {
                     } `}
                   >
                     <input
-                      onChange={() => setErrorMessage('')}
                       {...register('lastName', {
                         required: true,
                         pattern: /^[A-Za-z]+$/i,
@@ -153,7 +151,6 @@ const Register = () => {
                 }`}
               >
                 <input
-                  onChange={() => setErrorMessage('')}
                   {...register('username', {
                     required: true,
                     minLength: 5,
@@ -186,7 +183,8 @@ const Register = () => {
               {errors?.username?.type === 'pattern' && (
                 <span className="text-primary text-sm">UserName Invalid!</span>
               )}
-              {errorMessage === 'User with given username already Exist!' &&
+              {!errors?.username?.type &&
+                errorMessage === 'User with given username already Exist!' &&
                 !errors?.username && (
                   <span className="text-primary text-sm">
                     User with given username already Exist!
@@ -205,7 +203,6 @@ const Register = () => {
                 }`}
               >
                 <input
-                  onChange={() => setErrorMessage('')}
                   type="email"
                   {...register('email', {
                     required: true,
@@ -225,13 +222,14 @@ const Register = () => {
                 </span>
               )}
               {errors?.email?.type === 'pattern' && (
-                <span className="primary">Invalid email!</span>
+                <span className="text-primary text-sm">Invalid email!</span>
               )}
-              {errorMessage === 'User with given email already Exist!' && (
-                <span className="text-primary text-sm">
-                  User with given username already Exist!
-                </span>
-              )}
+              {!errors?.email?.type &&
+                errorMessage === 'User with given email already Exist!' && (
+                  <span className="text-primary text-sm">
+                    User with given username already Exist!
+                  </span>
+                )}
               <br />
               <label className="text-lg font-semibold">Password</label>
               <br />
@@ -274,9 +272,15 @@ const Register = () => {
               <button
                 disabled={isLoading ? true : false}
                 type="submit"
-                className="rounded-[50px] shadow-sm active:shadow-none shadow-black bg-primary w-[130px] md:my-4 my-2 text-white py-1 text-[17px] font-roboto font-semibold"
+                className="rounded-[50px] h-[40px] disabled:opacity-50 shadow-sm active:shadow-none shadow-black bg-primary w-[130px] relative md:my-4 my-2 text-white  text-[17px] font-roboto font-semibold"
               >
-                SIGN UP
+                {isLoading ? (
+                  <span className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[65%]">
+                    <LoadingSpinner />
+                  </span>
+                ) : (
+                  'SIGN UP'
+                )}
               </button>
               <p className="font-[600] text-[17px] mb-4">
                 Already Have An Account?{' '}

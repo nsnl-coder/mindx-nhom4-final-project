@@ -8,6 +8,7 @@ import { AuthContext } from '../../contexts/AuthContext'
 import IconReturn from '../../assets/icon-return.svg'
 import { BiError } from 'react-icons/bi'
 import { GoEyeClosed, GoEye } from 'react-icons/go'
+import { LoadingSpinner } from '../../components'
 const Login = () => {
   const navigate = useNavigate()
   const { isLoading, error, sendRequest } = useCallApi()
@@ -59,7 +60,7 @@ const Login = () => {
         <img
           src={IconReturn}
           alt=""
-          className="cursor-pointer absolute top-10 left-20"
+          className="cursor-pointer absolute md:top-10 md:left-20 top-5 left-5 md:w-[30px] w-[20px] "
         />
       </Link>
       <div className="md:w-[550px] w-[350px] shadow-md shadow-gray rounded-md p-10 border-[1px] border-gray">
@@ -76,20 +77,19 @@ const Login = () => {
             className="md:w-[150px] w-[100px] h-[100px] md:h-auto object-cover"
           />
         </div>
-        <div className="w-[80%]">
+        <div className="md:w-[80%] w-full">
           <form onSubmit={handleSubmit(onSubmit)}>
             <label className="text-lg font-semibold ">Email address:</label>
             <br />
             <div
-              className={`w-full rounded-md relative h-12 outline-none  overflow-hidden shadow-sm shadow-[#3333336d]   my-2 ${
+              className={`w-full rounded-md relative h-12 outline-none  overflow-hidden shadow-sm shadow-[#3333336d]  my-2 ${
                 errors?.email && 'border-[2px] border-primary'
               } ${
                 errorMessage === 'Email not valid!' &&
-                'order-[2px] border-primary'
+                'border-[2px] border-primary'
               }`}
             >
               <input
-                onChange={() => setErrorMessage('')}
                 type="email"
                 {...register('email', {
                   required: true,
@@ -108,11 +108,13 @@ const Login = () => {
             {errors?.email?.type === 'pattern' && (
               <p className="text-primary text-sm">Invalid email!</p>
             )}
-            {errorMessage === 'Email not valid!' && !errors?.email && (
-              <span className="text-primary text-sm">
-                Email is not registered!
-              </span>
-            )}
+            {!errors?.email?.type &&
+              errorMessage === 'Email not valid!' &&
+              !errors?.email && (
+                <span className="text-primary text-sm">
+                  Email is not registered!
+                </span>
+              )}
             <br />
             <label className="text-lg font-semibold">Password</label>
             <br />
@@ -125,7 +127,6 @@ const Login = () => {
               }`}
             >
               <input
-                onChange={() => setErrorMessage('')}
                 type={showPassword ? 'text' : 'password'}
                 {...register('password', {
                   required: true,
@@ -133,7 +134,7 @@ const Login = () => {
                 })}
                 className="w-full pr-24 h-full px-5 outline-none "
               />
-              {errors?.password || errorMessage ? (
+              {errors?.password || errorMessage === 'Incorrect password!' ? (
                 <BiError className="absolute top-[50%] text-xl right-6 -translate-y-[50%] text-primary" />
               ) : (
                 <div
@@ -153,16 +154,26 @@ const Login = () => {
                 Password must be at least 8 characters
               </p>
             )}
-            {errorMessage === 'Incorrect password!' && !errors?.password && (
-              <span className="text-primary texl-sm">Incorrect password!</span>
-            )}
+            {!errors?.password?.type &&
+              errorMessage === 'Incorrect password!' &&
+              !errors?.password && (
+                <span className="text-primary texl-sm">
+                  Incorrect password!
+                </span>
+              )}
             <br />
             <button
               disabled={isLoading ? true : false}
               type="submit"
-              className="rounded-[50px] disabled:opacity-50 shadow-sm shadow-black active:shadow-none bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
+              className="rounded-[50px] relative h-[40px] disabled:opacity-50 shadow-sm shadow-black active:shadow-none bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
             >
-              LOGIN
+              {isLoading ? (
+                <span className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[65%]">
+                  <LoadingSpinner />
+                </span>
+              ) : (
+                'LOGIN'
+              )}
             </button>
             <p className="font-[600] text-[17px] mb-4">
               Don't you have an account?{' '}

@@ -34,7 +34,9 @@ const SearchUsers = ({ search }) => {
         <div className="flex items-center  flex-wrap gap-4">
           {users.map((user) => {
             return (
-              <div className={`${user.userPosts && 'basis-[100%]'}`}>
+              <div
+                className={`${user?.userPosts.length > 0 && 'basis-[100%]'}`}
+              >
                 <div
                   className="flex sm:gap-7 gap-2 sm:flex-nowrap flex-wrap items-center "
                   key={user._id}

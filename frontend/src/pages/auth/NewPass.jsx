@@ -7,9 +7,10 @@ import { GoEyeClosed, GoEye } from 'react-icons/go'
 
 import useCallApi from '../../hooks/useCallApi'
 import { AuthContext } from '../../contexts'
+import { useNavigate } from 'react-router-dom'
 import { Error } from '../../components'
 import IconReturn from '../../assets/icon-return.svg'
-
+import { LoadingSpinner } from '../../components'
 const NewPass = () => {
   const { id, token } = useParams()
   const {
@@ -134,9 +135,15 @@ const NewPass = () => {
 
                   <button
                     type="submit"
-                    className="rounded-[50px] mt-8 shadow-sm shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
+                    className="rounded-[50px] relative mt-8 shadow-sm shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
                   >
-                    LOGIN
+                    {isLoading ? (
+                      <span className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[65%]">
+                        <LoadingSpinner />
+                      </span>
+                    ) : (
+                      'SIGN UP'
+                    )}
                   </button>
                 </form>
               </div>

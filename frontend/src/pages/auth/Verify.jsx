@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation, useParams, Link } from 'react-router-dom'
 import Countdown from 'react-countdown'
 import Logo from '../../assets/logo-icon-small.svg'
@@ -22,12 +22,16 @@ const Verify = () => {
     sendRequest(
       {
         method: 'post',
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/auth/resendEmail/${id}`,
+        url: `/api/auth/resendEmail/${id}`,
       },
       applyData
     )
   }
-
+  useEffect(() => {
+    if (error) {
+      showToastError('Email sending failed')
+    }
+  }, [error])
   return (
     <div className="flex items-center justify-center h-screen">
       <Link to="/auth/register">

@@ -56,7 +56,7 @@ const SearchCard = ({ post, user }) => {
             {post?.title}
           </p>
         </Link>
-        {auth?.userId === post?.author?._id ? (
+        {auth?.userId === post?.author ? (
           <button
             type="button"
             className="hidden group-hover:block absolute top-2 left-2"
