@@ -16,7 +16,6 @@ const useCallApi = () => {
         method: requestConfig.method || 'GET',
         url: requestConfig.url,
         withCredentials: true,
-        credentials: 'include',
         data: requestConfig.data,
         headers: {
           token,

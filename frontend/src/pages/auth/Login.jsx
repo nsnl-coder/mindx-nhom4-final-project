@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-
+import axios from 'axios'
 import Logo from '../../assets/logo-icon-big.svg'
 import useCallApi from '../../hooks/useCallApi'
 import { AuthContext } from '../../contexts/AuthContext'
@@ -68,8 +68,17 @@ const Login = () => {
       '_self'
     )
   }
+  const getUser = async () => {
+    try {
+      const url = `${import.meta.env.VITE_BACKEND_HOST}/auth/login/success`
+      const { data } = await axios.get(url, { withCredentials: true })
+      console.log(data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
   useEffect(() => {
-    sendRequest({ url: `api/auth/login/success` }, applyApi2)
+    getUser()
   }, [])
   useEffect(() => {
     setErrorMessage(error?.response?.data?.message)
