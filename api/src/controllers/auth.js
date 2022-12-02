@@ -67,11 +67,14 @@ const register = async (req, res, next) => {
 };
 const login = async (req, res, next) => {
   try {
-    const user = await User.findOne({ email: req.body?.email, googleId: null });
-    if (!user) {
-      return next(createError(400, 'Email is not registered!'));
-    }
     if (!req.body?.googleId) {
+      const user = await User.findOne({
+        email: req.body?.email,
+        googleId: null,
+      });
+      if (!user) {
+        return next(createError(400, 'Email is not registered!'));
+      }
       const hashedPassword = CryptoJS.AES.decrypt(
         user.password,
         process.env.CRYPTOJS_KEY
@@ -256,8 +259,9 @@ const googleLoginCallback = passport.authenticate('google', {
 });
 
 const loginSuccess = async (req, res) => {
-  const ggUser = req.user?._json;
-  if (req.user) {
+  const ggUser = req?.user?._json;
+
+  if (req?.user) {
     res.status(200).json({
       googleId: ggUser.sub,
       firstName: ggUser.family_name,

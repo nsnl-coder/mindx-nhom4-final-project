@@ -6,7 +6,6 @@ const passport = require('passport');
 const path = require('path');
 const passportStrategy = require('./passport');
 const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
 //
 const postRoute = require('../routes/post');
 const commentRoute = require('../routes/comment');
@@ -20,7 +19,7 @@ const app = express();
 app.use(
   cookieSession({
     name: 'session',
-    keys: ['cyberwolve'],
+    keys: ['aaa'],
     maxAge: 24 * 60 * 60 * 100,
   })
 );
@@ -28,7 +27,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(
   cors({
-    origin: process.env.FRONTEND_HOST,
+    origin: 'https://uposted.netlify.app',
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })
@@ -36,7 +35,7 @@ app.use(
 
 const main = async () => {
   try {
-    await mongoose.connect(process.env.MOGO_KEY);
+    mongoose.connect(process.env.MOGO_KEY);
     console.log('mongoose');
   } catch (err) {
     console.log(err);
