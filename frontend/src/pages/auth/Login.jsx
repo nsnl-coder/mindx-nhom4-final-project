@@ -68,17 +68,8 @@ const Login = () => {
       '_self'
     )
   }
-  const getUser = async () => {
-    try {
-      const url = `${import.meta.env.VITE_BACKEND_HOST}/auth/login/success`
-      const { data } = await axios.get(url, { withCredentials: true })
-      console.log(data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
   useEffect(() => {
-    getUser()
+    sendRequest({ url: `api/auth/login/success` }, applyApi2)
   }, [])
   useEffect(() => {
     setErrorMessage(error?.response?.data?.message)
