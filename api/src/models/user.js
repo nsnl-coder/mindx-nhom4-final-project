@@ -1,17 +1,15 @@
-const mongoose = require('mongoose')
-const formatPhotoName = require('../utils/formatPhotoName')
+const mongoose = require('mongoose');
+const formatPhotoName = require('../utils/formatPhotoName');
 const userSchema = mongoose.Schema(
   {
     username: {
       type: String,
-      required: true,
-      unique: true,
-      match: [/^[a-zA-Z0-9]+$/, 'Please provide a valid username'],
+      // unique: true,
+      // match: [/^[a-zA-Z0-9]+$/, 'Please provide a valid username'],
     },
     email: {
       type: String,
-      required: true,
-      unique: true,
+      unique: false,
       match: [
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         'Please provide a valid email',
@@ -19,18 +17,18 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
       minLength: 8,
+    },
+    googleId: {
+      type: String,
     },
     firstName: {
       type: String,
       required: true,
-      match: [/^[A-Za-z]+$/i, 'Please provide a valid firstName'],
     },
     lastName: {
       type: String,
       required: true,
-      match: [/^[A-Za-z]+$/i, 'Please provide a valid lastName'],
     },
     gender: String,
     dateOfBirth: {
@@ -57,18 +55,18 @@ const userSchema = mongoose.Schema(
     },
   },
   { timestamps: true }
-)
+);
 
 userSchema.post(/^find/, (docs) => {
   if (Array.isArray(docs)) {
     for (let i = 0; i < docs.length; i++) {
-      docs[i].profileImage = formatPhotoName(docs[i].profileImage)
+      docs[i].profileImage = formatPhotoName(docs[i].profileImage);
     }
   } else {
     if (docs) {
-      docs.profileImage = formatPhotoName(docs.profileImage)
+      docs.profileImage = formatPhotoName(docs.profileImage);
     }
   }
-})
+});
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User', userSchema);

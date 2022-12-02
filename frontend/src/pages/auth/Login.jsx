@@ -9,6 +9,7 @@ import IconReturn from '../../assets/icon-return.svg'
 import { BiError } from 'react-icons/bi'
 import { GoEyeClosed, GoEye } from 'react-icons/go'
 import { LoadingSpinner } from '../../components'
+import { FcGoogle } from 'react-icons/fc'
 const Login = () => {
   const navigate = useNavigate()
   const { isLoading, error, sendRequest } = useCallApi()
@@ -21,7 +22,6 @@ const Login = () => {
     watch,
     formState: { errors },
   } = useForm()
-
   const applyApi = (user) => {
     if (user.verified === false) {
       navigate(`/auth/verify/${user.id}`, { state: { email: user.email } })
@@ -38,32 +38,53 @@ const Login = () => {
       localStorage.setItem('auth', JSON.stringify(auth))
     }
   }
+  const applyApi2 = (user) => {
+    console.log(user)
+    sendRequest(
+      {
+        data: user,
+        method: 'post',
+        url: `/api/auth/login`,
+      },
+      applyApi
+    )
+  }
   const onSubmit = (data) => {
     sendRequest(
       {
         data: data,
         method: 'post',
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/auth/login`,
+        url: `/api/auth/login`,
       },
       applyApi
     )
   }
-  useEffect(() => {
-    setErrorMessage(error?.response?.data?.message)
-  }, [error])
   const changeShowPassword = () => {
     setShowPassword(!showPassword)
   }
+  const googleLogin = () => {
+    window.open(
+      `${import.meta.env.VITE_BACKEND_HOST}/api/auth/google/callback`,
+      '_self'
+    )
+  }
+  useEffect(() => {
+    sendRequest({ url: `api/auth/login/success` }, applyApi2)
+  }, [])
+  useEffect(() => {
+    setErrorMessage(error?.response?.data?.message)
+  }, [error])
+
   return (
     <div className="flex items-center justify-center h-screen text-black">
       <Link to="/">
         <img
           src={IconReturn}
           alt=""
-          className="cursor-pointer absolute md:top-10 md:left-20 top-5 left-5 md:w-[30px] w-[20px] "
+          className="cursor-pointer absolute md:top-10 md:left-20 top-8 left-5 md:w-[30px] w-[20px] "
         />
       </Link>
-      <div className="md:w-[550px] w-[350px] shadow-md shadow-gray rounded-md p-10 border-[1px] border-gray">
+      <div className="w-[550px] shadow-md shadow-gray rounded-md p-10 border-[1px] border-gray">
         <div className="flex justify-between">
           <div>
             <h1 className="text-3xl font-semibold text-black mb-5">
@@ -109,7 +130,7 @@ const Login = () => {
               <p className="text-primary text-sm">Invalid email!</p>
             )}
             {!errors?.email?.type &&
-              errorMessage === 'Email not valid!' &&
+              errorMessage === 'Email is not registered!' &&
               !errors?.email && (
                 <span className="text-primary text-sm">
                   Email is not registered!
@@ -175,23 +196,31 @@ const Login = () => {
                 'LOGIN'
               )}
             </button>
-            <p className="font-[600] text-[17px] mb-4">
-              Don't you have an account?{' '}
-              <Link
-                to="/auth/register"
-                className="text-primary text-lg cursor-pointer underline"
-              >
-                Create new{' '}
-              </Link>
-              now!
-            </p>
-            <Link to="/auth/forgot">
-              {' '}
-              <p className="text-[#333] text-lg font-semibold hover:underline cursor-pointer">
-                Forgotten password?
-              </p>
-            </Link>
           </form>
+          <p className="text-center text-lg mb-3">or</p>
+          <button
+            className="w-full h-[50px] gap-4 mb-3 rounded-md flex items-center justify-center border-[2px] border-green-800"
+            onClick={googleLogin}
+          >
+            <FcGoogle className="text-3xl" />
+            <span className="font-semibold">Sign in with Google</span>
+          </button>
+          <p className="font-[600] text-[17px] mb-4">
+            Don't you have an account?{' '}
+            <Link
+              to="/auth/register"
+              className="text-primary text-lg cursor-pointer underline"
+            >
+              Create new{' '}
+            </Link>
+            now!
+          </p>
+          <Link to="/auth/forgot">
+            {' '}
+            <p className="text-[#333] text-lg font-semibold hover:underline cursor-pointer">
+              Forgotten password?
+            </p>
+          </Link>
         </div>
       </div>
     </div>

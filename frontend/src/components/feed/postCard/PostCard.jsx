@@ -17,22 +17,21 @@ const PostCard = ({ post, user }) => {
     console.log(data)
   }
 
-  const handleSavePost = (post) => {
+  const handleSavePost = (id) => {
     sendRequest(
       {
         url: `/api/user/save-post/${auth?.userId}`,
         method: 'put',
-        data: post,
+        data: { id },
       },
       useApiData
     )
   }
 
   const handleDeletePost = (id) => {
-    console.log(`/api/post/${id}`)
     sendRequest(
       {
-        url: `/api/post/${id}`,
+        url: `/api/post/${auth?.userId}/${id}`,
         method: 'delete',
       },
       useApiData
@@ -71,7 +70,7 @@ const PostCard = ({ post, user }) => {
           <button
             type="button"
             className="hidden group-hover:block absolute top-2 left-2"
-            onClick={() => handleSavePost(post)}
+            onClick={() => handleSavePost(post?._id)}
           >
             <img src={saveIcon} alt="save-icon" />
           </button>

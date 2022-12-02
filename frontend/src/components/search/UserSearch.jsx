@@ -30,12 +30,12 @@ const SearchUsers = ({ search }) => {
 
   return (
     <div className={`bg-white relative px-8 mt-10 `}>
-      {users.length > 0 && (
+      {users?.length > 0 && (
         <div className="flex items-center  flex-wrap gap-4">
           {users.map((user) => {
             return (
               <div
-                className={`${user?.userPosts.length > 0 && 'basis-[100%]'}`}
+                className={`${user?.userPosts?.length > 0 && 'basis-[100%]'}`}
               >
                 <div
                   className="flex sm:gap-7 gap-2 sm:flex-nowrap flex-wrap items-center "

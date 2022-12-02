@@ -19,6 +19,7 @@ import ChatApp from './pages/ChatApp/ChatApp'
 import DirectMessage from './pages/ChatApp/directMessage/DirectMessage'
 import Notify from './pages/ChatApp/notify/Notify'
 import UserList from './pages/ChatApp/userList/UserList'
+import useCallApi from './hooks/useCallApi'
 
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
@@ -33,7 +34,7 @@ const App = () => {
     i18n.changeLanguage(newLanguage)
     localStorage.setItem('language', newLanguage)
   }
-  console.log(import.meta.env.VITE_BACKEND_HOST)
+
   return (
     <ContextProvider>
       <label htmlFor="language"></label>

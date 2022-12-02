@@ -8,6 +8,7 @@ import IconReturn from '../../assets/icon-return.svg'
 import { GoEyeClosed, GoEye } from 'react-icons/go'
 import { BiError } from 'react-icons/bi'
 import { LoadingSpinner } from '../../components'
+import { FcGoogle } from 'react-icons/fc'
 const Register = () => {
   const navigate = useNavigate()
   const {
@@ -36,6 +37,9 @@ const Register = () => {
   const changeShowPassword = () => {
     setShowPassword(!showPassword)
   }
+  const googleLogin = () => {
+    window.open(`${import.meta.env.VITE_BACKEND_HOST}/api/auth/google`, '_self')
+  }
   useEffect(() => {
     setErrorMessage(error?.response?.data?.message)
   }, [error])
@@ -48,7 +52,7 @@ const Register = () => {
           className="cursor-pointer absolute md:top-10 md:left-20 top-0 left-0 md:w-[30px] w-[20px]"
         />
       </Link>
-      <div className="flex items-center justify-center h-screen text-black">
+      <div className="flex items-center justify-center  text-black">
         <div className="md:w-[550px] w-[400px] shadow-md shadow-gray rounded-md p-2 md:p-10 border-[1px] border-gray">
           <div className="flex justify-between">
             <div>
@@ -272,7 +276,7 @@ const Register = () => {
               <button
                 disabled={isLoading ? true : false}
                 type="submit"
-                className="rounded-[50px] h-[40px] disabled:opacity-50 shadow-sm active:shadow-none shadow-black bg-primary w-[130px] relative md:my-4 my-2 text-white  text-[17px] font-roboto font-semibold"
+                className="rounded-[50px] h-[40px] disabled:opacity-50 shadow-sm active:shadow-none shadow-black bg-primary w-[130px] relative text-white  text-[17px] font-roboto font-semibold"
               >
                 {isLoading ? (
                   <span className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[65%]">
@@ -282,17 +286,25 @@ const Register = () => {
                   'SIGN UP'
                 )}
               </button>
-              <p className="font-[600] text-[17px] mb-4">
-                Already Have An Account?{' '}
-                <Link to="/auth/login">
-                  {' '}
-                  <span className="text-primary text-lg cursor-pointer underline">
-                    LOG IN{' '}
-                  </span>
-                </Link>
-                now!
-              </p>
             </form>
+            <p className="text-center my-3">or</p>
+            <button
+              className="w-full h-[50px] gap-4 mb-3 rounded-md flex items-center justify-center border-[2px] border-green-800"
+              onClick={googleLogin}
+            >
+              <FcGoogle className="text-3xl" />
+              <span className="font-semibold">Sign up with Google</span>
+            </button>
+            <p className="font-[600] text-[17px] mb-4">
+              Already Have An Account?{' '}
+              <Link to="/auth/login">
+                {' '}
+                <span className="text-primary text-lg cursor-pointer underline">
+                  LOG IN{' '}
+                </span>
+              </Link>
+              now!
+            </p>
           </div>
         </div>
       </div>

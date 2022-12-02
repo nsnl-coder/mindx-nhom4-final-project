@@ -1,9 +1,9 @@
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
 
-dotenv.config()
+dotenv.config();
 
 // start express server
-require('./config/server')
+require('./config/server');
 
 // start socket server
-require('./config/socketio')
+require('./config/socketio');
