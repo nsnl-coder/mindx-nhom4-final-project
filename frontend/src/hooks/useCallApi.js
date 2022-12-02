@@ -15,11 +15,12 @@ const useCallApi = () => {
       const { data } = await axios({
         method: requestConfig.method || 'GET',
         url: requestConfig.url,
+        withCredentials: true,
+        credentials: 'include',
         data: requestConfig.data,
         headers: {
           token,
         },
-        withCredentials: true,
       })
       applyApiData(data)
     } catch (err) {
