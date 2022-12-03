@@ -31,6 +31,7 @@ const signOut = (req, res, next) => {
   res.clearCookie('jwt', {
     httpOnly: true,
     secure: true,
+    domain: process.env.BACKEND_DOMAIN,
     sameSite: 'None',
   });
 
@@ -282,7 +283,7 @@ const googleLoginCallback = (req, res, next) => {
     ),
     httpOnly: true,
     secure: true,
-    domain: 'uposted-app.onrender.com',
+    domain: process.env.BACKEND_DOMAIN,
     sameSite: 'None',
   });
   res.status(200).redirect(process.env.FRONTEND_HOST);
