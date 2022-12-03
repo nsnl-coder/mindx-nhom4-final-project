@@ -194,7 +194,7 @@ const Login = () => {
             </button>
           </form>
           <p className="text-center text-lg mb-3">or</p>
-          <a href={`${import.meta.env.VITE_BACKEND_HOST}/auth/google`}>
+          <a href={`${import.meta.env.VITE_BACKEND_HOST}/api/auth/google`}>
             <button className="w-full h-[50px] gap-4 mb-3 rounded-md flex items-center justify-center border-[2px] border-green-800">
               <FcGoogle className="text-3xl" />
               <span className="font-semibold">Sign in with Google</span>
