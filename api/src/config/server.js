@@ -1,11 +1,10 @@
-const cookieSession = require('cookie-session');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const passport = require('passport');
 const path = require('path');
-const passportStrategy = require('./passport');
+require('./passport');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 //
 const postRoute = require('../routes/post');
 const commentRoute = require('../routes/comment');
@@ -17,17 +16,8 @@ const notifyRoute = require('../routes/notify');
 const app = express();
 
 app.use(
-  cookieSession({
-    name: 'session',
-    keys: ['aaa'],
-    maxAge: 24 * 60 * 60 * 100,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(
   cors({
-    origin: 'https://uposted.netlify.app',
+    origin: process.env.FRONTEND_HOST,
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })
@@ -42,6 +32,7 @@ const main = async () => {
   }
 };
 app.use(express.static(path.join(__dirname, '..', '..', 'public')));
+app.use(cookieParser());
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 

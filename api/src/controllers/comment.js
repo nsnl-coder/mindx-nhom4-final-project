@@ -8,7 +8,6 @@ const Post = require('../models/post');
 //
 
 const isValidObjectId = (id) => {
-  console.log(id);
   const newObjectId = new ObjectId(id);
 
   if (id === newObjectId.toString()) return true;

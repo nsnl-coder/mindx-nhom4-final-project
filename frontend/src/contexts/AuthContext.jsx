@@ -19,27 +19,27 @@ const AuthContextProvider = (props) => {
   const [auth, setAuth] = useState(initialAuth)
 
   useEffect(() => {
-    if (authLocal && authLocal.token) {
-      axios({
-        url: '/api/auth/checkJWT',
-        headers: {
-          token: authLocal.token,
-        },
+    axios({
+      url: '/api/auth/checkJWT',
+      method: 'post',
+      headers: {
+        token: authLocal?.token,
+      },
+      withCredentials: true,
+    })
+      .then((data) => {
+        const { _id, profileImage, username, token } = data.data.user
+        setAuth({
+          userId: _id,
+          isLoggedIn: true,
+          profileImage,
+          username,
+          token: authLocal?.token || token,
+        })
       })
-        .then((data) => {
-          const { _id, profileImage, username } = data.data.user
-          setAuth({
-            userId: _id,
-            isLoggedIn: true,
-            profileImage,
-            username,
-            token: authLocal.token,
-          })
-        })
-        .catch((err) => {
-          localStorage.removeItem('auth')
-        })
-    }
+      .catch((err) => {
+        localStorage.removeItem('auth')
+      })
   }, [])
   const contextData = { auth, setAuth }
 

@@ -8,16 +8,37 @@ const Token = require('../models/token');
 const passport = require('passport');
 const { createError } = require('../utils/createError');
 
+const signJwtToken = (id) => {
+  const token = jwt.sign({ id }, process.env.JWT_KEY, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+  return token;
+};
+
 const isJwtTokenValid = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select(
       'username profileImage'
     );
+    user.token = req.token;
     res.status(200).json({ user });
   } catch (err) {
     next(err);
   }
 };
+
+const signOut = (req, res, next) => {
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    secure: true,
+    domain: 'localhost',
+    sameSite: 'None',
+  });
+  res
+    .status(204)
+    .send({ status: 'success', message: 'You have been sign out' });
+};
+
 const register = async (req, res, next) => {
   try {
     const { username, email } = req.body;
@@ -253,10 +274,19 @@ const ResetPassword = async (req, res, next) => {
 
 const googleLogin = passport.authenticate('google', ['profile', 'email']);
 
-const googleLoginCallback = passport.authenticate('google', {
-  successRedirect: `${process.env.FRONTEND_HOST}/auth/login`,
-  failureRedirect: '/login/failed',
-});
+const googleLoginCallback = (req, res, next) => {
+  // sendback cookie
+  res.cookie('jwt', signJwtToken(req.user._id), {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+    secure: true,
+    domain: 'uposted.netlify.app',
+    sameSite: 'None',
+  });
+  res.status(200).redirect('http://127.0.0.1:5173');
+};
 
 const loginSuccess = async (req, res) => {
   const ggUser = req?.user?._json;
@@ -293,4 +323,5 @@ module.exports = {
   googleLoginCallback,
   loginSuccess,
   googleLogout,
+  signOut,
 };

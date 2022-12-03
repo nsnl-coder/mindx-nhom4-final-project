@@ -11,7 +11,7 @@ export default function useLogUserOut() {
   const logOut = () => {
     setAuth({ isLoggedIn: false })
     localStorage.removeItem('auth')
-    sendRequest({ url: '/api/auth/logout' })
+    sendRequest({ url: '/api/auth/signout' })
     showToastSuccess('Log out successfully')
     navigate('/')
   }
