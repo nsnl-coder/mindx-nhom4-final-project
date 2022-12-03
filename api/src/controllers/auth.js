@@ -31,9 +31,9 @@ const signOut = (req, res, next) => {
   res.clearCookie('jwt', {
     httpOnly: true,
     secure: true,
-    domain: 'localhost',
     sameSite: 'None',
   });
+
   res
     .status(204)
     .send({ status: 'success', message: 'You have been sign out' });
