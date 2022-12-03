@@ -25,7 +25,11 @@ const main = async () => {
 app.use(express.static(path.join(__dirname, '..', '..', 'public')))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
-app.use(cors())
+app.use(
+  cors({
+    origin: process.env.FRONTEND_HOST,
+  })
+)
 app.use('/api/post', postRoute)
 app.use('/api/comment', commentRoute)
 app.use('/api/user', userRoute)
