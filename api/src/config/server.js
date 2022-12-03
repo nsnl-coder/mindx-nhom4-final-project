@@ -43,6 +43,10 @@ app.use('/api/auth', authRoute);
 app.use('/api/message', messageRoute);
 app.use('/api/notify', notifyRoute);
 
+app.use('*', (req, res, next) => {
+  req.send('This route is not defined');
+});
+
 app.use((err, req, res, next) => {
   console.log(err);
   const errStatus = err.status || 500;
