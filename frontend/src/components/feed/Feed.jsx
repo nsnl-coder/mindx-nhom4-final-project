@@ -53,8 +53,8 @@ const Feed = ({ user, collection, apiUrl }) => {
     timeoutRef.current = setTimeout(() => {
       if (collection === 'saved') {
         let saved = user?.savedPosts?.slice(
-          pageNumber * 10,
-          pageNumber * 10 + 9
+          (pageNumber - 1) * 10,
+          (pageNumber - 1) * 10 + 9
         )
         if (saved?.length > 0 || pageNumber === 0) {
           setHasMore(true)

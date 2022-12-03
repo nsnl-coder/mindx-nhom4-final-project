@@ -5,6 +5,7 @@ import useCallApi from '../../hooks/useCallApi'
 import { showToastSuccess } from '../../utils/toast'
 import IconReturn from '../../assets/icon-return.svg'
 import { BiError } from 'react-icons/bi'
+import { LoadingSpinner } from '../../components'
 const ForgottenPass = () => {
   const {
     register,
@@ -22,7 +23,7 @@ const ForgottenPass = () => {
   const onSubmit = (data) => {
     sendRequest(
       {
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/auth/forgot-password`,
+        url: `/api/auth/forgot-password`,
         method: 'post',
         data,
       },
@@ -41,10 +42,10 @@ const ForgottenPass = () => {
         <img
           src={IconReturn}
           alt=""
-          className="cursor-pointer absolute top-10 left-20"
+          className="cursor-pointer absolute md:top-10 md:left-20 md:w-[30px] w-[20px] top-5 left-5"
         />
       </Link>
-      <div className="w-[600px] px-20 py-24 shadow-sm shadow-[#333] rounded-lg">
+      <div className="w-[600px] px-2  md:px-20 py-24 shadow-sm shadow-[#333] rounded-lg">
         <h1 className="text-3xl font-bold tracking-wider mb-20">
           Forgotten Password?
         </h1>
@@ -53,7 +54,7 @@ const ForgottenPass = () => {
             Enter your email:
           </label>
           <div
-            className={`w-full outline-none  rounded-md relative    h-12 px-4 shadow-sm shadow-[#3333336d]  my-2 ${
+            className={`w-full outline-none  rounded-md relative h-12 px-4 shadow-sm shadow-[#3333336d]  my-2 ${
               errors?.email && 'border-primary border-[2px]'
             } ${
               errorMessage === 'Email not valid' &&
@@ -68,7 +69,7 @@ const ForgottenPass = () => {
                 pattern:
                   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
               })}
-              className="w-[80%] h-full outline-none "
+              className="md:w-[80%] w-full h-full outline-none "
             />
             {(errors?.email || errorMessage) && (
               <BiError className="absolute top-[50%] text-xl right-6 -translate-y-[50%] text-primary" />
@@ -86,9 +87,15 @@ const ForgottenPass = () => {
           <button
             disabled={isLoading ? true : false}
             type="submit"
-            className="rounded-[50px] mt-8 shadow-sm disabled:opacity-50 shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
+            className="rounded-[50px] relative mt-8 shadow-sm disabled:opacity-50 shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
           >
-            SEND EMAIL
+            {isLoading ? (
+              <span className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[65%]">
+                <LoadingSpinner />
+              </span>
+            ) : (
+              'SIGN UP'
+            )}
           </button>
         </form>
       </div>

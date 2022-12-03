@@ -19,6 +19,7 @@ const useCallApi = () => {
         headers: {
           token,
         },
+        withCredentials: true,
       })
       applyApiData(data)
     } catch (err) {

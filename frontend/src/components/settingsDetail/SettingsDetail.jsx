@@ -14,6 +14,7 @@ const SettingsDetail = ({ setting }) => {
 
   const useApiData = (data) => {
     setUser(data)
+    console.log(data)
   }
 
   const updateUser = () => {

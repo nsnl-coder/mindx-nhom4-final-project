@@ -14,7 +14,7 @@ import searchIcon from '../../assets/icon-search.svg'
 import menuIcon from '../../assets/icon-bars.svg'
 import useLogUserOut from '../../hooks/useLogUserOut'
 import { useTranslation } from 'react-i18next'
-
+import { useEffect } from 'react'
 //
 import { NotifyContext } from '../../contexts'
 import Notify from '../../pages/ChatApp/notify/Notify'
@@ -38,6 +38,9 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
       navigate(`/search?q=${text}`)
     }
   }
+  useEffect(() => {
+    console.log(auth)
+  }, [auth])
   return (
     <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
       <div className="max-w-6xl mx-auto flex items-center gap-x-14 px-10">

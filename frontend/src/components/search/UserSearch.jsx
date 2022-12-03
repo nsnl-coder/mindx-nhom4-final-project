@@ -3,7 +3,7 @@ import ScrollToTop from 'react-scroll-to-top'
 import { Link } from 'react-router-dom'
 import { Spinner } from '..'
 import iconUp from '../../assets/icon-angle-up.svg'
-import useSearchUsers from '../../hooks/useSearchUsers.js'
+import useSearchUsers from '../../hooks/useSearchUser2'
 import SearchCart from './ItemUser.jsx'
 
 const SearchUsers = ({ search }) => {
@@ -30,11 +30,13 @@ const SearchUsers = ({ search }) => {
 
   return (
     <div className={`bg-white relative px-8 mt-10 `}>
-      {users.length > 0 && (
+      {users?.length > 0 && (
         <div className="flex items-center  flex-wrap gap-4">
           {users.map((user) => {
             return (
-              <div className={`${user.userPosts && 'basis-[100%]'}`}>
+              <div
+                className={`${user?.userPosts?.length > 0 && 'basis-[100%]'}`}
+              >
                 <div
                   className="flex sm:gap-7 gap-2 sm:flex-nowrap flex-wrap items-center "
                   key={user._id}
@@ -58,7 +60,7 @@ const SearchUsers = ({ search }) => {
                           className=" 2xl:h-[250px] 2xl:w-[250px] xl:h-[200px] xl:w-[200px] sm:w-[150px] sm:h-[170px] lg:w-[170px] lg:h-[180px] md:w-[160px] md:h-[160px] w-[140px] h-[140px] overflow-hidden"
                           key={post._id}
                         >
-                          <SearchCart post={post} user={user} />
+                          <SearchCart post={post} />
                         </div>
                       )
                     })}
