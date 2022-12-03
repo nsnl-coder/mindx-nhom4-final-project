@@ -44,7 +44,7 @@ app.use('/api/message', messageRoute);
 app.use('/api/notify', notifyRoute);
 
 app.use('*', (req, res, next) => {
-  req.send('This route is not defined');
+  res.send('This route is not defined');
 });
 
 app.use((err, req, res, next) => {

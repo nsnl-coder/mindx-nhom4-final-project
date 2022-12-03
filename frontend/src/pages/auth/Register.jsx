@@ -21,7 +21,6 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState(error)
   const [showPassword, setShowPassword] = useState(false)
   const applyApiData = (datas) => {
-    console.log(datas)
     navigate(`/auth/verify/${datas._id}`, { state: { email: datas.email } })
   }
   const onSubmit = (data) => {
