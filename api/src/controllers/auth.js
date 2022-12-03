@@ -282,10 +282,10 @@ const googleLoginCallback = (req, res, next) => {
     ),
     httpOnly: true,
     secure: true,
-    domain: 'uposted.netlify.app',
+    domain: 'uposted-app.onrender.com',
     sameSite: 'None',
   });
-  res.status(200).redirect('http://127.0.0.1:5173');
+  res.status(200).redirect(process.env.FRONTEND_HOST);
 };
 
 const loginSuccess = async (req, res) => {
