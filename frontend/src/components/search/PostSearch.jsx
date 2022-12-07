@@ -80,9 +80,6 @@ const SearchPost = ({ search }) => {
     )
     console.log('a')
   }, [search])
-  useEffect(() => {
-    console.log(posts)
-  }, [posts])
   if (notFound)
     return (
       <div

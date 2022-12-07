@@ -38,9 +38,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
       navigate(`/search?q=${text}`)
     }
   }
-  useEffect(() => {
-    console.log(auth)
-  }, [auth])
+
   return (
     <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
       <div className="max-w-6xl mx-auto flex items-center gap-x-14 px-10">

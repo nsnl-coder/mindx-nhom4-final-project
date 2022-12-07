@@ -17,7 +17,7 @@ const MyMessageBlock = ({ messages }) => {
       </div>
       <div className="space-y-1.5 mr-8">
         {messages.map((message) => (
-          <MyMessage key={message._id} message={message} />
+          <MyMessage key={message?._id} message={message} />
         ))}
       </div>
     </div>

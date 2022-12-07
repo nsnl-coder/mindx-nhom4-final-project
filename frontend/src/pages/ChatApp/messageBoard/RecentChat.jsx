@@ -11,7 +11,7 @@ const RecentChat = (props) => {
   const { isRead } = message
 
   const notify = messageNotify.find(
-    (noti) => noti.notifyFrom._id === receiver._id
+    (noti) => noti.notifyFrom?._id === receiver?._id
   )
 
   const notifyCount = notify ? notify.count : 0
@@ -35,7 +35,7 @@ const RecentChat = (props) => {
             {!isTyping && (
               <p
                 className={
-                  !isRead && message.from._id !== currentUserId
+                  !isRead && message.from?._id !== currentUserId
                     ? 'font-bold'
                     : ''
                 }

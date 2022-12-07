@@ -14,7 +14,7 @@ const OtherMessageGroup = ({ messages, receiver }) => {
       </div>
       <div className="ml-8 space-y-1.5">
         {messages.map((message) => (
-          <OtherMessage key={message._id} message={message} />
+          <OtherMessage key={message?._id} message={message} />
         ))}
       </div>
     </div>

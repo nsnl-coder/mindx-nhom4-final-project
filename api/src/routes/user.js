@@ -1,5 +1,5 @@
-const express = require('express');
-const uploadImage = require('../utils/uploadImage');
+const express = require('express')
+const uploadImage = require('../utils/uploadImage')
 
 const {
   getUser,
@@ -11,28 +11,29 @@ const {
   getAllUser,
   getUserBasicInfo,
   searchUsers,
-} = require('../controllers/user');
+  removeSavedPost,
+} = require('../controllers/user')
 
-const { verifyUser } = require('../utils/verify');
-const router = express.Router();
+const { verifyUser } = require('../utils/verify')
+const router = express.Router()
 
-router.get('/search-users', searchUsers);
+router.get('/search-users', searchUsers)
 
 //
-router.get('/find/:id', getUser);
-router.put('/change-password/:id', verifyUser, changePassword);
-router.put('/save-post/:id', verifyUser, addSavedPosts);
+router.get('/find/:id', getUser)
+router.put('/change-password/:id', verifyUser, changePassword)
+router.put('/save-post/:id', verifyUser, addSavedPosts)
 
 router.put(
   '/updateUser/:id',
   verifyUser,
   uploadImage.single('profileImage'),
   UpdateUser
-);
+)
 
-router.get('/basic-info/:id', getUserBasicInfo);
-router.get('/strangerUser/:id', getStrangerUser);
-router.delete('/delete/:id', deleteUser);
-router.get('/', getAllUser);
-
-module.exports = router;
+router.get('/basic-info/:id', getUserBasicInfo)
+router.get('/strangerUser/:id', getStrangerUser)
+router.delete('/delete/:id', deleteUser)
+router.get('/', getAllUser)
+router.put('/remove-savedPost/:id', removeSavedPost)
+module.exports = router

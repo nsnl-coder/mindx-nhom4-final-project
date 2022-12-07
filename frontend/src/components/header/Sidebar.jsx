@@ -19,9 +19,6 @@ const Sidebar = ({ auth }) => {
       navigate(`/search?q=${text}`)
     }
   }
-  useEffect(() => {
-    console.log(auth)
-  }, [auth])
   return (
     <div className="w-80 h-screen bg-white px-4 py-4 flex flex-col">
       <div className="flex-grow">

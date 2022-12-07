@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
 import Logo from '../../assets/logo-icon-big.svg'
 import useCallApi from '../../hooks/useCallApi'
 import { AuthContext } from '../../contexts/AuthContext'
@@ -23,7 +22,7 @@ const Login = () => {
     formState: { errors },
   } = useForm()
   const applyApi = (user) => {
-    if (user.verified === false) {
+    if (!user.verified && user) {
       navigate(`/auth/verify/${user.id}`, { state: { email: user.email } })
     } else {
       const auth = {
@@ -39,7 +38,6 @@ const Login = () => {
     }
   }
   const applyApi2 = (user) => {
-    console.log(user)
     sendRequest(
       {
         data: user,
@@ -103,7 +101,7 @@ const Login = () => {
             <label className="text-lg font-semibold ">Email address:</label>
             <br />
             <div
-              className={`w-full rounded-md relative h-12 outline-none  overflow-hidden shadow-sm shadow-[#3333336d]  my-2 ${
+              className={`w-full rounded-md  relative h-12 outline-none  overflow-hidden shadow-sm shadow-[#3333336d]  my-2 ${
                 errors?.email && 'border-[2px] border-primary'
               } ${
                 errorMessage === 'Email not valid!' &&

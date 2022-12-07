@@ -5,6 +5,7 @@ import Logo from '../../assets/logo-icon-small.svg'
 import useCallApi from '../../hooks/useCallApi'
 import { showToastSuccess, showToastError } from '../../utils/toast'
 import IconReturn from '../../assets/icon-return.svg'
+
 const Verify = () => {
   const { id } = useParams()
   const { error, isLoading, sendRequest } = useCallApi()
@@ -60,7 +61,7 @@ const Verify = () => {
         </p>
         <p>Still can't the email?</p>
         <button
-          disabled={delay ? true : false}
+          disabled={delay || isLoading ? true : false}
           onClick={resendEmail}
           className={` disabled:opacity-50 relative w-[150px] h-[40px] bg-primary text-white rounded-md text-md font-roboto  mt-4 shadow-sm shadow-black active:shadow-none font-semibold`}
         >

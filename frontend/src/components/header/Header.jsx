@@ -19,7 +19,6 @@ const Header = (props) => {
     } else {
       document.querySelector('body').classList.remove('overflow-y-hidden')
     }
-    console.log(isSideBarShow)
   }, [isSideBarShow])
 
   return (

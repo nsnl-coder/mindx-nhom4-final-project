@@ -7,7 +7,13 @@ import deleteIcon from '../../../assets/icon-delete.svg'
 import useCallApi from '../../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../../utils/toast'
 
-const PostCard = ({ post, user }) => {
+const PostCard = ({
+  post,
+  user,
+  handleDeletePost,
+  collection,
+  handleDeleteSavedPost,
+}) => {
   const { auth } = useContext(AuthContext)
 
   const { isLoading, error, sendRequest } = useCallApi()
@@ -28,22 +34,14 @@ const PostCard = ({ post, user }) => {
     )
   }
 
-  const handleDeletePost = (id) => {
-    sendRequest(
-      {
-        url: `/api/post/${auth?.userId}/${id}`,
-        method: 'delete',
-      },
-      useApiData
-    )
-  }
-
   useEffect(() => {
     if (error) {
       showToastError('Something went wrong, please try again')
     }
   }, [error])
-
+  useEffect(() => {
+    console.log(collection)
+  }, [collection])
   return (
     <div className="postCard">
       <div className="hover:shadow-xl image-full group relative rounded-xl">
@@ -58,21 +56,40 @@ const PostCard = ({ post, user }) => {
             {post?.title}
           </p>
         </Link>
-        {auth?.userId === post?.author?._id ? (
+        {!collection &&
+          (auth?.userId === post?.author?._id ? (
+            <button
+              type="button"
+              className="hidden group-hover:block absolute top-2 left-2"
+              onClick={() => handleDeletePost(post?._id)}
+            >
+              <img src={deleteIcon} alt="delete-icon" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="hidden group-hover:block absolute top-2 left-2"
+              onClick={() => handleSavePost(post?._id)}
+            >
+              <img src={saveIcon} alt="save-icon" />
+            </button>
+          ))}
+        {collection === 'saved' && (
+          <button
+            type="button"
+            className="hidden group-hover:block absolute top-2 left-2"
+            onClick={() => handleDeleteSavedPost(post?._id)}
+          >
+            <img src={deleteIcon} alt="delete-icon" />
+          </button>
+        )}
+        {collection === 'posts' && (
           <button
             type="button"
             className="hidden group-hover:block absolute top-2 left-2"
             onClick={() => handleDeletePost(post?._id)}
           >
             <img src={deleteIcon} alt="delete-icon" />
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="hidden group-hover:block absolute top-2 left-2"
-            onClick={() => handleSavePost(post?._id)}
-          >
-            <img src={saveIcon} alt="save-icon" />
           </button>
         )}
       </div>
@@ -88,7 +105,7 @@ const PostCard = ({ post, user }) => {
           />
           <h4 className="text-text mr-2 text-lg md:text-md truncate hover:text-primary hover:font-medium">
             {post?.author?.firstName && post.author.lastName
-              ? `${post?.author?.firstName} ${post.author.lastName}`
+              ? `${post?.author?.firstName} ${post?.author?.lastName}`
               : `User-${post?.author?._id}`}
           </h4>
         </Link>

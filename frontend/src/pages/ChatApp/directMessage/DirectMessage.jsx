@@ -69,7 +69,7 @@ const DirectMessage = () => {
 
   // listening for incoming message
   useEffect(() => {
-    if (receiveMessage && receiveMessage.from._id === receiverId) {
+    if (receiveMessage && receiveMessage.from?._id === receiverId) {
       setNewMessage(receiveMessage)
     }
   }, [receiveMessage])
@@ -80,10 +80,10 @@ const DirectMessage = () => {
     if (!newMessage) return
 
     const formartedMessage = {
-      from: newMessage.from._id,
-      to: newMessage.to._id,
+      from: newMessage.from?._id,
+      to: newMessage.to?._id,
       content: newMessage.content,
-      _id: newMessage._id,
+      _id: newMessage?._id,
     }
 
     const newAllMessages = [...allMessages]
@@ -157,12 +157,12 @@ const DirectMessage = () => {
                 return (
                   <OtherMessageBlock
                     receiver={userBasicInfo}
-                    key={block[0]._id}
+                    key={block[0]?._id}
                     messages={block}
                   />
                 )
               }
-              return <MyMessageBlock key={block[0]._id} messages={block} />
+              return <MyMessageBlock key={block[0]?._id} messages={block} />
             })}
 
           {/*  */}

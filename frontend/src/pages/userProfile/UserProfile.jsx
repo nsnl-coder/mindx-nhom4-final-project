@@ -25,7 +25,7 @@ const UserProfile = () => {
       useApiData
     )
   }, [])
-
+  useEffect(() => {}, [userId])
   return (
     <>
       <div className="bg-white min-h-screen">
