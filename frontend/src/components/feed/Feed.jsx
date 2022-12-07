@@ -111,7 +111,6 @@ const Feed = ({ user, collection, apiUrl }) => {
           setHasMore(true)
           const newData = [...new Set([...posts, ...saved])]
           setPosts(newData)
-
           return
         } else {
           setHasMore(false)

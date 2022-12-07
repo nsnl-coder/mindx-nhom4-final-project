@@ -46,7 +46,6 @@ const useSearchUsers = (keyword) => {
         )
       }, 1000)
     }
-    console.log(pageNumber)
   }, [pageNumber, request])
 
   useEffect(() => {

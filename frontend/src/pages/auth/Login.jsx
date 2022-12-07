@@ -60,12 +60,9 @@ const Login = () => {
   const changeShowPassword = () => {
     setShowPassword(!showPassword)
   }
-  const googleLogin = () => {
-    window.open(
-      `${import.meta.env.VITE_BACKEND_HOST}/api/auth/google/callback`,
-      '_self'
-    )
-  }
+  // const googleLogin = () => {
+  //   window.open(`${import.meta.env.VITE_BACKEND_HOST}/api/auth/google`, '_self')
+  // }
   useEffect(() => {
     sendRequest({ url: `api/auth/login/success` }, applyApi2)
   }, [])
@@ -196,13 +193,12 @@ const Login = () => {
             </button>
           </form>
           <p className="text-center text-lg mb-3">or</p>
-          <button
-            className="w-full h-[50px] gap-4 mb-3 rounded-md flex items-center justify-center border-[2px] border-green-800"
-            onClick={googleLogin}
-          >
-            <FcGoogle className="text-3xl" />
-            <span className="font-semibold">Sign in with Google</span>
-          </button>
+          <a href={`${import.meta.env.VITE_BACKEND_HOST}/api/auth/google`}>
+            <button className="w-full h-[50px] gap-4 mb-3 rounded-md flex items-center justify-center border-[2px] border-green-800">
+              <FcGoogle className="text-3xl" />
+              <span className="font-semibold">Sign in with Google</span>
+            </button>
+          </a>
           <p className="font-[600] text-[17px] mb-4">
             Don't you have an account?{' '}
             <Link

@@ -8,16 +8,36 @@ const Token = require('../models/token')
 const passport = require('passport')
 const { createError } = require('../utils/createError')
 
+const signJwtToken = (id) => {
+  const token = jwt.sign({ id }, process.env.JWT_KEY, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  })
+  return token
+}
+
 const isJwtTokenValid = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select(
       'username profileImage'
     )
+    user.token = req.token
     res.status(200).json({ user })
   } catch (err) {
     next(err)
   }
 }
+
+const signOut = (req, res, next) => {
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    secure: true,
+    domain: process.env.BACKEND_DOMAIN,
+    sameSite: 'None',
+  })
+
+  res.status(204).send({ status: 'success', message: 'You have been sign out' })
+}
+
 const register = async (req, res, next) => {
   try {
     const { username, email } = req.body
@@ -30,11 +50,8 @@ const register = async (req, res, next) => {
     })
     if (checkUser)
       return next(createError(409, 'User with given username already Exist!'))
-    let checkEmail = await User.findOne({
-      email: req.body.email,
-      googleId: null,
-    })
-    if (checkEmail)
+    let checkEmail = await User.findOne({ email: req.body.email })
+    if (!checkEmail?.googleId && checkEmail)
       return next(createError(409, 'User with given email already Exist!'))
 
     const newUser = new User(req.body)
@@ -114,11 +131,10 @@ const login = async (req, res, next) => {
       )
       res.status(200).json({ ...details, token_access })
     } else {
-      console.log(req.body)
       let user
       user = await User.findOne({ googleId: req.body?.googleId })
       if (!user) {
-        user = await User.create(req.body)
+        user = await new User(req.body).save()
       }
       const token_access = jwt.sign(
         { id: user._id, isAdmin: user.isAdmin },
@@ -257,10 +273,19 @@ const ResetPassword = async (req, res, next) => {
 
 const googleLogin = passport.authenticate('google', ['profile', 'email'])
 
-const googleLoginCallback = passport.authenticate('google', {
-  successRedirect: `${process.env.FRONTEND_HOST}/auth/login`,
-  failureRedirect: '/login/failed',
-})
+const googleLoginCallback = (req, res, next) => {
+  // sendback cookie
+  res.cookie('jwt', signJwtToken(req.user._id), {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+    secure: true,
+    domain: process.env.BACKEND_DOMAIN,
+    sameSite: 'None',
+  })
+  res.status(200).redirect(process.env.FRONTEND_HOST)
+}
 
 const loginSuccess = async (req, res) => {
   const ggUser = req?.user?._json
@@ -297,4 +322,5 @@ module.exports = {
   googleLoginCallback,
   loginSuccess,
   googleLogout,
+  signOut,
 }

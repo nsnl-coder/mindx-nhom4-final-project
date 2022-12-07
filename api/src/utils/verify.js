@@ -5,16 +5,29 @@ const { createError } = require('./createError');
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.token;
 
-  if (!authHeader) {
+  if (!authHeader && !req.cookies.jwt) {
     return next(createError(401, 'You are not authencation'));
   }
-  const token = authHeader.split(' ')[1];
+
+  let token = req.cookies.jwt;
+
+  if (!token) {
+    token = authHeader.split(' ')[1];
+  }
+
   jwt.verify(token, process.env.JWT_KEY, (err, user) => {
     if (err) {
-      console.log(err);
+      res.clearCookie('jwt', {
+        httpOnly: true,
+        secure: true,
+        domain: 'uposted.netlify.app',
+        sameSite: 'None',
+      });
+
       return next(createError(401, 'Token is not valid!'));
     }
     req.user = user;
+    req.token = token;
     next();
   });
 };
