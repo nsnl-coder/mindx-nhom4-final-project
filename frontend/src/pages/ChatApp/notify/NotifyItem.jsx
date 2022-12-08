@@ -46,11 +46,11 @@ const NotifyItem = (props) => {
           <p className="text-sm text-text">
             {noti?.notifyContent || noti?.content}...
           </p>
-          {!isToast && (
+          {/* {!isToast && (
             <p className={noti?.count > 0 ? 'text-sm' : 'text-sm font-bold'}>
-              3 days ago
+              Few seconds ago
             </p>
-          )}
+          )} */}
           {isToast && <p className="text-xs mt-1">Few seconds ago</p>}
         </div>
         {noti?.count > 0 && !isToast && (

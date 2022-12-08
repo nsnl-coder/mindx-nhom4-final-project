@@ -91,51 +91,49 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                   <div className="w-3 aspect-square rounded-full bg-primary absolute -right-1.5 top-0.5"></div>
                 )}
               </label>
-              <div tabIndex={0} className="dropdown-content menu w-52 pt-6 rounded-xl">
-                <ul className="bg-base-100 shadow-md">
-                  <li>
-                    <Link to={'/'}>
-                      <AiFillHome />
-                      {t('feed')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={`/profile/${userId}`}>
-                      <FaUser />
-                      {username}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={'/chat'}>
-                      <RiMessageFill />
-                      {t('messages')}
-                      {messageNotifyCount > 0 && (
-                        <div className="w-6 aspect-square rounded-full bg-primary ml-auto text-white text-sm flex justify-center items-center">
-                          {messageNotifyCount > 9 ? '9+' : messageNotifyCount}
-                        </div>
-                      )}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={`/new-post`}>
-                      <MdAddCircle />
-                      {t('new_post')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={`/settings`}>
-                      <IoSettingsSharp />
-                      {t('settings')}
-                    </Link>
-                  </li>
-                  <li className="text-text" onClick={logOut}>
-                    <a>
-                      <RiLogoutCircleFill />
-                      {t('log_out')}
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              <ul tabIndex={0} className="dropdown-content menu w-52 pt-4bg-base-100 shadow-md">
+                <li>
+                  <Link to={'/'}>
+                    <AiFillHome />
+                    {t('feed')}
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/profile/${userId}`}>
+                    <FaUser />
+                    {username}
+                  </Link>
+                </li>
+                <li>
+                  <Link to={'/chat'}>
+                    <RiMessageFill />
+                    {t('messages')}
+                    {messageNotifyCount > 0 && (
+                      <div className="w-6 aspect-square rounded-full bg-primary ml-auto text-white text-sm flex justify-center items-center">
+                        {messageNotifyCount > 9 ? '9+' : messageNotifyCount}
+                      </div>
+                    )}
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/new-post`}>
+                    <MdAddCircle />
+                    {t('new_post')}
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/settings`}>
+                    <IoSettingsSharp />
+                    {t('settings')}
+                  </Link>
+                </li>
+                <li className="text-text" onClick={logOut}>
+                  <a>
+                    <RiLogoutCircleFill />
+                    {t('log_out')}
+                  </a>
+                </li>
+              </ul>
             </div>
             <div className="dropdown dropdown-hover dropdown-end pl-6">
               <label tabIndex={0}>
@@ -157,26 +155,24 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
             <label tabIndex={0} className="text-2xl cursor-pointer">
               <FaUserPlus />
             </label>
-            <div tabIndex={0} className="dropdown-content menu w-52 pt-4">
-              <ul className="bg-base-100 shadow-md">
-                <li>
-                  <Link
-                    to="/auth/login"
-                    className="text-text focus:bg-gray-200"
-                  >
-                    {t('login')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/auth/register"
-                    className="text-text focus:bg-gray-200"
-                  >
-                    {t('register')}
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            <ul tabIndex={0} className="dropdown-content menu w-52 pt-4bg-base-100 shadow-md">
+              <li>
+                <Link
+                  to="/auth/login"
+                  className="text-text focus:bg-gray-200"
+                >
+                  {t('login')}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/auth/register"
+                  className="text-text focus:bg-gray-200"
+                >
+                  {t('register')}
+                </Link>
+              </li>
+            </ul>
           </div>
         )}
       </div>
