@@ -20,7 +20,7 @@ const MemoImg = ({ link, setFormError, errorMessage }) => {
       })
     }
   }
-  return <img src={link} onLoad={onImageLoad} alt="Selected Photo" />
+  return <img onLoad={onImageLoad} src={link} alt="Selected Photo" />
 }
 
 export default React.memo(MemoImg)
