@@ -71,18 +71,18 @@ const Login = () => {
   }, [error])
 
   return (
-    <div className="flex items-center justify-center h-screen text-black shadow-md">
+    <div className="flex items-center justify-center h-screen text-text shadow-md">
       <Link to="/">
         <img
           src={IconReturn}
           alt=""
-          className="cursor-pointer absolute md:top-10 md:left-20 top-8 left-5 md:w-[30px] w-[20px] "
+          className="cursor-pointer absolute md:top-10 md:left-20 top-5 left-5"
         />
       </Link>
-      <div className="w-[550px] shadow-md shadow-gray rounded-md p-10 mt-10 border-[1px] border-gray">
+      <div className="w-[550px] shadow-lg rounded-md p-10 mt-10">
         <div className="flex justify-between">
           <div>
-            <h1 className="text-3xl font-semibold text-black mb-5">
+            <h1 className="text-3xl font-semibold text-text mb-5">
               {t('welcome-title-login')}
             </h1>
             <p className="text-dark-gray"> {t('welcome-content-login')}</p>
@@ -201,11 +201,11 @@ const Login = () => {
             {t('link-to-register')}{' '}
             <Link
               to="/auth/register"
-              className="text-primary text-lg cursor-pointer underline"
+              className="text-primary text-lg cursor-pointer underline uppercase"
             >
-              {t('create-new')}{' '}
+              {t('create-new')}
             </Link>
-            {t('now')}
+            {' '}{t('now')}
           </p>
           <Link to="/auth/forgot">
             {' '}

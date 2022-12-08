@@ -19,6 +19,7 @@ const Sidebar = ({ auth }) => {
       navigate(`/search?q=${text}`)
     }
   }
+  
   return (
     <div className="w-80 h-screen bg-white px-4 py-4 flex flex-col">
       <div className="flex-grow">
@@ -43,14 +44,15 @@ const Sidebar = ({ auth }) => {
           </button>
         </form>
       </div>
-      <div className="flex items-center space-x-2">
-        <img
-          src={auth.profileImage}
-          alt="profile image"
-          className="w-9 aspect-square object-cover object-center rounded-full"
-        />
-        <p className="font-semibold">{auth.username}</p>
-      </div>
+      {auth.isLoggedIn ?
+        <div className="flex items-center space-x-2">
+          <img
+            src={auth?.profileImage}
+            alt="profile image"
+            className="w-9 aspect-square object-cover object-center rounded-full"
+          />
+          <p className="font-semibold">{auth?.username}</p>
+        </div> : null}
     </div>
   )
 }

@@ -40,7 +40,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
   }
 
   return (
-    <div className="py-4 shadow-xl sticky top-0 bg-white z-20">
+    <div className="py-4 pr-12 md:pr-10 xl:pr-0 shadow-xl sticky top-0 bg-white z-20">
       <div className="max-w-6xl mx-auto flex items-center gap-x-14 px-10">
         <div className="flex items-center flex-grow ">
           <label
@@ -91,7 +91,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                   <div className="w-3 aspect-square rounded-full bg-primary absolute -right-1.5 top-0.5"></div>
                 )}
               </label>
-              <ul tabIndex={0} className="dropdown-content menu w-52 pt-4bg-base-100 shadow-md">
+              <ul tabIndex={0} className="dropdown-content menu w-52 bg-base-100 shadow-md rounded-xl">
                 <li>
                   <Link to={'/'}>
                     <AiFillHome />
@@ -155,7 +155,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
             <label tabIndex={0} className="text-2xl cursor-pointer">
               <FaUserPlus />
             </label>
-            <ul tabIndex={0} className="dropdown-content menu w-52 pt-4bg-base-100 shadow-md">
+            <ul tabIndex={0} className="dropdown-content menu w-52 bg-base-100 shadow-md rounded-xl">
               <li>
                 <Link
                   to="/auth/login"
