@@ -18,7 +18,7 @@ const MemoImg = ({ link, setFormError, errorMessage }) => {
       })
     }
   }
-  return <img onLoad={onImageLoad} src={link} alt="Selected Photo" />
+  return <img onLoad={onImageLoad} src={link} alt="Selected Photo" className="rounded-xl" />
 }
 
 export default React.memo(MemoImg)

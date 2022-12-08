@@ -42,7 +42,7 @@ const PostDetail = () => {
     <PageContainer>
       <div className="flex flex-col md:flex-row py-6 gap-x-6">
         <div className="w-full md:w-1/2 mb-8">
-          <img src={post?.photo} alt="post image" />
+          <img src={post?.photo} alt="post image" className="rounded-xl" />
         </div>
         <div className="flex flex-col flex-grow max-w-2xl h-[800px] w-full">
           <div className="overflow-y-auto mb-6 min-h-[160px] max-h-[280px]">
@@ -93,7 +93,7 @@ const PostDetail = () => {
               </div>
             </div>
           </div>
-          <div className="h-[450px] flex-grow overflow-y-auto space-y-2 py-6 px-4 border mt-4 flex flex-col small-scrollbar">
+          <div className="h-[450px] flex-grow overflow-y-auto space-y-2 py-6 px-4 border mt-4 flex flex-col small-scrollbar rounded-xl">
             {currentTab === 'comment' && (
               <Comments comments={post?.comments || []} />
             )}

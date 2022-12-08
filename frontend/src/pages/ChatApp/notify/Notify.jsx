@@ -11,7 +11,7 @@ const Notify = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="bg-white border-r flex-shrink-0 max-w-full w-80 shadow-md h-[80vh] overflow-y-auto small-scrollbar ">
+    <div className="bg-white border-r flex-shrink-0 max-w-full w-80 shadow-md h-[80vh] overflow-y-auto small-scrollbar rounded-xl">
       <h2 className="font-bold text-2xl px-4 py-4">{t('notifications')}</h2>
       <div className="space-y-2 bg-base-100">
         {otherNotify.length > 0 &&

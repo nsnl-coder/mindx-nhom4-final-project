@@ -91,7 +91,7 @@ const NavBar = ({ toggleSideBarVisivility, auth }) => {
                   <div className="w-3 aspect-square rounded-full bg-primary absolute -right-1.5 top-0.5"></div>
                 )}
               </label>
-              <div tabIndex={0} className="dropdown-content menu w-52 pt-6">
+              <div tabIndex={0} className="dropdown-content menu w-52 pt-6 rounded-xl">
                 <ul className="bg-base-100 shadow-md">
                   <li>
                     <Link to={'/'}>
