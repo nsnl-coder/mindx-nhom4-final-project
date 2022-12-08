@@ -2,8 +2,8 @@ import React from 'react'
 
 const MemoImg = ({ link, setFormError, errorMessage }) => {
   const onImageLoad = (e) => {
-    const width = e.target.offsetWidth
-    const height = e.target.offsetHeight
+    const width = e.target.width
+    const height = e.target.height
 
     console.log(width, height)
 
