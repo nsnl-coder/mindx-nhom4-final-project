@@ -12,9 +12,8 @@ const Verify = () => {
   const { error, isLoading, sendRequest } = useCallApi()
   const [delay, setDelay] = useState(false)
   const location = useLocation()
-
+  const { t } = useTranslation()
   const applyData = (data) => {
-    const { t } = useTranslation()
     showToastSuccess(t('send-email-successfully'))
     setTimeout(() => {
       setDelay(false)
