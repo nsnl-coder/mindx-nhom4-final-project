@@ -38,13 +38,13 @@ const App = () => {
 
   return (
     <ContextProvider>
-      <div className="absolute -top-6 md:-top-4 right-1 md:right-2 xl:right-10 z-10">
+      <div className="absolute -top-6 md:-top-5 right-1 md:right-2 xl:right-10 z-10">
         <div className="dropdown dropdown-hover dropdown-end pl-6 text-text">
           <label tabIndex={0} className="collapse-title text-4xl font-medium cursor-pointer">
             <BiGlobe />
           </label>
           <div className="collapse-content text-md rounded-xl bg-white">
-            <ul tabIndex={0} className="dropdown-content menu w-32 bg-base-100 shadow-md rounded-xl top-28">
+            <ul tabIndex={0} className="dropdown-content menu w-32 bg-base-100 shadow-md rounded-xl top-24">
               <li data-name="en" className={`w-full p-2 hover:bg-gray-200 ${language === 'en' ? 'font-semibold' : ''} cursor-pointer`} onClick={onLanguageChange}>English</li>
               <li data-name="vi" className={`w-full p-2 hover:bg-gray-200 ${language === 'vi' ? 'font-semibold' : ''} cursor-pointer`} onClick={onLanguageChange}>Tiếng Việt</li>
             </ul>
