@@ -13,6 +13,7 @@ const ForgottenPass = () => {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm()
   const { error, isLoading, sendRequest } = useCallApi()
@@ -20,7 +21,7 @@ const ForgottenPass = () => {
 
   const applyApiData = (data) => {
     showToastSuccess('An email has been sent')
-    setEmail('')
+    setValue('email', '')
   }
   const onSubmit = (data) => {
     sendRequest(
@@ -83,7 +84,7 @@ const ForgottenPass = () => {
           {errors?.email?.type === 'pattern' && (
             <p className="text-primary">{t('invalid-email')}</p>
           )}
-          {errorMessage === 'Email not valid' && (
+          {errorMessage === 'Email not valid' && !errors?.email && (
             <p className="text-primary">{t('email-not-register')}</p>
           )}
           <button
