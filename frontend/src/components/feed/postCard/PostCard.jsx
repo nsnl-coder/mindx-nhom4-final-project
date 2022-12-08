@@ -74,7 +74,7 @@ const PostCard = ({
               <img src={saveIcon} alt="save-icon" />
             </button>
           ))}
-        {collection === 'saved' && (
+        {collection === 'saved' && auth?.userId === user?._id && (
           <button
             type="button"
             className="hidden group-hover:block absolute top-2 left-2"
@@ -83,7 +83,7 @@ const PostCard = ({
             <img src={deleteIcon} alt="delete-icon" />
           </button>
         )}
-        {collection === 'posts' && (
+        {collection === 'posts' && auth?.userId === user?._id && (
           <button
             type="button"
             className="hidden group-hover:block absolute top-2 left-2"
