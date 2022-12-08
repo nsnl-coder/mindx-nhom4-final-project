@@ -38,7 +38,7 @@ const ReactMentions = ({ value, setValue, placeholder }) => {
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
       >
-        <Mention style={defaultMentionStyle} data={fetchUsers} />
+        <Mention style={defaultMentionStyle} trigger="@" data={fetchUsers} />
       </MentionsInput>
     </div>
   )

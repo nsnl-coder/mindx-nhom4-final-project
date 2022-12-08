@@ -14,7 +14,7 @@ const {
   removeSavedPost,
 } = require('../controllers/user')
 
-const { verifyUser } = require('../utils/verify')
+const { verifyUser, verifyAdmin } = require('../utils/verify')
 const router = express.Router()
 
 router.get('/search-users', searchUsers)
@@ -33,7 +33,7 @@ router.put(
 
 router.get('/basic-info/:id', getUserBasicInfo)
 router.get('/strangerUser/:id', getStrangerUser)
-router.delete('/delete/:id', deleteUser)
-router.get('/', getAllUser)
-router.put('/remove-savedPost/:id', removeSavedPost)
+router.delete('/delete/:id', verifyUser, deleteUser)
+router.get('/', verifyAdmin, getAllUser)
+router.put('/remove-savedPost/:id', verifyUser, removeSavedPost)
 module.exports = router
