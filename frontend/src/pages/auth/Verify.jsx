@@ -51,13 +51,10 @@ const Verify = () => {
         />
         <h2 className="text-xl font-semibold mb-5 mt-7">{t('verify-email')}</h2>
         <p className="mb-5">
-          {t('verify-email-content')}
+          {t('verify-email-address')}
           <span className="font-bold">{location.state.email}</span>
         </p>
-        <p className="mb-5">
-          Just click on the link that email to complete your signup.If you
-          dont't see it, you may need to check your spam folder.
-        </p>
+        <p className="mb-5">{t('veirfy-email-content')}</p>
         <p>{t('still-not-email')}</p>
         <button
           disabled={delay || isLoading ? true : false}
@@ -71,7 +68,7 @@ const Verify = () => {
           <p className="mt-2">
             {t('count-seconds-content')}
             <Countdown
-              date={Date.now() + 10000}
+              date={Date.now() + 15000}
               renderer={(props) => (
                 <div className="text-xl font-bold text-primary">
                   {Math.round(props.total / 1000)}
