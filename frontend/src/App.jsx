@@ -40,7 +40,7 @@ const App = () => {
     <ContextProvider>
       <div className="absolute -top-4 md:-top-2 right-1 md:right-2 xl:right-10 z-10">
         <div className="dropdown dropdown-hover dropdown-end pl-6 text-text">
-          <label tabIndex={0} className="collapse-title text-2xl font-medium cursor-pointer">
+          <label tabIndex={0} className="collapse-title text-4xl lg:text-2xl font-medium cursor-pointer">
             <BiGlobe />
           </label>
           <div className="collapse-content text-md rounded-xl bg-white">
