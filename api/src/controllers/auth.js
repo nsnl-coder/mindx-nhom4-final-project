@@ -52,7 +52,7 @@ const register = async (req, res, next) => {
     })
     if (checkUser)
       return next(createError(409, 'User with given username already Exist!'))
-    let checkEmail = await User.findOne({
+    const checkEmail = await User.findOne({
       email: req.body.email,
       googleId: null,
     })
@@ -294,7 +294,7 @@ const googleLoginCallback = (req, res, next) => {
 
 const loginSuccess = async (req, res) => {
   const ggUser = req?.user?._json
-
+  const date = new Date().getTime()
   if (req?.user) {
     res.status(200).json({
       googleId: ggUser.sub,
@@ -303,7 +303,7 @@ const loginSuccess = async (req, res) => {
       verified: ggUser.email_verified,
       profileImage: ggUser.picture,
       email: ggUser.email,
-      username: ggUser.name,
+      username: `user-${date}`,
     })
   } else {
     res.status(403).json({ error: true, message: 'Not Authorized' })

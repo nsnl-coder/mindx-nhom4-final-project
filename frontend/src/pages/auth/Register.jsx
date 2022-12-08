@@ -47,6 +47,7 @@ const Register = () => {
   useEffect(() => {
     setErrorMessage(error?.response?.data?.message)
   }, [error])
+
   return (
     <>
       <Link to="/">
@@ -88,7 +89,6 @@ const Register = () => {
                       {...register('firstName', {
                         required: true,
                         maxLength: 20,
-                        pattern: /^[A-Za-z]+$/i,
                       })}
                       className="w-full h-full pr-14 pl-4 outline-none"
                     />
@@ -103,11 +103,6 @@ const Register = () => {
                   )}
                   {errors?.firstName?.type === 'maxLength' && (
                     <span className="text-primary text-sm">{t('exceed')}</span>
-                  )}
-                  {errors?.firstName?.type === 'pattern' && (
-                    <span className="text-primary text-sm">
-                      {t('first-name')} {t('valid')}
-                    </span>
                   )}
                 </div>
                 <div className="md:w-[48%] w-full ">
@@ -124,7 +119,7 @@ const Register = () => {
                     <input
                       {...register('lastName', {
                         required: true,
-                        pattern: /^[A-Za-z]+$/i,
+
                         maxLength: 20,
                       })}
                       className="w-full h-full pr-14 pl-4 outline-none"
@@ -141,11 +136,11 @@ const Register = () => {
                   {errors?.lastName?.type === 'maxLength' && (
                     <span className="text-primary text-sm"> {t('exceed')}</span>
                   )}
-                  {errors?.lastName?.type === 'pattern' && (
+                  {/* {errors?.lastName?.type === 'pattern' && (
                     <span className="text-primary text-sm">
                       {t('last-name')} {t('valid')}!
                     </span>
-                  )}
+                  )} */}
                 </div>
               </div>
               <label className="text-lg font-semibold "> {t('username')}</label>

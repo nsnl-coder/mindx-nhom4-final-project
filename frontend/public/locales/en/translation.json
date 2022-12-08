@@ -74,6 +74,7 @@
   "log-in": "LOG IN",
   "exceed": "This field cannot exceed 20 characters!",
   "valid": "Invalid!",
+  "signUp-gg": "Sign Up with Google",
   "userName-minLength": "User Name must be at least 5 characters!",
   "userName-maxLength": "User Name cannot axceed 20 characters",
   "username-already": "User with given username already Exist!",
