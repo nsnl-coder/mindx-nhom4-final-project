@@ -49,19 +49,19 @@ const Register = () => {
   }, [error])
 
   return (
-    <>
+    <div className="m-5">
       <Link to="/">
         <img
           src={IconReturn}
           alt=""
-          className="cursor-pointer absolute md:top-10 md:left-20 top-7 left-2 md:w-[30px] w-[20px]"
+          className="cursor-pointer absolute md:top-10 md:left-20 top-5 left-2"
         />
       </Link>
-      <div className="flex items-center justify-center shadow-md text-black">
-        <div className="md:w-[550px] w-[400px] shadow-md shadow-gray rounded-md p-2 mt-10 md:p-10 border-[1px] border-gray">
+      <div className="flex items-center justify-center">
+        <div className="w-[550px] p-10 shadow-md text-text rounded-md mt-10">
           <div className="flex justify-between">
             <div>
-              <h1 className="text-3xl font-semibold text-black  mb-5">
+              <h1 className="text-3xl font-semibold text-text  mb-5">
                 {t('signUp')}
               </h1>
               <p className="text-dark-gray"> {t('welcome-signUp')}</p>
@@ -307,7 +307,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

@@ -23,12 +23,14 @@ import UserList from './pages/ChatApp/userList/UserList'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 
+import { BiGlobe } from 'react-icons/bi'
+
 const App = () => {
   const { i18n } = useTranslation()
   const [language, setLanguage] = useState(localStorage.getItem('language'))
 
   const onLanguageChange = (e) => {
-    const newLanguage = e.target.value
+    const newLanguage = e.target.dataset.name
     setLanguage(newLanguage)
     i18n.changeLanguage(newLanguage)
     localStorage.setItem('language', newLanguage)
@@ -36,16 +38,19 @@ const App = () => {
 
   return (
     <ContextProvider>
-      <label htmlFor="language"></label>
-      <select
-        name="language"
-        id="language"
-        onChange={onLanguageChange}
-        value={language}
-      >
-        <option value="en">English</option>
-        <option value="vi">Tiếng việt</option>
-      </select>
+      <div className="absolute -top-6 right-1 md:right-2 xl:right-10 z-10">
+        <div className="dropdown dropdown-hover dropdown-end pl-6 text-text">
+          <label tabIndex={0} className="collapse-title text-4xl font-medium cursor-pointer">
+            <BiGlobe />
+          </label>
+          <div className="collapse-content text-md rounded-xl bg-white">
+            <ul tabIndex={0} className="dropdown-content menu w-32 bg-base-100 shadow-md rounded-xl top-24 md:top-20">
+              <li data-name="en" className={`w-full p-2 hover:bg-gray-200 ${language === 'en' ? 'font-semibold' : ''} cursor-pointer`} onClick={onLanguageChange}>English</li>
+              <li data-name="vi" className={`w-full p-2 hover:bg-gray-200 ${language === 'vi' ? 'font-semibold' : ''} cursor-pointer`} onClick={onLanguageChange}>Tiếng Việt</li>
+            </ul>
+          </div>
+        </div>
+      </div>
       <ToastContainer limit={3} />
       <Routes>
         <Route path="/" element={<Home />} />
