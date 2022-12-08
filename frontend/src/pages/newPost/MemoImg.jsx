@@ -5,7 +5,7 @@ const MemoImg = ({ link, setFormError, errorMessage }) => {
     const width = e.target.naturalWidth
     const height = e.target.naturalHeight
 
-    console.log(width, height)
+    console.log('natural size: ', width, height)
 
     if (width < 300 || height < 300) {
       setFormError((prev) => {
