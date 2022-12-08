@@ -5,6 +5,8 @@ const MemoImg = ({ link, setFormError, errorMessage }) => {
     const width = e.target.offsetWidth
     const height = e.target.offsetHeight
 
+    console.log(width, height)
+
     if (width < 300 || height < 300) {
       setFormError((prev) => {
         return {
