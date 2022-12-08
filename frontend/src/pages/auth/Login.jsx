@@ -63,9 +63,6 @@ const Login = () => {
   const changeShowPassword = () => {
     setShowPassword(!showPassword)
   }
-  // const googleLogin = () => {
-  //   window.open(`${import.meta.env.VITE_BACKEND_HOST}/api/auth/google`, '_self')
-  // }
   useEffect(() => {
     sendRequest({ url: `api/auth/login/success` }, applyApi2)
   }, [])
@@ -104,7 +101,7 @@ const Login = () => {
               className={`w-full rounded-md  relative h-12 outline-none  overflow-hidden shadow-sm shadow-[#3333336d]  my-2 ${
                 errors?.email && 'border-[2px] border-primary'
               } ${
-                errorMessage === 'Email not valid!' &&
+                errorMessage === 'Email is not registered!' &&
                 'border-[2px] border-primary'
               }`}
             >

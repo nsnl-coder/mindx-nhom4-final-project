@@ -42,7 +42,9 @@ const register = async (req, res, next) => {
   try {
     const { username, email } = req.body
     if (!username || !email || !req.body.password) {
-      return next(createError(400, 'Error'))
+      return next(
+        createError(400, 'username or email or password are required')
+      )
     }
     let checkUser = await User.findOne({
       username: req.body.username,
@@ -50,8 +52,11 @@ const register = async (req, res, next) => {
     })
     if (checkUser)
       return next(createError(409, 'User with given username already Exist!'))
-    let checkEmail = await User.findOne({ email: req.body.email })
-    if (!checkEmail?.googleId && checkEmail)
+    let checkEmail = await User.findOne({
+      email: req.body.email,
+      googleId: null,
+    })
+    if (checkEmail)
       return next(createError(409, 'User with given email already Exist!'))
 
     const newUser = new User(req.body)
