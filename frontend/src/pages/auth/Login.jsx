@@ -71,7 +71,7 @@ const Login = () => {
   }, [error])
 
   return (
-    <div className="flex items-center justify-center h-screen text-black">
+    <div className="flex items-center justify-center h-screen text-black shadow-md">
       <Link to="/">
         <img
           src={IconReturn}
@@ -98,7 +98,7 @@ const Login = () => {
             <label className="text-lg font-semibold "> {t('email')}:</label>
             <br />
             <div
-              className={`w-full rounded-md  relative h-12 outline-none  overflow-hidden shadow-sm shadow-[#3333336d]  my-2 ${
+              className={`w-full rounded-md  relative h-12 outline-none  overflow-hidden shadow-md  my-2 ${
                 errors?.email && 'border-[2px] border-primary'
               } ${
                 errorMessage === 'Email is not registered!' &&
@@ -120,7 +120,7 @@ const Login = () => {
               )}
             </div>
             {errors?.email?.type === 'required' && (
-              <p className="text-primary text-sm">{t('this-feild-required')}</p>
+              <p className="text-primary text-sm">{t('this-field-required')}</p>
             )}
             {errors?.email?.type === 'pattern' && (
               <p className="text-primary text-sm">{t('invalid-email')}</p>
@@ -136,7 +136,7 @@ const Login = () => {
             <label className="text-lg font-semibold"> {t('password')}</label>
             <br />
             <div
-              className={`w-full rounded-md h-12 shadow-sm shadow-[#3333336d] overflow-hidden relative my-2 ${
+              className={`w-full rounded-md h-12 shadow-md overflow-hidden relative my-2 ${
                 errors?.password?.type && 'border-[2px] border-primary'
               } ${
                 errorMessage === 'Incorrect password!' &&
@@ -163,7 +163,7 @@ const Login = () => {
               )}
             </div>
             {errors?.password?.type === 'required' && (
-              <p className="text-primary text-sm">{t('this-feild-required')}</p>
+              <p className="text-primary text-sm">{t('this-field-required')}</p>
             )}
             {errors?.password?.type === 'minLength' && (
               <p className="text-primary text-sm"> {t('minLength-password')}</p>
@@ -179,7 +179,7 @@ const Login = () => {
             <button
               disabled={isLoading ? true : false}
               type="submit"
-              className="rounded-[50px] relative h-[40px] disabled:opacity-50 shadow-sm shadow-black active:shadow-none bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
+              className="rounded-[50px] relative h-[40px] disabled:opacity-50 shadow-md active:shadow-none bg-primary w-[130px] my-4 text-white py-1 text-[17px] font-roboto font-semibold"
             >
               {isLoading ? (
                 <span className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[65%]">

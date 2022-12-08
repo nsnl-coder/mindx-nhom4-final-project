@@ -88,7 +88,7 @@ const NewPass = () => {
           </Link>
           {successs ? (
             <div className="flex items-center justify-center h-screen">
-              <div className="w-[600px] px-20 py-20 shadow-md shadow-[#333] rounded-lg">
+              <div className="w-[600px] px-20 py-20 shadow-md rounded-lg">
                 <h1 className="text-3xl font-bold tracking-wider mb-20">
                   {t('fotgot')}
                 </h1>

@@ -57,7 +57,7 @@ const Register = () => {
           className="cursor-pointer absolute md:top-10 md:left-20 top-7 left-2 md:w-[30px] w-[20px]"
         />
       </Link>
-      <div className="flex items-center justify-center  text-black">
+      <div className="flex items-center justify-center shadow-md text-black">
         <div className="md:w-[550px] w-[400px] shadow-md shadow-gray rounded-md p-2 mt-10 md:p-10 border-[1px] border-gray">
           <div className="flex justify-between">
             <div>
@@ -81,7 +81,7 @@ const Register = () => {
                   </label>
 
                   <div
-                    className={`w-full outline-none relative rounded-md h-12 overflow-hidden  shadow-sm shadow-[#3333336d]  my-2 ${
+                    className={`w-full outline-none relative rounded-md h-12 overflow-hidden  shadow-md  my-2 ${
                       errors?.firstName?.type && 'border-primary border-[2px]'
                     } `}
                   >
@@ -112,7 +112,7 @@ const Register = () => {
                   </label>
                   <br />
                   <div
-                    className={` outline-none relative rounded-md h-12 overflow-hidden  shadow-sm shadow-[#3333336d]  my-2 ${
+                    className={` outline-none relative rounded-md h-12 overflow-hidden  shadow-md  my-2 ${
                       errors?.lastName?.type && 'border-primary border-[2px]'
                     } `}
                   >
@@ -146,7 +146,7 @@ const Register = () => {
               <label className="text-lg font-semibold "> {t('username')}</label>
               <br />
               <div
-                className={`w-full outline-none relative rounded-md h-12 overflow-hidden  shadow-sm shadow-[#3333336d]  my-2 ${
+                className={`w-full outline-none relative rounded-md h-12 overflow-hidden  shadow-md  my-2 ${
                   errors?.username?.type && 'border-primary border-[2px]'
                 } ${
                   errorMessage === 'User with given username already Exist!' &&
@@ -198,7 +198,7 @@ const Register = () => {
               <label className="text-lg font-semibold "> {t('email')}:</label>
               <br />
               <div
-                className={`w-full outline-none overflow-hidden rounded-md h-12  shadow-sm shadow-[#3333336d] relative my-2 ${
+                className={`w-full outline-none overflow-hidden rounded-md h-12  shadow-md relative my-2 ${
                   errors?.email?.type && 'border-primary border-[2px]'
                 } ${
                   errorMessage === 'User with given email already Exist!' &&
@@ -237,7 +237,7 @@ const Register = () => {
               <label className="text-lg font-semibold"> {t('password')}</label>
               <br />
               <div
-                className={`w-full rounded-md relative outline-none h-12 overflow-hidden shadow-sm shadow-[#3333336d]  my-2 ${
+                className={`w-full rounded-md relative outline-none h-12 overflow-hidden shadow-md  my-2 ${
                   errors?.password?.type && 'border-primary border-[2px]'
                 }`}
               >
@@ -275,7 +275,7 @@ const Register = () => {
               <button
                 disabled={isLoading ? true : false}
                 type="submit"
-                className="rounded-[50px] h-[40px] disabled:opacity-50 shadow-sm mt-2 active:shadow-none shadow-black bg-primary w-[130px] relative text-white  text-[17px] font-roboto font-semibold"
+                className="rounded-[50px] h-[40px] disabled:opacity-50 shadow-md mt-2 active:shadow-none bg-primary w-[130px] relative text-white  text-[17px] font-roboto font-semibold"
               >
                 {isLoading ? (
                   <span className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[65%]">

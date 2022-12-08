@@ -40,7 +40,7 @@ const ForgottenPass = () => {
   }, [error])
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-screen shadow-md">
       <Link to="/auth/login">
         <img
           src={IconReturn}
@@ -48,7 +48,7 @@ const ForgottenPass = () => {
           className="cursor-pointer absolute md:top-10 md:left-20 md:w-[30px] w-[20px] top-5 left-5"
         />
       </Link>
-      <div className="w-[600px] px-2  md:px-20 py-24 shadow-sm shadow-[#333] rounded-lg">
+      <div className="w-[600px] px-2  md:px-20 py-24 shadow-md rounded-lg">
         <h1 className="text-3xl font-bold tracking-wider mb-20">
           {t('fotgot')}
         </h1>
@@ -57,7 +57,7 @@ const ForgottenPass = () => {
             {t('enter-your-email')}
           </label>
           <div
-            className={`w-full outline-none  rounded-md relative h-12 px-4 shadow-sm shadow-[#3333336d]  my-2 ${
+            className={`w-full outline-none  rounded-md relative h-12 px-4 shadow-md  my-2 ${
               errors?.email && 'border-primary border-[2px]'
             } ${
               errorMessage === 'Email not valid' &&
@@ -90,7 +90,7 @@ const ForgottenPass = () => {
           <button
             disabled={isLoading ? true : false}
             type="submit"
-            className="rounded-[50px] relative mt-8 shadow-sm disabled:opacity-50 shadow-black active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
+            className="rounded-[50px] relative mt-8 shadow-md disabled:opacity-50 active:shadow-none text-white tracking-wider bg-primary w-[150px] h-[40px] text-lg font-semibold"
           >
             {isLoading ? (
               <span className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[65%]">

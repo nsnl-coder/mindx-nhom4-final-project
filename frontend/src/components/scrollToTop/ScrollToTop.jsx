@@ -9,7 +9,7 @@ const ScrollToTop = ({ topContainerRef }) => {
   return (
     <div
       onClick={scrollHandler}
-      className="absolute bottom-4 right-3 cursor-pointer"
+      className="absolute bottom-4 right-3 cursor-pointer rounded-full"
     >
       <BsArrowUpCircleFill fontSize={26} />
     </div>
