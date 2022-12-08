@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -9,7 +10,9 @@ import { GoEyeClosed, GoEye } from 'react-icons/go'
 import { BiError } from 'react-icons/bi'
 import { LoadingSpinner } from '../../components'
 import { FcGoogle } from 'react-icons/fc'
+
 const Register = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const {
     register,
@@ -50,17 +53,17 @@ const Register = () => {
         <img
           src={IconReturn}
           alt=""
-          className="cursor-pointer absolute md:top-10 md:left-20 top-0 left-0 md:w-[30px] w-[20px]"
+          className="cursor-pointer absolute md:top-10 md:left-20 top-7 left-2 md:w-[30px] w-[20px]"
         />
       </Link>
       <div className="flex items-center justify-center  text-black">
-        <div className="md:w-[550px] w-[400px] shadow-md shadow-gray rounded-md p-2 md:p-10 border-[1px] border-gray">
+        <div className="md:w-[550px] w-[400px] shadow-md shadow-gray rounded-md p-2 mt-10 md:p-10 border-[1px] border-gray">
           <div className="flex justify-between">
             <div>
               <h1 className="text-3xl font-semibold text-black  mb-5">
-                Sign Up
+                {t('signUp')}
               </h1>
-              <p className="text-dark-gray">We're happy to see you here!</p>
+              <p className="text-dark-gray"> {t('welcome-signUp')}</p>
             </div>
             <img
               src={Logo}
@@ -72,7 +75,9 @@ const Register = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex justify-between flex-wrap ">
                 <div className="md:w-[48%] w-full ">
-                  <label className="text-lg font-semibold ">First Name:</label>
+                  <label className="text-lg font-semibold ">
+                    {t('first-name')}
+                  </label>
 
                   <div
                     className={`w-full outline-none relative rounded-md h-12 overflow-hidden  shadow-sm shadow-[#3333336d]  my-2 ${
@@ -93,22 +98,23 @@ const Register = () => {
                   </div>
                   {errors?.firstName?.type === 'required' && (
                     <span className="text-primary text-sm">
-                      This field is required
+                      {t('this-feild-required')}
                     </span>
                   )}
                   {errors?.firstName?.type === 'maxLength' && (
-                    <span className="text-primary text-sm">
-                      Cannot exceed 20 characters
-                    </span>
+                    <span className="text-primary text-sm">{t('exceed')}</span>
                   )}
                   {errors?.firstName?.type === 'pattern' && (
                     <span className="text-primary text-sm">
-                      First Name Invalid !
+                      {t('first-name')} {t('valid')}
                     </span>
                   )}
                 </div>
                 <div className="md:w-[48%] w-full ">
-                  <label className="text-lg font-semibold ">Last Name:</label>
+                  <label className="text-lg font-semibold ">
+                    {' '}
+                    {t('last-name')}
+                  </label>
                   <br />
                   <div
                     className={` outline-none relative rounded-md h-12 overflow-hidden  shadow-sm shadow-[#3333336d]  my-2 ${
@@ -129,23 +135,20 @@ const Register = () => {
                   </div>
                   {errors?.lastName?.type === 'required' && (
                     <span className="text-primary text-sm">
-                      This field is required!
+                      {t('this-feild-required')}
                     </span>
                   )}
                   {errors?.lastName?.type === 'maxLength' && (
-                    <span className="text-primary text-sm">
-                      {' '}
-                      Cannot exceed 20 characters!
-                    </span>
+                    <span className="text-primary text-sm"> {t('exceed')}</span>
                   )}
                   {errors?.lastName?.type === 'pattern' && (
                     <span className="text-primary text-sm">
-                      Last Name Invalid!
+                      {t('last-name')} {t('valid')}!
                     </span>
                   )}
                 </div>
               </div>
-              <label className="text-lg font-semibold ">User Name:</label>
+              <label className="text-lg font-semibold "> {t('username')}</label>
               <br />
               <div
                 className={`w-full outline-none relative rounded-md h-12 overflow-hidden  shadow-sm shadow-[#3333336d]  my-2 ${
@@ -172,17 +175,17 @@ const Register = () => {
               </div>
               {errors?.username?.type === 'required' && (
                 <span className="text-primary text-sm">
-                  This field is required
+                  {t('this-feild-required')}
                 </span>
               )}
               {errors?.username?.type === 'minLength' && (
                 <span className="text-primary text-sm">
-                  User Name must be at least 5 characters
+                  {t('userName-minLength')}
                 </span>
               )}
               {errors?.username?.type === 'maxLength' && (
                 <span className="text-primary text-sm">
-                  User Name cannot axceed 20 characters
+                  {t('userName-maxLength')}
                 </span>
               )}
               {errors?.username?.type === 'pattern' && (
@@ -192,12 +195,12 @@ const Register = () => {
                 errorMessage === 'User with given username already Exist!' &&
                 !errors?.username && (
                   <span className="text-primary text-sm">
-                    User with given username already Exist!
+                    {t('username-already')}
                   </span>
                 )}
 
               <br />
-              <label className="text-lg font-semibold ">Email address:</label>
+              <label className="text-lg font-semibold "> {t('email')}:</label>
               <br />
               <div
                 className={`w-full outline-none overflow-hidden rounded-md h-12  shadow-sm shadow-[#3333336d] relative my-2 ${
@@ -223,7 +226,7 @@ const Register = () => {
               </div>
               {errors?.email?.type === 'required' && (
                 <span className="text-primary text-sm">
-                  This field is required
+                  {t('this-feild-required')}
                 </span>
               )}
               {errors?.email?.type === 'pattern' && (
@@ -232,11 +235,11 @@ const Register = () => {
               {!errors?.email?.type &&
                 errorMessage === 'User with given email already Exist!' && (
                   <span className="text-primary text-sm">
-                    User with given username already Exist!
+                    {t('email-already')}
                   </span>
                 )}
               <br />
-              <label className="text-lg font-semibold">Password</label>
+              <label className="text-lg font-semibold"> {t('password')}</label>
               <br />
               <div
                 className={`w-full rounded-md relative outline-none h-12 overflow-hidden shadow-sm shadow-[#3333336d]  my-2 ${
@@ -264,12 +267,12 @@ const Register = () => {
               </div>
               {errors?.password?.type === 'required' && (
                 <span className="text-primary text-sm">
-                  This field is required
+                  {t('this-feild-required')}
                 </span>
               )}
               {errors?.password?.type === 'minLength' && (
                 <span className="text-primary text-sm">
-                  Email must be at least 8 characters
+                  {t('password-minLength')}
                 </span>
               )}
 
@@ -277,34 +280,34 @@ const Register = () => {
               <button
                 disabled={isLoading ? true : false}
                 type="submit"
-                className="rounded-[50px] h-[40px] disabled:opacity-50 shadow-sm active:shadow-none shadow-black bg-primary w-[130px] relative text-white  text-[17px] font-roboto font-semibold"
+                className="rounded-[50px] h-[40px] disabled:opacity-50 shadow-sm mt-2 active:shadow-none shadow-black bg-primary w-[130px] relative text-white  text-[17px] font-roboto font-semibold"
               >
                 {isLoading ? (
                   <span className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[65%]">
                     <LoadingSpinner />
                   </span>
                 ) : (
-                  'SIGN UP'
+                  t('signUp')
                 )}
               </button>
             </form>
-            <p className="text-center my-3">or</p>
+            <p className="text-center my-3"> {t('or')}</p>
             <button
               className="w-full h-[50px] gap-4 mb-3 rounded-md flex items-center justify-center border-[2px] border-green-800"
               onClick={googleLogin}
             >
               <FcGoogle className="text-3xl" />
-              <span className="font-semibold">Sign up with Google</span>
+              <span className="font-semibold"> {t('signUp-gg')}</span>
             </button>
             <p className="font-[600] text-[17px] mb-4">
-              Already Have An Account?{' '}
+              {t('link-to-login')}{' '}
               <Link to="/auth/login">
                 {' '}
                 <span className="text-primary text-lg cursor-pointer underline">
-                  LOG IN{' '}
+                  {t('log-in')}{' '}
                 </span>
               </Link>
-              now!
+              {t('now')}
             </p>
           </div>
         </div>

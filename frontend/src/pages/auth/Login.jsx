@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Logo from '../../assets/logo-icon-big.svg'
@@ -9,7 +10,9 @@ import { BiError } from 'react-icons/bi'
 import { GoEyeClosed, GoEye } from 'react-icons/go'
 import { LoadingSpinner } from '../../components'
 import { FcGoogle } from 'react-icons/fc'
+
 const Login = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { isLoading, error, sendRequest } = useCallApi()
   const { setAuth } = useContext(AuthContext)
@@ -79,13 +82,13 @@ const Login = () => {
           className="cursor-pointer absolute md:top-10 md:left-20 top-8 left-5 md:w-[30px] w-[20px] "
         />
       </Link>
-      <div className="w-[550px] shadow-md shadow-gray rounded-md p-10 border-[1px] border-gray">
+      <div className="w-[550px] shadow-md shadow-gray rounded-md p-10 mt-10 border-[1px] border-gray">
         <div className="flex justify-between">
           <div>
             <h1 className="text-3xl font-semibold text-black mb-5">
-              Welcome back!
+              {t('welcome-title-login')}
             </h1>
-            <p className="text-dark-gray">Good to see again.</p>
+            <p className="text-dark-gray"> {t('welcome-content-login')}</p>
           </div>
           <img
             src={Logo}
@@ -95,7 +98,7 @@ const Login = () => {
         </div>
         <div className="md:w-[80%] w-full">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <label className="text-lg font-semibold ">Email address:</label>
+            <label className="text-lg font-semibold "> {t('email')}:</label>
             <br />
             <div
               className={`w-full rounded-md  relative h-12 outline-none  overflow-hidden shadow-sm shadow-[#3333336d]  my-2 ${
@@ -114,25 +117,26 @@ const Login = () => {
                 })}
                 className="w-full pl-4 pr-14 h-full outline-none "
               />
-              {(errors?.email || errorMessage === 'Email not valid!') && (
+              {(errors?.email ||
+                errorMessage === 'Email is not registered!') && (
                 <BiError className="absolute top-[50%] text-xl right-6 -translate-y-[50%] text-primary" />
               )}
             </div>
             {errors?.email?.type === 'required' && (
-              <p className="text-primary text-sm">This field is required</p>
+              <p className="text-primary text-sm">{t('this-feild-required')}</p>
             )}
             {errors?.email?.type === 'pattern' && (
-              <p className="text-primary text-sm">Invalid email!</p>
+              <p className="text-primary text-sm">{t('invalid-email')}</p>
             )}
             {!errors?.email?.type &&
               errorMessage === 'Email is not registered!' &&
               !errors?.email && (
                 <span className="text-primary text-sm">
-                  Email is not registered!
+                  {t('email-not-register')}
                 </span>
               )}
             <br />
-            <label className="text-lg font-semibold">Password</label>
+            <label className="text-lg font-semibold"> {t('password')}</label>
             <br />
             <div
               className={`w-full rounded-md h-12 shadow-sm shadow-[#3333336d] overflow-hidden relative my-2 ${
@@ -162,19 +166,16 @@ const Login = () => {
               )}
             </div>
             {errors?.password?.type === 'required' && (
-              <p className="text-primary text-sm">This field is required</p>
+              <p className="text-primary text-sm">{t('this-feild-required')}</p>
             )}
             {errors?.password?.type === 'minLength' && (
-              <p className="text-primary text-sm">
-                {' '}
-                Password must be at least 8 characters
-              </p>
+              <p className="text-primary text-sm"> {t('minLength-password')}</p>
             )}
             {!errors?.password?.type &&
               errorMessage === 'Incorrect password!' &&
               !errors?.password && (
                 <span className="text-primary texl-sm">
-                  Incorrect password!
+                  {t('incorrectPass')}
                 </span>
               )}
             <br />
@@ -188,31 +189,31 @@ const Login = () => {
                   <LoadingSpinner />
                 </span>
               ) : (
-                'LOGIN'
+                t('login')
               )}
             </button>
           </form>
-          <p className="text-center text-lg mb-3">or</p>
+          <p className="text-center text-lg mb-3"> {t('or')}</p>
           <a href={`${import.meta.env.VITE_BACKEND_HOST}/api/auth/google`}>
             <button className="w-full h-[50px] gap-4 mb-3 rounded-md flex items-center justify-center border-[2px] border-green-800">
               <FcGoogle className="text-3xl" />
-              <span className="font-semibold">Sign in with Google</span>
+              <span className="font-semibold">{t('signIn-gg')}</span>
             </button>
           </a>
           <p className="font-[600] text-[17px] mb-4">
-            Don't you have an account?{' '}
+            {t('link-to-register')}{' '}
             <Link
               to="/auth/register"
               className="text-primary text-lg cursor-pointer underline"
             >
-              Create new{' '}
+              {t('create-new')}{' '}
             </Link>
-            now!
+            {t('now')}
           </p>
           <Link to="/auth/forgot">
             {' '}
             <p className="text-[#333] text-lg font-semibold hover:underline cursor-pointer">
-              Forgotten password?
+              {t('fotgot')}
             </p>
           </Link>
         </div>

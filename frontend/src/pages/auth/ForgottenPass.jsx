@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import useCallApi from '../../hooks/useCallApi'
@@ -7,6 +8,7 @@ import IconReturn from '../../assets/icon-return.svg'
 import { BiError } from 'react-icons/bi'
 import { LoadingSpinner } from '../../components'
 const ForgottenPass = () => {
+  const { t } = useTranslation()
   const {
     register,
     handleSubmit,
@@ -47,11 +49,11 @@ const ForgottenPass = () => {
       </Link>
       <div className="w-[600px] px-2  md:px-20 py-24 shadow-sm shadow-[#333] rounded-lg">
         <h1 className="text-3xl font-bold tracking-wider mb-20">
-          Forgotten Password?
+          {t('fotgot')}
         </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label className="text-lg font-semibold mb-3">
-            Enter your email:
+            {t('enter-your-email')}
           </label>
           <div
             className={`w-full outline-none  rounded-md relative h-12 px-4 shadow-sm shadow-[#3333336d]  my-2 ${
@@ -76,13 +78,13 @@ const ForgottenPass = () => {
             )}
           </div>
           {errors?.email?.type === 'required' && (
-            <p className="text-primary">This field is required</p>
+            <p className="text-primary">{t('this-feild-required')}</p>
           )}
           {errors?.email?.type === 'pattern' && (
-            <p className="text-primary">Email not valid!</p>
+            <p className="text-primary">{t('invalid-email')}</p>
           )}
           {errorMessage === 'Email not valid' && (
-            <p className="text-primary">Email is not registered!</p>
+            <p className="text-primary">{t('email-not-register')}</p>
           )}
           <button
             disabled={isLoading ? true : false}
@@ -94,7 +96,7 @@ const ForgottenPass = () => {
                 <LoadingSpinner />
               </span>
             ) : (
-              'SIGN UP'
+              t('signUp')
             )}
           </button>
         </form>

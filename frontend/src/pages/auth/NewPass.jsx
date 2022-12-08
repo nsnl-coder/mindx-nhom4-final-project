@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import { useParams, Link } from 'react-router-dom'
 import { TailSpin } from 'react-loader-spinner'
@@ -12,6 +13,7 @@ import { Error } from '../../components'
 import IconReturn from '../../assets/icon-return.svg'
 import { LoadingSpinner } from '../../components'
 const NewPass = () => {
+  const { t } = useTranslation()
   const { id, token } = useParams()
   const {
     register,
@@ -68,7 +70,6 @@ const NewPass = () => {
   }, [])
   useEffect(() => {
     setErrorMessage(error)
-    console.log(error)
   }, [error])
   return (
     <>
@@ -89,23 +90,20 @@ const NewPass = () => {
             <div className="flex items-center justify-center h-screen">
               <div className="w-[600px] px-20 py-20 shadow-md shadow-[#333] rounded-lg">
                 <h1 className="text-3xl font-bold tracking-wider mb-20">
-                  Forgotten Password?
+                  {t('fotgot')}
                 </h1>
                 <form
                   onSubmit={handleSubmit(onSubmit)}
                   className="flex flex-col"
                 >
                   <label className="text-lg font-semibold mb-3">
-                    New Password:
+                    {t('new-password')}
                   </label>
                   <div
                     className={`w-full relative outline-none rounded-md h-12 px-4  mt-2 ${
                       errors?.password
                         ? 'border-primary border-[2px] '
                         : 'border-[1px] border-[#33333392]'
-                    } ${
-                      errorMessage === 'User with given email already Exist!' &&
-                      'border-[2px] border-primary'
                     }`}
                   >
                     <input
@@ -125,11 +123,11 @@ const NewPass = () => {
                     </span>
                   </div>
                   {errors?.password?.type === 'required' && (
-                    <p className="text-primary">This field is required</p>
+                    <p className="text-primary">{t('this-feild-required')}</p>
                   )}
                   {errors?.password?.type === 'minLength' && (
                     <span className="text-primary">
-                      Password must be at least 8 characters
+                      {t('minLength-password')}
                     </span>
                   )}
 
@@ -142,7 +140,7 @@ const NewPass = () => {
                         <LoadingSpinner />
                       </span>
                     ) : (
-                      'SIGN UP'
+                      t('signUp')
                     )}
                   </button>
                 </form>

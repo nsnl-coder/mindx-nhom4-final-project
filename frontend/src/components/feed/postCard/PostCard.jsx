@@ -36,7 +36,7 @@ const PostCard = ({
 
   useEffect(() => {
     if (error) {
-      showToastError('Something went wrong, please try again')
+      showToastError('This post has been saved to your list')
     }
   }, [error])
   useEffect(() => {

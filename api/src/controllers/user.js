@@ -189,7 +189,7 @@ const removeSavedPost = async (req, res, next) => {
     await Post.findByIdAndUpdate(req.body.id, {
       $pull: { savedUsers: Types.ObjectId(req.params.id) },
     })
-    res.status(200).json('successfully')
+    res.status(200).json('Saved Post deleted successfully')
   } catch (err) {
     next(err)
   }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLocation, useParams, Link } from 'react-router-dom'
 import Countdown from 'react-countdown'
 import Logo from '../../assets/logo-icon-small.svg'
@@ -13,7 +14,8 @@ const Verify = () => {
   const location = useLocation()
 
   const applyData = (data) => {
-    showToastSuccess('successfully')
+    const { t } = useTranslation()
+    showToastSuccess(t('send-email-successfully'))
     setTimeout(() => {
       setDelay(false)
     }, 10000)
@@ -30,7 +32,7 @@ const Verify = () => {
   }
   useEffect(() => {
     if (error) {
-      showToastError('Email sending failed')
+      showToastError(t('send-email-failed'))
     }
   }, [error])
   return (
@@ -48,29 +50,27 @@ const Verify = () => {
           alt=""
           className="absolute -top-[30px] left-[50%] -translate-x-[50%] h-[60px]  "
         />
-        <h2 className="text-xl font-semibold mb-5 mt-7">
-          Please verify your email
-        </h2>
+        <h2 className="text-xl font-semibold mb-5 mt-7">{t('verify-email')}</h2>
         <p className="mb-5">
-          You're almost there! We sent an email to{' '}
+          {t('verify-email-content')}
           <span className="font-bold">{location.state.email}</span>
         </p>
         <p className="mb-5">
           Just click on the link that email to complete your signup.If you
           dont't see it, you may need to check your spam folder.
         </p>
-        <p>Still can't the email?</p>
+        <p>{t('still-not-email')}</p>
         <button
           disabled={delay || isLoading ? true : false}
           onClick={resendEmail}
           className={` disabled:opacity-50 relative w-[150px] h-[40px] bg-primary text-white rounded-md text-md font-roboto  mt-4 shadow-sm shadow-black active:shadow-none font-semibold`}
         >
-          Resend Email
+          {t('resend-email')}
         </button>
 
         {delay && (
           <p className="mt-2">
-            Please wait until later to resend email{' '}
+            {t('count-seconds-content')}
             <Countdown
               date={Date.now() + 10000}
               renderer={(props) => (
