@@ -50,9 +50,9 @@ const PublicSettings = ({ user, updateUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const image = e.target[0].files[0]
+    const avatar = e.target[0].files[0]
     const formData = new FormData()
-    const mountainsRef = ref(storage, `avatar/image-${image.lastModified}`)
+    const mountainsRef = ref(storage, `avatar/image-${avatar.lastModified}`)
     await uploadBytes(mountainsRef, image)
     const imageAvatar = await getDownloadURL(mountainsRef)
     formData.append('profileImage', imageAvatar)
