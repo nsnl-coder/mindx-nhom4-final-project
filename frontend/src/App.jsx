@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -29,6 +29,8 @@ const App = () => {
   const { i18n } = useTranslation()
   const [language, setLanguage] = useState(localStorage.getItem('language'))
 
+  const location = useLocation()
+
   const onLanguageChange = (e) => {
     const newLanguage = e.target.dataset.name
     setLanguage(newLanguage)
@@ -38,7 +40,7 @@ const App = () => {
 
   return (
     <ContextProvider>
-      <div className="absolute -top-6 right-1 md:right-2 xl:right-10 z-10">
+      <div className={`${location?.pathname?.search('chat') !== -1 && 'hidden'} absolute -top-6 right-1 md:right-2 xl:right-10 z-10`}>
         <div className="dropdown dropdown-hover dropdown-end pl-6 text-text">
           <label tabIndex={0} className="collapse-title text-4xl font-medium cursor-pointer">
             <BiGlobe />
