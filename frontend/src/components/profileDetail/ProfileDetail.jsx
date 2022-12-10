@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { IoMdFemale } from 'react-icons/io'
 import { IoMdMale } from 'react-icons/io'
 import { IoMdTransgender } from 'react-icons/io'
+import { BiMessageAltDetail } from 'react-icons/bi'
 
 const ProfileDetail = ({ user }) => {
   const data = useParams()
@@ -26,7 +27,12 @@ const ProfileDetail = ({ user }) => {
           {`(${user?.username})`}
         </h3>
       </Link>
-      <Link to={`/chat/direct/${user?._id}`}>Message</Link>
+      <Link
+        to={`/chat/direct/${user?._id}`}
+        className="mt-2"
+      >
+        <BiMessageAltDetail fontSize={28} />
+      </Link>
       {data['*'] === '' ? (
         <div className="flex flex-col gap-1 justify-center items-center text-text m-2 text-lg font-semibold">
           <p className="text-rose-400">
