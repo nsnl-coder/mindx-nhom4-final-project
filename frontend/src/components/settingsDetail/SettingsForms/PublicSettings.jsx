@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-
+import { ref, getDownloadURL, uploadBytes } from '@firebase/storage'
 import FormButtons from './FormButtons'
 import useCallApi from '../../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../../utils/toast'
-
+import { storage } from '../../../../firebase'
 const PublicSettings = ({ user, updateUser }) => {
   const [image, setImage] = useState(user?.profileImage)
   const [firstName, setFirstName] = useState(user?.firstName)
@@ -48,10 +48,14 @@ const PublicSettings = ({ user, updateUser }) => {
     setUsername(user?.username)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    const image = e.target[0].files[0]
     const formData = new FormData()
-    formData.append('profileImage', image)
+    const mountainsRef = ref(storage, `avatar/image-${image.lastModified}`)
+    await uploadBytes(mountainsRef, image)
+    const imageAvatar = await getDownloadURL(mountainsRef)
+    formData.append('profileImage', imageAvatar)
     formData.append('firstName', firstName)
     formData.append('lastName', lastName)
     formData.append('username', username)
@@ -59,7 +63,9 @@ const PublicSettings = ({ user, updateUser }) => {
     sendRequest(
       {
         method: 'put',
-        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/updateUser/${user?._id}`,
+        url: `${import.meta.env.VITE_BACKEND_HOST}/api/user/updateUser/${
+          user?._id
+        }`,
         data: formData,
       },
       applyApiData
@@ -75,7 +81,13 @@ const PublicSettings = ({ user, updateUser }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col justify-center items-center">
-        <img src={image !== user?.profileImage ? URL.createObjectURL(image) : image} className="w-32 h-32 rounded-full" alt="user-avatar" />
+        <img
+          src={
+            image !== user?.profileImage ? URL.createObjectURL(image) : image
+          }
+          className="w-32 h-32 rounded-full"
+          alt="user-avatar"
+        />
         <label
           htmlFor="profileImage"
           className="cursor-pointer text-center w-[100px] m-4 px-4 py-1 bg-gray-300 rounded-full text-text hover:shadow-md"
@@ -92,9 +104,7 @@ const PublicSettings = ({ user, updateUser }) => {
         />
       </div>
       <div className="flex flex-col mx-12 text-text text-lg font-medium">
-        <label htmlFor="firstName">
-          First name:
-        </label>
+        <label htmlFor="firstName">First name:</label>
         <input
           required
           id="firstName"
@@ -103,9 +113,7 @@ const PublicSettings = ({ user, updateUser }) => {
           onChange={handleChangeInput}
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
-        <label htmlFor="lastName">
-          Last name:
-        </label>
+        <label htmlFor="lastName">Last name:</label>
         <input
           required
           id="lastName"
@@ -114,9 +122,7 @@ const PublicSettings = ({ user, updateUser }) => {
           onChange={handleChangeInput}
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
-        <label htmlFor="username">
-          User name:
-        </label>
+        <label htmlFor="username">User name:</label>
         <input
           required
           id="userName"
