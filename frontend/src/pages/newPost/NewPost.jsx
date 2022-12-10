@@ -4,9 +4,10 @@ import { useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-
+import { ref, uploadBytes, getDownloadURL } from '@firebase/storage'
 //
 import useCallApi from '../../hooks/useCallApi'
+import { storage } from '../../../firebase'
 import { showToastError, showToastSuccess } from '../../utils/toast'
 import {
   wrapperWithHeader,
@@ -52,7 +53,8 @@ const NewPost = () => {
     navigate(`/post/${data._id}`)
   }
 
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = async (event) => {
+    const image = event.target[0].files[0]
     event.preventDefault()
     const formData = new FormData()
     const html = editor.getHTML()
@@ -82,11 +84,13 @@ const NewPost = () => {
       showToastError(t('invalid_toast_content'))
       return
     }
+    const mountainsRef = ref(storage, `images/image-${image.lastModified}`)
+    uploadBytes(mountainsRef, image)
+    const images = await getDownloadURL(mountainsRef)
 
-    formData.append('photo', selectedPhoto)
+    formData.append('photo', images)
     formData.append('content', html)
     formData.append('title', title)
-
     sendRequest(
       {
         method: 'post',
