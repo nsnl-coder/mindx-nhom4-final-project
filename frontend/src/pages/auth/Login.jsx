@@ -120,7 +120,7 @@ const Login = () => {
               )}
             </div>
             {errors?.email?.type === 'required' && (
-              <p className="text-primary text-sm">{t('this-field-required')}</p>
+              <p className="text-primary text-sm">{t('this-feild-required')}</p>
             )}
             {errors?.email?.type === 'pattern' && (
               <p className="text-primary text-sm">{t('invalid-email')}</p>
@@ -163,7 +163,7 @@ const Login = () => {
               )}
             </div>
             {errors?.password?.type === 'required' && (
-              <p className="text-primary text-sm">{t('this-field-required')}</p>
+              <p className="text-primary text-sm">{t('this-feild-required')}</p>
             )}
             {errors?.password?.type === 'minLength' && (
               <p className="text-primary text-sm"> {t('minLength-password')}</p>
@@ -204,8 +204,8 @@ const Login = () => {
               className="text-primary text-lg cursor-pointer underline uppercase"
             >
               {t('create-new')}
-            </Link>
-            {' '}{t('now')}
+            </Link>{' '}
+            {t('now')}
           </p>
           <Link to="/auth/forgot">
             {' '}
