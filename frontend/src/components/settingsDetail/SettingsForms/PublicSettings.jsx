@@ -52,10 +52,13 @@ const PublicSettings = ({ user, updateUser }) => {
     e.preventDefault()
     const avatar = e.target[0].files[0]
     const formData = new FormData()
-    const mountainsRef = ref(storage, `avatar/image-${avatar.lastModified}`)
-    await uploadBytes(mountainsRef, image)
-    const imageAvatar = await getDownloadURL(mountainsRef)
-    formData.append('profileImage', imageAvatar)
+    if (avatar) {
+      const mountainsRef = ref(storage, `avatar/image-${avatar.lastModified}`)
+      await uploadBytes(mountainsRef, image)
+      const imageAvatar = await getDownloadURL(mountainsRef)
+      formData.append('profileImage', imageAvatar)
+    }
+
     formData.append('firstName', firstName)
     formData.append('lastName', lastName)
     formData.append('username', username)
