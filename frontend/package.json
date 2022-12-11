@@ -40,6 +40,7 @@
     "react-scroll-to-top": "^3.0.0",
     "react-toastify": "^9.1.1",
     "socket.io-client": "^4.5.4",
+    "uuid": "^9.0.0",
     "xregexp": "^5.1.1",
     "yup": "^0.32.11"
   },

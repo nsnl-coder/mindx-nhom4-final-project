@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ref, getDownloadURL, uploadBytes } from '@firebase/storage'
+import { v4 as uuidv4 } from 'uuid'
 import FormButtons from './FormButtons'
 import useCallApi from '../../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../../utils/toast'
@@ -9,7 +10,7 @@ const PublicSettings = ({ user, updateUser }) => {
   const [firstName, setFirstName] = useState(user?.firstName)
   const [lastName, setLastName] = useState(user?.lastName)
   const [username, setUsername] = useState(user?.username)
-
+  const [loading, setLoading] = useState(false)
   const { isLoading, error, sendRequest } = useCallApi()
 
   const applyApiData = (data) => {
@@ -19,6 +20,7 @@ const PublicSettings = ({ user, updateUser }) => {
     setFirstName(data.firstName)
     setLastName(data.lastName)
     setUsername(data.username)
+    setLoading(false)
   }
 
   const handleChangeImage = (e) => {
@@ -51,12 +53,16 @@ const PublicSettings = ({ user, updateUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const avatar = e.target[0].files[0]
+
     const formData = new FormData()
+    const idImage = uuidv4()
+    setLoading(true)
     if (avatar) {
-      const mountainsRef = ref(storage, `avatar/image-${avatar.lastModified}`)
+      const mountainsRef = ref(storage, `avatar/image-${idImage}`)
       await uploadBytes(mountainsRef, image)
-      const imageAvatar = await getDownloadURL(mountainsRef)
-      formData.append('profileImage', imageAvatar)
+      await getDownloadURL(mountainsRef).then((url) => {
+        formData.append('profileImage', url)
+      })
     }
 
     formData.append('firstName', firstName)
@@ -134,7 +140,7 @@ const PublicSettings = ({ user, updateUser }) => {
           onChange={handleChangeInput}
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
-        <FormButtons onClear={handleClearInput} />
+        <FormButtons onClear={handleClearInput} loading={loading} />
       </div>
     </form>
   )

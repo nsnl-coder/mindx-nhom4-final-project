@@ -3,12 +3,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useNavigate } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 import { useTranslation } from 'react-i18next'
 import { ref, uploadBytes, getDownloadURL } from '@firebase/storage'
 //
 import useCallApi from '../../hooks/useCallApi'
 import { storage } from '../../../firebase'
 import { showToastError, showToastSuccess } from '../../utils/toast'
+// import LoadingSpinner from '../../components'
 import {
   wrapperWithHeader,
   Editor,
@@ -20,6 +22,7 @@ import MemoImg from './MemoImg'
 const NewPost = () => {
   const [selectedPhoto, setSelectedPhoto] = useState()
   const [title, setTitle] = useState('')
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const [formError, setFormError] = useState({})
   const { error, isLoading, sendRequest } = useCallApi()
@@ -51,6 +54,7 @@ const NewPost = () => {
   const applyApiData = (data) => {
     showToastSuccess(t('posted_success'))
     navigate(`/post/${data._id}`)
+    setLoading(false)
   }
 
   const onSubmitHandler = async (event) => {
@@ -84,21 +88,23 @@ const NewPost = () => {
       showToastError(t('invalid_toast_content'))
       return
     }
-    const mountainsRef = ref(storage, `images/image-${image?.lastModified}`)
-    uploadBytes(mountainsRef, image)
-    const images = await getDownloadURL(mountainsRef)
-
-    formData.append('photo', images)
-    formData.append('content', html)
-    formData.append('title', title)
-    sendRequest(
-      {
-        method: 'post',
-        url: '/api/post',
-        data: formData,
-      },
-      applyApiData
-    )
+    const imageId = uuidv4()
+    setLoading(true)
+    const mountainsRef = ref(storage, `images/image-${imageId}`)
+    await uploadBytes(mountainsRef, image)
+    await getDownloadURL(mountainsRef).then((url) => {
+      formData.append('photo', url)
+      formData.append('content', html)
+      formData.append('title', title)
+      sendRequest(
+        {
+          method: 'post',
+          url: '/api/post',
+          data: formData,
+        },
+        applyApiData
+      )
+    })
   }
   useEffect(() => {
     if (error) {
@@ -205,13 +211,13 @@ const NewPost = () => {
             )}
             <button
               className={
-                isLoading
+                loading
                   ? 'bg-primary/50 text-white py-2 px-12 rounded-full mt-4 self-end'
                   : 'bg-primary text-white py-2 px-12 rounded-full mt-4 self-end'
               }
-              disabled={isLoading ? true : false}
+              disabled={loading ? true : false}
             >
-              {isLoading ? t('posting') : t('post')}
+              {loading ? t('posting') : t('post')}
             </button>
           </div>
         </div>
