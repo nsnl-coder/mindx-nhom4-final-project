@@ -84,7 +84,7 @@ const NewPost = () => {
       showToastError(t('invalid_toast_content'))
       return
     }
-    const mountainsRef = ref(storage, `images/image-${image.lastModified}`)
+    const mountainsRef = ref(storage, `images/image-${image?.lastModified}`)
     uploadBytes(mountainsRef, image)
     const images = await getDownloadURL(mountainsRef)
 
