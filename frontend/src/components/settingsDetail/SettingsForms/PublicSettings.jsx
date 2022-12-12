@@ -5,7 +5,8 @@ import FormButtons from './FormButtons'
 import useCallApi from '../../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../../utils/toast'
 import { storage } from '../../../../firebase'
-const PublicSettings = ({ user, updateUser }) => {
+
+const PublicSettings = ({ user, updateUser, t }) => {
   const [image, setImage] = useState(user?.profileImage)
   const [firstName, setFirstName] = useState(user?.firstName)
   const [lastName, setLastName] = useState(user?.lastName)
@@ -101,7 +102,7 @@ const PublicSettings = ({ user, updateUser }) => {
           htmlFor="profileImage"
           className="cursor-pointer text-center w-[100px] m-4 px-4 py-1 bg-gray-300 rounded-full text-text hover:shadow-md"
         >
-          Change
+          {t('Change')}
         </label>
         <input
           type="file"
@@ -113,7 +114,7 @@ const PublicSettings = ({ user, updateUser }) => {
         />
       </div>
       <div className="flex flex-col mx-12 text-text text-lg font-medium">
-        <label htmlFor="firstName">First name:</label>
+        <label htmlFor="firstName">{t('First name:')}</label>
         <input
           required
           id="firstName"
@@ -122,7 +123,7 @@ const PublicSettings = ({ user, updateUser }) => {
           onChange={handleChangeInput}
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
-        <label htmlFor="lastName">Last name:</label>
+        <label htmlFor="lastName">{t('Last name:')}</label>
         <input
           required
           id="lastName"
@@ -131,7 +132,7 @@ const PublicSettings = ({ user, updateUser }) => {
           onChange={handleChangeInput}
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
-        <label htmlFor="username">User name:</label>
+        <label htmlFor="username">{t('User name:')}</label>
         <input
           required
           id="userName"
@@ -140,7 +141,7 @@ const PublicSettings = ({ user, updateUser }) => {
           onChange={handleChangeInput}
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
-        <FormButtons onClear={handleClearInput} loading={loading} />
+        <FormButtons onClear={handleClearInput} loading={loading} t={t} />
       </div>
     </form>
   )

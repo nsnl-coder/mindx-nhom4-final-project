@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { IoMdFemale } from 'react-icons/io'
 import { IoMdMale } from 'react-icons/io'
@@ -7,6 +8,8 @@ import { BiMessageAltDetail } from 'react-icons/bi'
 
 const ProfileDetail = ({ user }) => {
   const data = useParams()
+
+  const { t } = useTranslation()
 
   return (
     <div
@@ -45,13 +48,13 @@ const ProfileDetail = ({ user }) => {
             {user?.gender === 'Other' && <IoMdTransgender fontSize={36} />}
           </p>
           <p className="text-gray-500">
-            {new Date(user?.dateOfBirth)
+            {t(new Date(user?.dateOfBirth)
               ?.toUTCString()
               .split(' ')
               .slice(1, 4)
-              .join(' ')}
+              .join(' '))}
           </p>
-          <p className="mt-4 text-base font-light">Lists of posts</p>
+          <p className="mt-4 text-base font-light">{t('Lists of posts')}</p>
         </div>
       ) : null}
       <div className="h-10 mt-4 w-[240px] rounded-full flex justify-around items-center bg-gray-300">
@@ -61,7 +64,7 @@ const ProfileDetail = ({ user }) => {
             data['*'] === 'posts' ? 'bg-primary text-white' : 'bg-transparent'
           }`}
         >
-          Posts
+          {t('Posts')}
         </Link>
         <Link
           to="saved"
@@ -69,7 +72,7 @@ const ProfileDetail = ({ user }) => {
             data['*'] === 'saved' ? 'bg-primary text-white' : 'bg-transparent'
           }`}
         >
-          Saved
+          {t('Saved')}
         </Link>
       </div>
     </div>

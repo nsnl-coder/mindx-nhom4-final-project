@@ -7,7 +7,7 @@ import { showToastError, showToastSuccess } from '../../../utils/toast'
 
 // const regex = //
 
-const PrivateSettings = ({ user, updateUser }) => {
+const PrivateSettings = ({ user, updateUser, t }) => {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [newPassword2, setNewPassword2] = useState('')
@@ -93,7 +93,7 @@ const PrivateSettings = ({ user, updateUser }) => {
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col mx-12 text-text text-lg font-medium">
         <label htmlFor="oldPassword">
-          Old password:
+          {t('Old password:')}
         </label>
         <input
           required
@@ -106,7 +106,7 @@ const PrivateSettings = ({ user, updateUser }) => {
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
         <label htmlFor="newPassword">
-          New password:
+          {t('New password:')}
         </label>
         <input
           required
@@ -119,7 +119,7 @@ const PrivateSettings = ({ user, updateUser }) => {
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
         <label htmlFor="newPassword2">
-          Confirm password:
+          {t('Confirm password:')}
         </label>
         <input
           required
@@ -135,13 +135,13 @@ const PrivateSettings = ({ user, updateUser }) => {
           htmlFor="delete-modal"
           className="text-center cursor-pointer w-[200px] mx-auto md:mx-0 uppercase my-4 px-4 py-2 bg-gray-300 rounded-full text-text font-medium hover:shadow-lg"
         >
-          Delete account
+          {t('Delete account')}
         </label>
         <input type="checkbox" id="delete-modal" className="modal-toggle" />
         <label htmlFor="delete-modal" className="modal cursor-pointer">
           <label className="py-8 modal-box relative" htmlFor="">
             <h3 className="text-lg font-bold text-center">
-              Are you sure want to delete your account?
+              {t('Are you sure want to delete your account?')}
             </h3>
             <div className="mt-4 flex justify-center gap-8">
               <label
@@ -149,17 +149,17 @@ const PrivateSettings = ({ user, updateUser }) => {
                 className="text-center text-base cursor-pointer w-[100px] mx-auto md:mx-0 uppercase my-4 px-4 py-2 bg-primary rounded-full text-white font-medium hover:shadow-lg"
                 onClick={handleDeleteAccount}
               >
-                Yes
+                {t('Yes')}
               </label>
               <label
                 htmlFor="delete-modal"
                 className="text-center text-base cursor-pointer w-[100px] mx-auto md:mx-0 uppercase my-4 px-4 py-2 bg-gray-300 rounded-full text-text font-medium hover:shadow-lg"
               >
-                No
+                {t('No')}
               </label></div>
           </label>
         </label>
-        <FormButtons onClear={handleClearInput} />
+        <FormButtons onClear={handleClearInput} t={t} />
       </div>
     </form >
   )

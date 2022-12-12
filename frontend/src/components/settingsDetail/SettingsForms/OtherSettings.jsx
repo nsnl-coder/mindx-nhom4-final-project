@@ -4,7 +4,7 @@ import FormButtons from './FormButtons'
 import useCallApi from '../../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../../utils/toast'
 
-const OtherSettings = ({ user, updateUser }) => {
+const OtherSettings = ({ user, updateUser, t }) => {
   const [gender, setGender] = useState(user?.gender)
   const [dateOfBirth, setDateOfBirth] = useState(user?.dateOfBirth?.slice(0, 10))
 
@@ -58,7 +58,7 @@ const OtherSettings = ({ user, updateUser }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="my-8 flex flex-col mx-12 text-text text-lg font-medium">
-        <h3>Gender:</h3>
+        <h3>{t('Gender:')}</h3>
         <div className="flex justify-between font-normal">
           <label className="label cursor-pointer">
             <input
@@ -69,7 +69,7 @@ const OtherSettings = ({ user, updateUser }) => {
               className="radio checked:bg-primary mr-2 sm:mr-4"
               onChange={handleChangeInput}
             />
-            <span>Male</span>
+            <span>{t('Male')}</span>
           </label>
           <label className="label cursor-pointer">
             <input
@@ -80,7 +80,7 @@ const OtherSettings = ({ user, updateUser }) => {
               className="radio checked:bg-primary mr-2 sm:mr-4"
               onChange={handleChangeInput}
             />
-            <span>Female</span>
+            <span>{t('Female')}</span>
           </label>
           <label className="label cursor-pointer">
             <input
@@ -91,11 +91,11 @@ const OtherSettings = ({ user, updateUser }) => {
               className="radio checked:bg-primary mr-2 sm:mr-4"
               onChange={handleChangeInput}
             />
-            <span>Other</span>
+            <span>{t('Other')}</span>
           </label>
         </div>
         <label htmlFor="dateOfBirth" className="mt-16">
-          Date of Birth:
+          {t('Date of Birth:')}
         </label>
         <input
           type="date"
@@ -105,7 +105,7 @@ const OtherSettings = ({ user, updateUser }) => {
           onChange={handleChangeInput}
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
-        <FormButtons onClear={handleClearInput} />
+        <FormButtons onClear={handleClearInput} t={t} />
       </div>
     </form>
   )

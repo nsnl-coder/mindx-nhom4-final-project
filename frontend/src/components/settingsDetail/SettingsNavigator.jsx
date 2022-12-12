@@ -1,4 +1,8 @@
+import { useTranslation } from "react-i18next"
+
 const SettingsNavigator = ({ setting, setSetting }) => {
+  const { t } = useTranslation()
+
   const handleChange = (e) => {
     setSetting(e.target.value)
   }
@@ -12,13 +16,13 @@ const SettingsNavigator = ({ setting, setSetting }) => {
             onChange={handleChange}
           >
             <option value="public">
-              Public Information
+              {t('Public Information')}
             </option>
             <option value="other">
-              Other Information
+              {t('Other Information')}
             </option>
             <option value="private">
-              Private Information
+              {t('Private Information')}
             </option>
           </select>
         </div>
@@ -37,7 +41,7 @@ const SettingsNavigator = ({ setting, setSetting }) => {
           htmlFor="public"
           className={`cursor-pointer m-6 text-lg text-text ${setting === "public" ? "font-medium" : "font-normal"}`}
         >
-          Public Information
+          {t('Public Information')}
         </label>
         <input
           type="radio"
@@ -52,7 +56,7 @@ const SettingsNavigator = ({ setting, setSetting }) => {
           htmlFor="other"
           className={`cursor-pointer m-6 text-lg text-text ${setting === "other" ? "font-medium" : "font-normal"}`}
         >
-          Other Information
+          {t('Other Information')}
         </label>
         <input
           type="radio"
@@ -67,7 +71,7 @@ const SettingsNavigator = ({ setting, setSetting }) => {
           htmlFor="private"
           className={`cursor-pointer m-6 text-lg text-text ${setting === "private" ? "font-medium" : "font-normal"}`}
         >
-          Private Information
+          {t('Private Information')}
         </label>
       </div>
     </>

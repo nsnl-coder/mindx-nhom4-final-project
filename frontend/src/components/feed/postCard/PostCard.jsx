@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { AuthContext } from '../../../contexts'
 import saveIcon from '../../../assets/icon-save.svg'
@@ -16,11 +17,12 @@ const PostCard = ({
 }) => {
   const { auth } = useContext(AuthContext)
 
+  const { t } = useTranslation()
+
   const { isLoading, error, sendRequest } = useCallApi()
 
   const useApiData = (data) => {
-    if (data) showToastSuccess('Successfully')
-    console.log(data)
+    if (data) showToastSuccess('Save post successfully')
   }
 
   const handleSavePost = (id) => {
@@ -39,9 +41,7 @@ const PostCard = ({
       showToastError('This post has been saved to your list')
     }
   }, [error])
-  useEffect(() => {
-    console.log(collection)
-  }, [collection])
+
   return (
     <div className="postCard">
       <div className="hover:shadow-xl image-full group relative rounded-xl">
