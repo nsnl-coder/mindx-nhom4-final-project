@@ -16,13 +16,13 @@ const SettingsNavigator = ({ setting, setSetting }) => {
             onChange={handleChange}
           >
             <option value="public">
-              {t('Public Information')}
+              {t('public-info')}
             </option>
             <option value="other">
-              {t('Other Information')}
+              {t('other-info')}
             </option>
             <option value="private">
-              {t('Private Information')}
+              {t('private-info')}
             </option>
           </select>
         </div>
@@ -41,7 +41,7 @@ const SettingsNavigator = ({ setting, setSetting }) => {
           htmlFor="public"
           className={`cursor-pointer m-6 text-lg text-text ${setting === "public" ? "font-medium" : "font-normal"}`}
         >
-          {t('Public Information')}
+          {t('public-info')}
         </label>
         <input
           type="radio"
@@ -56,7 +56,7 @@ const SettingsNavigator = ({ setting, setSetting }) => {
           htmlFor="other"
           className={`cursor-pointer m-6 text-lg text-text ${setting === "other" ? "font-medium" : "font-normal"}`}
         >
-          {t('Other Information')}
+          {t('other-info')}
         </label>
         <input
           type="radio"
@@ -71,7 +71,7 @@ const SettingsNavigator = ({ setting, setSetting }) => {
           htmlFor="private"
           className={`cursor-pointer m-6 text-lg text-text ${setting === "private" ? "font-medium" : "font-normal"}`}
         >
-          {t('Private Information')}
+          {t('private-info')}
         </label>
       </div>
     </>

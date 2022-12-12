@@ -9,14 +9,14 @@ const FormButtons = ({ onClear, loading, t }) => {
         } bg-primary rounded-full text-white font-medium hover:shadow-lg cursor-pointer`}
         value="submit"
       >
-        {t('Submit')}
+        {t('submit')}
       </button>
       <button
         type="reset"
         className="w-[200px] uppercase my-2 px-4 py-2 bg-gray-300 rounded-full text-text font-medium hover:shadow-lg"
         onClick={onClear}
       >
-        {t('Cancel')}
+        {t('cancel')}
       </button>
     </div>
   )

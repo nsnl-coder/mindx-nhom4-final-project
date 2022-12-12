@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import FormButtons from './FormButtons'
 import useCallApi from '../../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../../utils/toast'
+import { useLogUserOut } from '../../../hooks/useLogUserOut'
 
 // const regex = //
 
@@ -11,6 +12,8 @@ const PrivateSettings = ({ user, updateUser, t }) => {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [newPassword2, setNewPassword2] = useState('')
+
+  const { logOut } = useLogUserOut()
 
   const navigate = useNavigate()
 
@@ -23,8 +26,8 @@ const PrivateSettings = ({ user, updateUser, t }) => {
   }
 
   const useApiData = (data) => {
-    showToastSuccess('Delete successfully')
-    navigate('../')
+    showToastSuccess('Delete account successfully')
+    logOut()
   }
 
   const applyApiData = (data) => {
@@ -55,10 +58,10 @@ const PrivateSettings = ({ user, updateUser, t }) => {
       return
     }
 
-    // if (!newPassword.match(regex) || !newPassword2.match(regex)) {
-    //   showToastError('Password must includes at least a capital letter, a lowercase letter, a number and the length of 8 or more')
-    //   return
-    // }
+    if (newPassword.length > 8 || newPassword2.length > 8) {
+      showToastError('Password must have the length of 8 or more')
+      return
+    }
 
     sendRequest(
       {
@@ -93,7 +96,7 @@ const PrivateSettings = ({ user, updateUser, t }) => {
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col mx-12 text-text text-lg font-medium">
         <label htmlFor="oldPassword">
-          {t('Old password:')}
+          {t('old-password')}
         </label>
         <input
           required
@@ -106,7 +109,7 @@ const PrivateSettings = ({ user, updateUser, t }) => {
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
         <label htmlFor="newPassword">
-          {t('New password:')}
+          {t('new-password')}
         </label>
         <input
           required
@@ -119,7 +122,7 @@ const PrivateSettings = ({ user, updateUser, t }) => {
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
         <label htmlFor="newPassword2">
-          {t('Confirm password:')}
+          {t('confirm-password')}
         </label>
         <input
           required
@@ -135,7 +138,7 @@ const PrivateSettings = ({ user, updateUser, t }) => {
           htmlFor="delete-modal"
           className="text-center cursor-pointer w-[200px] mx-auto md:mx-0 uppercase my-4 px-4 py-2 bg-gray-300 rounded-full text-text font-medium hover:shadow-lg"
         >
-          {t('Delete account')}
+          {t('delete-account')}
         </label>
         <input type="checkbox" id="delete-modal" className="modal-toggle" />
         <label htmlFor="delete-modal" className="modal cursor-pointer">
@@ -149,13 +152,13 @@ const PrivateSettings = ({ user, updateUser, t }) => {
                 className="text-center text-base cursor-pointer w-[100px] mx-auto md:mx-0 uppercase my-4 px-4 py-2 bg-primary rounded-full text-white font-medium hover:shadow-lg"
                 onClick={handleDeleteAccount}
               >
-                {t('Yes')}
+                {t('yes')}
               </label>
               <label
                 htmlFor="delete-modal"
                 className="text-center text-base cursor-pointer w-[100px] mx-auto md:mx-0 uppercase my-4 px-4 py-2 bg-gray-300 rounded-full text-text font-medium hover:shadow-lg"
               >
-                {t('No')}
+                {t('no')}
               </label></div>
           </label>
         </label>

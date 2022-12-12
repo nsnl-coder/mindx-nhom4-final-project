@@ -69,7 +69,7 @@ const OtherSettings = ({ user, updateUser, t }) => {
               className="radio checked:bg-primary mr-2 sm:mr-4"
               onChange={handleChangeInput}
             />
-            <span>{t('Male')}</span>
+            <span>{t('male')}</span>
           </label>
           <label className="label cursor-pointer">
             <input
@@ -80,7 +80,7 @@ const OtherSettings = ({ user, updateUser, t }) => {
               className="radio checked:bg-primary mr-2 sm:mr-4"
               onChange={handleChangeInput}
             />
-            <span>{t('Female')}</span>
+            <span>{t('female')}</span>
           </label>
           <label className="label cursor-pointer">
             <input
@@ -91,11 +91,11 @@ const OtherSettings = ({ user, updateUser, t }) => {
               className="radio checked:bg-primary mr-2 sm:mr-4"
               onChange={handleChangeInput}
             />
-            <span>{t('Other')}</span>
+            <span>{t('other')}</span>
           </label>
         </div>
         <label htmlFor="dateOfBirth" className="mt-16">
-          {t('Date of Birth:')}
+          {t('dob')}{':'}
         </label>
         <input
           type="date"

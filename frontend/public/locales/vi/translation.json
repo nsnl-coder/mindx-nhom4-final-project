@@ -90,5 +90,23 @@
   "count-seconds-content": "Vui lòng chờ sau 15s để gửi lại email",
   "verify-failure": "Xác thực thất bại",
   "verify-successfully": "Xác thực thành công",
-  "new-password": "Mật khẩu mới:"
+  "new-password": "Mật khẩu mới:",
+
+  "post-list": "Danh sách Bài đăng",
+  "posts": "Bài đăng",
+  "change": "Thay đổi",
+  "public-info": "Thông tin chung",
+  "other-info": "Thông tin khác",
+  "private-info": "Thông tin riêng tư",
+  "male": "Nam",
+  "female": "Nữ",
+  "other": "Khác",
+  "dob": "Ngày sinh",
+  "submit": "Nhập",
+  "cancel": "Hủy",
+  "old-password": "Mật khẩu cũ:",
+  "confirm-password": "Xác nhận mật khẩu:",
+  "delete-account": "Xóa tài khoản",
+  "yes": "Đồng ý",
+  "no": "Không"
 }

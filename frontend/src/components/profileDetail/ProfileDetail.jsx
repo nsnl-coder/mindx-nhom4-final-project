@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { IoMdFemale } from 'react-icons/io'
 import { IoMdMale } from 'react-icons/io'
 import { IoMdTransgender } from 'react-icons/io'
-import { BiMessageAltDetail } from 'react-icons/bi'
+import { RiMessageFill } from 'react-icons/ri'
 
 const ProfileDetail = ({ user }) => {
   const data = useParams()
@@ -34,7 +34,7 @@ const ProfileDetail = ({ user }) => {
         to={`/chat/direct/${user?._id}`}
         className="mt-2"
       >
-        <BiMessageAltDetail fontSize={28} />
+        <RiMessageFill fontSize={28} />
       </Link>
       {data['*'] === '' ? (
         <div className="flex flex-col gap-1 justify-center items-center text-text m-2 text-lg font-semibold">
@@ -54,7 +54,7 @@ const ProfileDetail = ({ user }) => {
               .slice(1, 4)
               .join(' '))}
           </p>
-          <p className="mt-4 text-base font-light">{t('Lists of posts')}</p>
+          <p className="mt-4 text-base font-light">{t('post-list')}</p>
         </div>
       ) : null}
       <div className="h-10 mt-4 w-[240px] rounded-full flex justify-around items-center bg-gray-300">
@@ -63,14 +63,14 @@ const ProfileDetail = ({ user }) => {
           className={`cursor-pointer rounded-full w-[45%] py-1 text-text text-center font-medium ${data['*'] === 'posts' ? 'bg-primary text-white' : 'bg-transparent'
             }`}
         >
-          {t('Posts')}
+          {t('posts')}
         </Link>
         <Link
           to="saved"
           className={`cursor-pointer rounded-full w-[45%] py-1 text-text text-center font-medium ${data['*'] === 'saved' ? 'bg-primary text-white' : 'bg-transparent'
             }`}
         >
-          {t('Saved')}
+          {t('saved')}
         </Link>
       </div>
     </div>
