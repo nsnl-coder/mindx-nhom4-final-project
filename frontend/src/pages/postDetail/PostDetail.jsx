@@ -44,7 +44,7 @@ const PostDetail = () => {
         <div className="w-full md:w-1/2 mb-8">
           <img src={post?.photo} alt="post image" className="rounded-xl" />
         </div>
-        <div className="flex flex-col flex-grow max-w-2xl h-[800px] w-full">
+        <div className="flex flex-col flex-grow max-w-lg h-[800px] w-full">
           <div className="overflow-y-auto mb-6 min-h-[160px] max-h-[280px]">
             <ProfileImageAndName user={post?.author} date={post?.createdAt} />
             <div
