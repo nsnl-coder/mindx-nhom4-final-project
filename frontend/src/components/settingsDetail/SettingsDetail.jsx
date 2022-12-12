@@ -33,7 +33,7 @@ const SettingsDetail = ({ setting }) => {
     updateUser()
   }, [])
 
-  const Details = ({ user, updateUser }) => {
+  const Details = ({ user, updateUser, t }) => {
     switch (setting) {
       case 'other':
         return <OtherSettings user={user} updateUser={updateUser} t={t} />
@@ -46,7 +46,7 @@ const SettingsDetail = ({ setting }) => {
 
   return (
     <div className="mt-4 ml-4 md:absolute md:top-4 md:right-4 md:left-[250px] max-w-[700px] md:mx-auto">
-      <Details user={user} updateUser={updateUser} />
+      <Details user={user} updateUser={updateUser} t={t} />
     </div>
   )
 }

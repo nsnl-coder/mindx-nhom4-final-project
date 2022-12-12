@@ -60,17 +60,15 @@ const ProfileDetail = ({ user }) => {
       <div className="h-10 mt-4 w-[240px] rounded-full flex justify-around items-center bg-gray-300">
         <Link
           to="posts"
-          className={`cursor-pointer rounded-full w-[45%] py-1 text-text text-center font-medium ${
-            data['*'] === 'posts' ? 'bg-primary text-white' : 'bg-transparent'
-          }`}
+          className={`cursor-pointer rounded-full w-[45%] py-1 text-text text-center font-medium ${data['*'] === 'posts' ? 'bg-primary text-white' : 'bg-transparent'
+            }`}
         >
           {t('Posts')}
         </Link>
         <Link
           to="saved"
-          className={`cursor-pointer rounded-full w-[45%] py-1 text-text text-center font-medium ${
-            data['*'] === 'saved' ? 'bg-primary text-white' : 'bg-transparent'
-          }`}
+          className={`cursor-pointer rounded-full w-[45%] py-1 text-text text-center font-medium ${data['*'] === 'saved' ? 'bg-primary text-white' : 'bg-transparent'
+            }`}
         >
           {t('Saved')}
         </Link>
