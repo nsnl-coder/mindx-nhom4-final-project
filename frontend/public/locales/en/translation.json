@@ -108,6 +108,7 @@
   "cancel": "Cancel",
   "old-password": "Old Password:",
   "confirm-password": "Confirm Password:",
+  "confirm-delete": "Are you sure want to delete your account?",
   "delete-account": "Delete Account",
   "yes": "Yes",
   "no": "No"

@@ -106,6 +106,7 @@
   "cancel": "Hủy",
   "old-password": "Mật khẩu cũ:",
   "confirm-password": "Xác nhận mật khẩu:",
+  "confirm-delete": "Bạn có chắc muốn xóa tài khoản?",
   "delete-account": "Xóa tài khoản",
   "yes": "Đồng ý",
   "no": "Không"
