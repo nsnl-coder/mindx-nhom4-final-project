@@ -109,7 +109,7 @@ const PrivateSettings = ({ user, updateUser, t }) => {
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
         <label htmlFor="newPassword">
-          {t('new-password')}{':'}
+          {t('new-password')}
         </label>
         <input
           required

@@ -92,7 +92,7 @@
   "count-seconds-content": "Please wait until later 15s to resend email",
   "verify-failure": "Verified failure",
   "verify-successfully": "Verified successfully",
-  "new-password": "New Password",
+  "new-password": "New Password:",
 
   "post-list": "List of Posts",
   "posts": "Posts",
