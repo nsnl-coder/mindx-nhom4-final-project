@@ -58,7 +58,7 @@ const PrivateSettings = ({ user, updateUser, t }) => {
       return
     }
 
-    if (newPassword.length > 8 || newPassword2.length > 8) {
+    if (newPassword.length < 8 || newPassword2.length < 8) {
       showToastError('Password must have the length of 8 or more')
       return
     }
