@@ -17,7 +17,7 @@ const Verify = () => {
     showToastSuccess(t('send-email-successfully'))
     setTimeout(() => {
       setDelay(false)
-    }, 10000)
+    }, 15000)
     setDelay(true)
   }
   const resendEmail = () => {
