@@ -114,7 +114,7 @@ const PublicSettings = ({ user, updateUser, t }) => {
         />
       </div>
       <div className="flex flex-col mx-12 text-text text-lg font-medium">
-        <label htmlFor="firstName">{t('first-name:')}</label>
+        <label htmlFor="firstName">{t('first-name')}{':'}</label>
         <input
           required
           id="firstName"
@@ -123,7 +123,7 @@ const PublicSettings = ({ user, updateUser, t }) => {
           onChange={handleChangeInput}
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
-        <label htmlFor="lastName">{t('last-name:')}</label>
+        <label htmlFor="lastName">{t('last-name')}{':'}</label>
         <input
           required
           id="lastName"
@@ -132,7 +132,7 @@ const PublicSettings = ({ user, updateUser, t }) => {
           onChange={handleChangeInput}
           className="bg-white text-text font-normal outline-none border-gray-300 border-[2px] my-2 p-2 rounded-lg"
         />
-        <label htmlFor="username">{t('username:')}</label>
+        <label htmlFor="username">{t('username')}{':'}</label>
         <input
           required
           id="userName"

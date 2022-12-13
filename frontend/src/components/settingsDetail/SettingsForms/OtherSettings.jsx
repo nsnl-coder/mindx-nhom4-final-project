@@ -58,7 +58,7 @@ const OtherSettings = ({ user, updateUser, t }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="my-8 flex flex-col mx-12 text-text text-lg font-medium">
-        <h3>{t('Gender:')}</h3>
+        <h3>{t('gender')}{':'}</h3>
         <div className="flex justify-between font-normal">
           <label className="label cursor-pointer">
             <input
