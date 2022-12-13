@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import FormButtons from './FormButtons'
 import useCallApi from '../../../hooks/useCallApi'
 import { showToastError, showToastSuccess } from '../../../utils/toast'
-import { useLogUserOut } from '../../../hooks/useLogUserOut'
+import useLogUserOut from '../../../hooks/useLogUserOut'
 
 // const regex = //
 
